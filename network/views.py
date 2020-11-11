@@ -31,7 +31,7 @@ def add_post(request):
     data = json.loads(request.body)
 
     print(data)
-    
+    print(user)
 
     return JsonResponse({"message": "Posted successfully."}, status=201)
 

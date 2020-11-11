@@ -4,6 +4,7 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
 
 from .models import Post, User
 
@@ -17,7 +18,33 @@ def index(request):
     else:
         return HttpResponseRedirect(reverse("login"))
 
-# feed/<feed> 
+
+# API route posts 
+@csrf_exempt
+@login_required
+def add_post(request):
+    # Adding a new post must be via POST
+    if request.method != "POST":
+        return JsonResponse({"error": "POST request required."}, status=400)
+
+    user = request.user
+    data = json.loads(request.body)
+
+    print(data)
+    
+
+    return JsonResponse({"message": "Posted successfully."}, status=201)
+
+    
+    
+
+
+
+
+
+
+
+# API route feed/<feed> 
 @login_required
 def feed(request, feed):
     # Filter posts returned on feed

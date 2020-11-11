@@ -8,6 +8,9 @@ function load_feed(feed) {
     // Show the feed view and hide other views
     document.querySelector('#feeds-view').style.display = 'block';
 
+    // Clear out form text field
+    document.querySelector('#post-form-text').value = '';
+
     // Show the feed name
     document.querySelector('#feed-name').innerHTML = 
                             `<div class="row justify-content-center mt-2">
@@ -60,8 +63,7 @@ function load_feed(feed) {
             </div>`;
 
             document.querySelector("#feeds-view").append(element)
-        });
-        
+        }); 
 
     }); 
 }

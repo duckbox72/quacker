@@ -9,7 +9,12 @@ function load_feed(feed) {
     document.querySelector('#feeds-view').style.display = 'block';
 
     // Show the feed name
-    document.querySelector('#feed-name').innerHTML = `<h3 class="text-center">${feed.charAt(0).toUpperCase() + feed.slice(1)}</h3>`;
+    document.querySelector('#feed-name').innerHTML = 
+                            `<div class="row justify-content-center mt-2">
+                                <div class="col-lg-6">
+                                    <p>${feed.charAt(0).toUpperCase() + feed.slice(1)}</p>
+                                </div>
+                            </div>`;
 
     // Fetch feed for posts from API ROUTE
     fetch(`feed/${feed}`)
@@ -31,7 +36,7 @@ function load_feed(feed) {
             const element = document.createElement('div');
             element.className = `row justify-content-center`
             element.innerHTML = 
-                `<div class="col-lg-6 border rounded shadow-sm m-2 bg-white">
+                `<div class="col-lg-6 border rounded shadow-sm bg-white">
                 <div class="row">
                     <div class="col">
                         ${post.username} <span class="font-weight-lighter text-right">${post.user_email }</span>

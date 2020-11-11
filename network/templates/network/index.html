@@ -9,17 +9,15 @@
 
 <!-------  FEEDS VIEW  ------->
 <div id="feeds-view">
-    <!-------  New post form  ------->
-    <div id="feed-name" class="text-center">
-
+    <div id="feed-name">
     </div>
-    
-    <div class="row justify-content-center"> 
-        <div class="col-lg-6 border rounded shadow-sm m-2 bg-white">
-            <form>
+    <!-------  New post form  ------->
+    <div class="row justify-content-center mb-2"> 
+        <div class="col-lg-6 border rounded shadow-sm bg-white">
+            <form id="post-form">
                 <div class="row">
                     <div class="col">
-                        <p>New Post</p>
+                        <h5>New Post</h5>
                     </div>
                 </div>
                 <div class="row">
@@ -35,8 +33,7 @@
             </form>    
         </div>
     </div>
-    <!-- Feed added below -->
-
+    <!-- Actual feed rendered here -->
 </div>
 {% endblock %}
 

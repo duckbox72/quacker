@@ -11,19 +11,20 @@
         {% block script %}
         {% endblock %}
     </head>
-    <body>
+    <body  class="bg-light">
 
-        <nav class="navbar navbar-expand-md navbar-light shadow-sm" style="background-color: lightblue;">
+        <nav class="navbar navbar-expand-md navbar-light shadow-sm justify-content-center" style="background-color: lightblue;">
+            
             <a class="navbar-brand" href="#">QUACKer</a>  
             <div>
-              <ul class="navbar-nav mr-auto">
+            <ul class="navbar-nav mrr-auto">
                 {% if user.is_authenticated %}
                     <li class="nav-item">
                         <a class="nav-link" href="#"><strong>{{ user.username }}</strong></a>
                     </li>
                 {% endif %}
                 <li class="nav-item">
-                  <a class="nav-link" href="{% url 'index' %}">All Posts</a>
+                <a class="nav-link" href="{% url 'index' %}">All Posts</a>
                 </li>
                 {% if user.is_authenticated %}
                     <li class="nav-item">
@@ -40,9 +41,10 @@
                         <a class="nav-link" href="{% url 'register' %}">Register</a>
                     </li>
                 {% endif %}
-              </ul>
-            </div>
-          </nav>
+            </ul>
+            
+        </div>
+        </nav>
         
         <div class="body">
             <div class="container">

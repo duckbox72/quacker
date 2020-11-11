@@ -1,5 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
-#from django.core.serializers import serialize
+from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
@@ -17,10 +17,11 @@ def index(request):
     else:
         return HttpResponseRedirect(reverse("login"))
 
-
+# feed/<feed> 
+@login_required
 def feed(request, feed):
     # Filter posts returned on feed
-    if feed == "all":
+    if feed == "all posts":
         posts = Post.objects.all().order_by("-created")
     elif feed == "following":
         posts = Post.objects.all().order_by("-created")

@@ -1,26 +1,42 @@
 {% extends "network/layout.html" %}
 
 {% block title %}
-    TODO
+    QUACKer
 {% endblock %}
 
 
 {% block body %}
-<!-------  NEW POST FORM  ------->
-<h3 class="text-center">All Posts</h3>
-<div class="row justify-content-center"> 
-    <div class="col-lg-6 border rounded shadow-sm bg-white">
-        <form>
-            <p class="m-1">New Post</p>
-            <textarea class="form-control" type="text" placeholder="What are you thinking..."></textarea>
-            <input class="btn btn-primary btn-sm m-1" type="submit">
-        </form>    
-    </div>
-</div>
 
-<!-------  ALL POSTS VIEW  ------->
-<div id="all-posts-view">
-    ALL POSTS VIEW 
+<!-------  FEEDS VIEW  ------->
+<div id="feeds-view">
+    <!-------  New post form  ------->
+    <div id="feed-name" class="text-center">
+
+    </div>
+    
+    <div class="row justify-content-center"> 
+        <div class="col-lg-6 border rounded shadow-sm m-2 bg-white">
+            <form>
+                <div class="row">
+                    <div class="col">
+                        <p>New Post</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <textarea class="form-control" type="text" placeholder="What are you thinking?"></textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col text-right">
+                        <input class="btn btn-primary btn-sm" value="Quack" type="submit">
+                    </div>
+                </div>    
+            </form>    
+        </div>
+    </div>
+    <!-- Feed added below -->
+
 </div>
 {% endblock %}
 

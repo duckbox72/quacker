@@ -1,56 +1,29 @@
 {% extends "network/layout.html" %}
 
 {% block title %}
-    Home
+    TODO
 {% endblock %}
 
+
 {% block body %}
-
-<!-------  ALL POSTS VIEW  ------->
-
-<div id="all-posts-view">
-    <h3>All Posts</h3>
-    <div class="row justify-content-center">  
-        <div class="col-lg-6 border rounded shadow-sm bg-white">
-            <form>
-                    
-                <p class="m-1">New Post</p>
-                
-                <textarea class="form-control" type="text" placeholder="What are you thinking..."></textarea>
-                <input class="btn btn-primary btn-sm m-1" type="submit">
-            </form>    
-        </div>
+<!-------  NEW POST FORM  ------->
+<h3 class="text-center">All Posts</h3>
+<div class="row justify-content-center"> 
+    <div class="col-lg-6 border rounded shadow-sm bg-white">
+        <form>
+            <p class="m-1">New Post</p>
+            <textarea class="form-control" type="text" placeholder="What are you thinking..."></textarea>
+            <input class="btn btn-primary btn-sm m-1" type="submit">
+        </form>    
     </div>
 </div>
 
-<!--
-{% for post in posts %}
-    <div class="row justify-content-center">
-        <div class="col-lg-6 border rounded shadow-sm bg-white">
-            <div class="row">
-                <div class="col">
-                    {{ post.user }} <span class="font-weight-lighter text-right">{{ post.user.email }}</span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    {{ post.text }}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    {{ post.created }}
-                </div>
-            </div> 
-            <div class="row">
-                <div class="col">
-                    Number of Likes 
-                </div>
-            </div>   
-        </div>
-    </div>
-{% endfor %}
--->
-{% blockcript %}
-    <script src="{% static 'network/index.js'"></script>
+<!-------  ALL POSTS VIEW  ------->
+<div id="all-posts-view">
+    ALL POSTS VIEW 
+</div>
+{% endblock %}
+
+{% block script %}
+    
 {% endblock %}

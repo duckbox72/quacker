@@ -1,3 +1,4 @@
+import json
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
@@ -29,10 +30,17 @@ def add_post(request):
 
     user = request.user
     data = json.loads(request.body)
-
-    print(data)
+    print(user.id)
     print(user)
+    print(data.get("text", ""))
 
+  
+    post = Post(
+        user=user,
+        text=data.get("text", "")
+    )
+    post.save()
+    
     return JsonResponse({"message": "Posted successfully."}, status=201)
 
     

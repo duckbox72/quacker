@@ -39,7 +39,7 @@ function load_feed(feed) {
             const element = document.createElement('div');
             element.className = `row justify-content-center`
             element.innerHTML = 
-                `<div class="col-lg-6 border rounded shadow-sm bg-white">
+                `<div class="col-lg-6 border rounded-lg shadow-sm bg-white">
                 <div class="row">
                     <div class="col">
                         ${post.username} <span class="font-weight-lighter text-right">${post.user_email }</span>

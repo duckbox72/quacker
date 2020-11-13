@@ -1,0 +1,21 @@
+.fas {
+    color: rgb(67, 165, 249);
+    
+}
+.fas:hover {
+    color: rgb(7, 135, 249);
+}
+
+.my-btn {
+    color: white;
+    background-color: rgb(67, 165, 249);
+}
+
+.my-btn:hover {
+    color: white;
+    background-color: rgb(7, 135, 249);
+}
+
+.my-text {
+    color: rgb(67, 165, 249);
+}

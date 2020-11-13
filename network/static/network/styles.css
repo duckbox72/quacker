@@ -18,4 +18,10 @@
 
 .my-text {
     color: rgb(67, 165, 249);
+    font-weight: bold;
+}
+
+.my-text:hover {
+    color: rgb(7, 135, 249);
+    font-weight: bold;
 }

@@ -2,17 +2,27 @@
     font-size: 12px;
     color: rgb(67, 165, 249);
 }
-#fa-rss {
+#fa-rss:hover {
     font-size: 12px;
     color: rgb(67, 165, 249);
 }
 
-.fas {
+#fa-rss-white {
+    font-size: 12px;
+    color: white;
+}
+
+#fa-rss-white:hover {
+    font-size: 12px;
+    
+}
+
+.fa-home, .fa-user, .fa-user-friends, .fa-user-plus, .fa-power-off {
     font-size: 18px;
     color: rgb(67, 165, 249);
     
 }
-.fas:hover {
+.fa-home:hover {
     
     color: rgb(7, 135, 249);
 }

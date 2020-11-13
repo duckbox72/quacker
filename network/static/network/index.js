@@ -57,7 +57,7 @@ function load_feed(feed) {
                 </div> 
                 <div class="row">
                     <div class="col">
-                        Number of Likes 
+                        <div>No of likes <i class="fas fa-heart"></i><div>
                     </div>
                 </div>   
             </div>`;

@@ -1,8 +1,19 @@
+#fa-rss {
+    font-size: 12px;
+    color: rgb(67, 165, 249);
+}
+#fa-rss {
+    font-size: 12px;
+    color: rgb(67, 165, 249);
+}
+
 .fas {
+    font-size: 18px;
     color: rgb(67, 165, 249);
     
 }
 .fas:hover {
+    
     color: rgb(7, 135, 249);
 }
 

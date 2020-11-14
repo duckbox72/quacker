@@ -5,9 +5,13 @@ from django.contrib.auth.models import AbstractUser
 class User(AbstractUser):
     pass
 
+class Like(models.Model):
+    user = models.ForeignKey("User", on_delete=models.CASCADE, related_name="total_liked")
+    post = models.ForeignKey("Post", on_delete=models.CASCADE, related_name="total_likes")
+    
 
 class Post(models.Model):
-    user = models.ForeignKey("User", on_delete=models.CASCADE, related_name="posts_posted")
+    user = models.ForeignKey("User", on_delete=models.CASCADE, related_name="posted")
     text = models.CharField(max_length=256)
     created = models.DateTimeField(auto_now_add=True)
     #created = models.DateTimeField(default=timezone.now)

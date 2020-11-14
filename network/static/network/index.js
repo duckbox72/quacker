@@ -36,8 +36,11 @@ function load_feed(feed) {
 
         // If there are posts iteract though them and render div element
         posts.forEach(post => {
+            // Create toggle_like
+            
             const element = document.createElement('div');
-            element.className = `row justify-content-center`
+            element.className = `row justify-content-center`;
+            element.id = `post${post.id}`;
             element.innerHTML = 
             `<div class="col-lg-6 border rounded-lg shadow-sm bg-white p-3">
                 <div class="row">
@@ -57,12 +60,26 @@ function load_feed(feed) {
                 </div> 
                 <div class="row">
                     <div class="col">
-                        <div>No of likes <i class="fas fa-heart"></i><div>
+                        <div>
+                            <i id="toggle_like${post.id}" class="far fa-heart text-dark"></i> 
+                        <div>
                     </div>
                 </div>   
             </div>`;
 
             document.querySelector("#feeds-view").append(element)
+            document.querySelector(`#toggle_like${post.id}`).addEventListener('click', function() {
+                console.log(`CLICK toggle_like ${post.id}`)
+                
+                if (document.querySelector(`#toggle_like${post.id}`).className === "far fa-heart text-dark") {
+                    document.querySelector(`#toggle_like${post.id}`).className = "fas fa-heart text-danger";
+                    
+                } else {
+                    document.querySelector(`#toggle_like${post.id}`).className = "far fa-heart text-dark";
+                }
+
+            });
+        
         }); 
 
     }); 

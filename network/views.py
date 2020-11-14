@@ -12,7 +12,6 @@ from .models import Post, User
 def index(request):
     # Authenticated users view index page (home) 
     if request.user.is_authenticated:
-        #posts = Post.objects.all().order_by('-created')
         return render(request, "network/index.html")
     
     # Everyone else will be redirected to login
@@ -43,13 +42,19 @@ def add_post(request):
     
     return JsonResponse({"message": "Posted successfully."}, status=201)
 
-    
-    
 
 
-
-
-
+# API route edit/<post_id> 
+@csrf_exempt
+@login_required
+def edit(request, post_id):
+    # Query for requested post
+    try:
+        post = Post.objects.get(pk=post_id)
+    except Email.DoesNotExist:
+        return JsonResponse({"error": "Email not found."}, status=404)
+    if request.method == "GET":
+        return JsonResponse(post.serialize())
 
 
 # API route feed/<feed> 
@@ -65,6 +70,14 @@ def feed(request, feed):
     
     # Return feed of posts in reverse chronologial order    
     return JsonResponse([post.serialize() for post in posts], safe=False)
+
+
+@csrf_exempt
+@login_required
+def like(request, post_id):
+    
+    return JsonResponse({"message": f"post {post_id} toggler clicked"}, status=201)
+
 
 
 def login_view(request):

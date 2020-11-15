@@ -7,7 +7,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 
-from .models import Post, User
+from .models import Like, Post, User
 
 def index(request):
     # Authenticated users view index page (home) 
@@ -52,7 +52,7 @@ def edit(request, post_id):
     try:
         post = Post.objects.get(pk=post_id)
     except Email.DoesNotExist:
-        return JsonResponse({"error": "Email not found."}, status=404)
+        return JsonResponse({"error": "Post not found."}, status=404)
     if request.method == "GET":
         return JsonResponse(post.serialize())
 
@@ -72,12 +72,23 @@ def feed(request, feed):
     return JsonResponse([post.serialize() for post in posts], safe=False)
 
 
+# API route like/<post.id>
 @csrf_exempt
 @login_required
 def like(request, post_id):
+    user = request.user
+    # Query for the requested like
+    print(f' POST ID {post_id}')    
+    try:
+        is_liked = Like.objects.get(user=user, post=post_id)
+    except:# LikeDoesNotExist():
+        return JsonResponse({"message": "Post not found"}, status=201)
     
-    return JsonResponse({"message": f"post {post_id} toggler clicked"}, status=201)
-
+    if request.method == "GET":
+        print(is_liked)
+        return JsonResponse(is_liked.serialize())
+          
+    
 
 
 def login_view(request):

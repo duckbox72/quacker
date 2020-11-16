@@ -126,7 +126,7 @@ function load_feed(feed) {
                     console.log(`NOT LIKED POST ${post.id}`);
                     heart_ini = "far fa-heart text-dark"; 
                 }
-                // Render correct heart_class
+                // Render correct heart_ini
                 document.querySelector(`#toggle_like${post.id}`).className = heart_ini;
             }); 
         });   

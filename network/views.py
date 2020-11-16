@@ -78,11 +78,11 @@ def feed(request, feed):
 def like(request, post_id):
     user = request.user
     # Query for the requested like
-    print(f' POST ID {post_id}')    
+    print(f' POST ID {post_id}, USER ID {user.username}')    
     try:
-        is_liked = Like.objects.get(user=user, post=post_id)
+        is_liked = Like.objects.get(user=user.id, post=post_id)
     except:# LikeDoesNotExist():
-        return JsonResponse({"message": "Post not found"}, status=201)
+        return JsonResponse({"message": f"Like not found Post {post_id}"}, status=201)
     
     if request.method == "GET":
         print(is_liked)

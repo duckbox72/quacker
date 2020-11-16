@@ -21,8 +21,7 @@ function is_liked(post) {
             return console.log(heart_ini);
         }
     
-    }); // Close fetch for like 
-    
+    }); // Close fetch for like   
 }
 
 
@@ -66,24 +65,22 @@ function load_feed(feed) {
             element.className = `row justify-content-center`;
             element.id = `post${post.id}`;
             element.innerHTML = 
-            `<div class="col-lg-6 border rounded-lg shadow-sm bg-white p-3">
+            `<div class="col-lg-6 border rounded-lg shadow-sm bg-white">
                 <div class="row">
-                    <div class="col">
-                        ${post.username} <span class="font-weight-lighter text-right">${post.user_email }</span>
+                    <div class="col p-1 ml-3 small my-text">
+                        @${post.username}
+                    </div>
+                    <div class="col small my-text text-right font-weight-lighter pt-1">
+                        ${post.created}
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col">
+                    <div class="col border rounded-lg ml-3 mr-3 pt-1 pb-1" style="min-height: 60px;">
                         ${post.text}
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col">
-                        ${post.created}
-                    </div>
-                </div> 
-                <div class="row">
-                    <div class="col">
+                    <div class="col m-2">
                         <div>
                             <i id="toggle_like${post.id}" class="far fa-heart text-dark"></i> 
                         <div>
@@ -105,7 +102,7 @@ function load_feed(feed) {
  
             });
         });
-    });
+    })
     
     // Check whether post is liked by user or not to set correct heart_ini
     fetch(`feed/${feed}`)
@@ -117,21 +114,22 @@ function load_feed(feed) {
             // Check if is_liked
             fetch(`like/${post.id}`)
             .then(response => response.json())
-            .then(is_liked => {    
+            .then(is_liked => {  
                 // Select correct heart_ini class
                 if (!is_liked.message) {
                     console.log(`IS LIKED POST ${post.id} => ${is_liked.post}`);
-                    heart_ini = "fas fa-heart text-danger";
-                } else {
+                    heart_ini = `fas fa-heart text-danger`;
+                }else {
                     console.log(`NOT LIKED POST ${post.id}`);
-                    heart_ini = "far fa-heart text-dark"; 
+                    heart_ini = `far fa-heart text-dark`; 
                 }
+                
                 // Render correct heart_ini
                 document.querySelector(`#toggle_like${post.id}`).className = heart_ini;
-            }); 
-        });   
+            }) 
+        })   
     
     });
     
-    return false; 
+     
 }

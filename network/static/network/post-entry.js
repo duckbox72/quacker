@@ -41,8 +41,4 @@ class PostEntry extends React.Component {
     }
 }
 
-
-
-
-
 ReactDOM.render(<PostEntry />, document.querySelector("#post_entry"));

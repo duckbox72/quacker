@@ -77,17 +77,39 @@ def feed(request, feed):
 @login_required
 def like(request, post_id):
     user = request.user
-    # Query for the requested like
-    print(f' POST ID {post_id}, USER ID {user.username}')    
-    try:
-        is_liked = Like.objects.get(user=user.id, post=post_id)
-    except:# LikeDoesNotExist():
-        return JsonResponse({"message": f"Like not found Post {post_id}"}, status=201)
-    
+
     if request.method == "GET":
+    # Query for the requested like
+        print(f' POST ID {post_id}, USER ID {user.username}')    
+        try:
+            is_liked = Like.objects.get(user=user.id, post=post_id)
+        except: # LikeDoesNotExist():
+            return JsonResponse({"message": f"Like not found Post {post_id}"}, status=201)
+
         print(is_liked)
-        return JsonResponse(is_liked.serialize())
-          
+        return JsonResponse(is_liked.serialize(), safe=False)
+    
+    if request.method == "POST":
+        post = json.loads(request.body)
+        
+        like_action = post.get("action", "")
+        
+        if like_action == "delete":
+            liked_post = post.get("post", "")
+            delete_like = Like.objects.get(user=user.id, post=liked_post)
+            delete_like.delete()
+            print(f"===>>> {like_action}, {liked_post} ===>deleted")
+            # Print post to terminal and return it to be logged on console
+            #print(f"=====>>>> DELETED LIKE >>>> {delete_like}")
+            return JsonResponse(post)
+        else: # like_action == create
+            liked_post = post.get("post", "")
+            like = Like(
+                user=user,
+                post=Post.objects.get(pk=post_id)
+            )
+            like.save()
+            return JsonResponse(like.serialize(), safe=False)
     
 
 

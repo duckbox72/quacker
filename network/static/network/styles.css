@@ -1,10 +1,10 @@
 
-.fa-home, .fa-user, .fa-user-friends, .fa-user-plus, .fa-power-off {
+.fa-home, .fa-user, .fa-user-friends, .fa-user-plus, .fa-sign-out-alt {
     font-size: 18px;
     color: rgb(67, 165, 249);
     
 }
-.fa-home:hover, .fa-user:hover, .fa-user-friends:hover, .fa-user-plus:hover, .fa-power-off:hover {
+.fa-home:hover, .fa-user:hover, .fa-user-friends:hover, .fa-user-plus:hover, .fa-sign-out-alt:hover {
     
     color: rgb(7, 135, 249);
 }
@@ -29,6 +29,9 @@
 }
 
 
+
+/* my family COMPONENTS */
+
 .my-btn {
     color: white;
     background-color: rgb(67, 165, 249);
@@ -39,12 +42,21 @@
     background-color: rgb(7, 135, 249);
 }
 
-.my-text {
+.my-icon {
     color: rgb(67, 165, 249);
     font-weight: bold;
 }
 
-.my-text:hover {
+.my-icon:hover {
     color: rgb(7, 135, 249);
     font-weight: bold;
+}
+
+.my-text {
+    color: rgb(67, 165, 249);
+}
+
+.my-text-hover:hover {
+    color: rgb(7, 135, 249);
+
 }

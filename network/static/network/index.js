@@ -14,12 +14,14 @@ function is_liked(post) {
         if (!is_liked.message) {
             console.log(`IS LIKED POST ${post.id} => ${is_liked.post}`);
             heart_ini = "fas fa-heart text-danger";
-            return console.log(heart_ini);
+            //return console.log(heart_ini);
         } else {
             console.log(`NOT LIKED POST ${post.id}`);
             heart_ini = "far fa-heart text-dark";
-            return console.log(heart_ini);
+            //return console.log(heart_ini);
         }
+        // Render correct heart_ini
+        document.querySelector(`#toggle_like${post.id}`).className = heart_ini;
     
     }); // Close fetch for like   
 }
@@ -33,11 +35,11 @@ function load_feed(feed) {
     // Clear out form text field
     document.querySelector('#post-form-text').value = '';
 
-    // Show the feed name
+    // DISPLAY the feed name
     document.querySelector('#feed-name').innerHTML = 
                             `<div class="row justify-content-center mt-2">
-                                <div class="col-lg-6">
-                                    <p>${feed.charAt(0).toUpperCase() + feed.slice(1)}</p>
+                                <div class="col-lg-6 my-text">
+                                    ${feed.charAt(0).toUpperCase() + feed.slice(1)}
                                 </div>
                             </div>`;
 
@@ -56,7 +58,7 @@ function load_feed(feed) {
             </div>`;
         };
         
-        // If there are posts iteract though them and RENDER a div element for each
+        // If there are posts iteract though them 
         posts.forEach(post => {
             console.log(post.id, post.user_id, post.text)
 
@@ -67,7 +69,7 @@ function load_feed(feed) {
             element.innerHTML = 
             `<div class="col-lg-6 border rounded-lg shadow-sm bg-white">
                 <div class="row">
-                    <div class="col p-1 ml-3 small my-text">
+                    <div class="col p-1 ml-3 small my-text font-weight-bolder">
                         @${post.username}
                     </div>
                     <div class="col small my-text text-right font-weight-lighter pt-1">
@@ -75,7 +77,7 @@ function load_feed(feed) {
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col border rounded-lg ml-3 mr-3 pt-1 pb-1" style="min-height: 60px;">
+                    <div class="col small font-weight-lighter ml-3 mr-3 pt-1 pb-1" style="min-height: 60px;">
                         ${post.text}
                     </div>
                 </div>
@@ -88,12 +90,62 @@ function load_feed(feed) {
                 </div>   
             </div>`;
             
+            // RENDER div element for each post
             document.querySelector("#feeds-view").append(element);
         
+            
+            // Add event listener to like button
             document.querySelector(`#toggle_like${post.id}`).addEventListener('click', function() {
+                  
                 console.log(`CLICK toggle_like ${post.id}`);
+
+                // ONCLICK: GET request to CHECK if is_liked, send request acordingly
+                fetch(`like/${post.id}`)
+                .then(response => response.json())
+                .then(is_liked => {  
+                    // No message means is_like exists
+                    if (!is_liked.message) {
+                        console.log(`IS LIKED POST ${post.id} => ${is_liked.post}`);
+                        fetch(`like/${post.id}`, {
+                            method: 'POST',
+                            body: JSON.stringify({
+                                post: post.id,
+                                action: "delete",
+                            })
+                        })
+                        
+                        .then(response => response.json())
+                        .then(post => {
+                            console.log(post)
+                        })
+                        
+
+                    } else {
+                        console.log(`NOT LIKED POST ${post.id}`);
+                        fetch(`like/${post.id}`, {
+                            method: 'POST',
+                            body: JSON.stringify({
+                                post: post.id,
+                                action: "create",
+                            })
+                        })
+
+                        .then(response => response.json())
+                        .then(like => {
+                            console.log(like)
+                        })
+                        
+                      
+                    }
+                })
+
+
+
+
                 
                 if (document.querySelector(`#toggle_like${post.id}`).className === "far fa-heart text-dark") {
+                   
+                   
                     document.querySelector(`#toggle_like${post.id}`).className = "fas fa-heart text-danger";
                     
                 } else {
@@ -110,7 +162,8 @@ function load_feed(feed) {
     .then(posts => {
         posts.forEach(post => {
             console.log(post.id)
-            
+            is_liked(post)
+            /*
             // Check if is_liked
             fetch(`like/${post.id}`)
             .then(response => response.json())
@@ -126,10 +179,11 @@ function load_feed(feed) {
                 
                 // Render correct heart_ini
                 document.querySelector(`#toggle_like${post.id}`).className = heart_ini;
-            }) 
+            
+            }) */
+            
         })   
     
     });
-    
-     
+      
 }

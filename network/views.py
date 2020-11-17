@@ -112,6 +112,13 @@ def like(request, post_id):
             return JsonResponse(like.serialize(), safe=False)
     
 
+def likes(post_id):
+    post = Post.objects.get(pk=post_id)
+    likes = Like.objects.get(post=post)
+    
+    print(post.id, likes.count())
+    return JsonResponse(likes.serialize(), safe="False")
+
 
 def login_view(request):
     if request.method == "POST":

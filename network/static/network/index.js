@@ -26,6 +26,13 @@ function is_liked(post) {
     }); // Close fetch for like   
 }
 
+/*
+function num_likes(post) {
+    fetch(`likes/${post.id}`)
+    .then(response => response.json())
+
+}*/
+
 
 
 function load_feed(feed) {
@@ -67,7 +74,7 @@ function load_feed(feed) {
             element.className = `row justify-content-center`;
             element.id = `post${post.id}`;
             element.innerHTML = 
-            `<div class="col-lg-6 border rounded-lg shadow-sm bg-white">
+            `<div class="col-lg-6 border rounded-lg  bg-white">
                 <div class="row">
                     <div class="col p-1 ml-3 small my-text font-weight-bolder">
                         @${post.username}
@@ -94,7 +101,7 @@ function load_feed(feed) {
             document.querySelector("#feeds-view").append(element);
         
             
-            // Add event listener to like button
+            // Add event handler to like button
             document.querySelector(`#toggle_like${post.id}`).addEventListener('click', function() {
                   
                 console.log(`CLICK toggle_like ${post.id}`);
@@ -112,14 +119,11 @@ function load_feed(feed) {
                                 post: post.id,
                                 action: "delete",
                             })
-                        })
-                        
+                        })   
                         .then(response => response.json())
                         .then(post => {
                             console.log(post)
                         })
-                        
-
                     } else {
                         console.log(`NOT LIKED POST ${post.id}`);
                         fetch(`like/${post.id}`, {
@@ -129,29 +133,18 @@ function load_feed(feed) {
                                 action: "create",
                             })
                         })
-
                         .then(response => response.json())
                         .then(like => {
                             console.log(like)
-                        })
-                        
-                      
+                        }) 
                     }
                 })
-
-
-
-
                 
                 if (document.querySelector(`#toggle_like${post.id}`).className === "far fa-heart text-dark") {
-                   
-                   
-                    document.querySelector(`#toggle_like${post.id}`).className = "fas fa-heart text-danger";
-                    
+                    document.querySelector(`#toggle_like${post.id}`).className = "fas fa-heart text-danger";   
                 } else {
                     document.querySelector(`#toggle_like${post.id}`).className = "far fa-heart text-dark";
                 }
- 
             });
         });
     })
@@ -163,6 +156,7 @@ function load_feed(feed) {
         posts.forEach(post => {
             console.log(post.id)
             is_liked(post)
+            //num_likes(post)
             /*
             // Check if is_liked
             fetch(`like/${post.id}`)

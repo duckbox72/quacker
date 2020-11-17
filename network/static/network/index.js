@@ -26,15 +26,6 @@ function is_liked(post) {
     }); // Close fetch for like   
 }
 
-/*
-function num_likes(post) {
-    fetch(`likes/${post.id}`)
-    .then(response => response.json())
-
-}*/
-
-
-
 function load_feed(feed) {
     // Show the feed view and hide other views
     document.querySelector('#feeds-view').style.display = 'block';
@@ -68,7 +59,7 @@ function load_feed(feed) {
         // If there are posts iteract though them 
         posts.forEach(post => {
             console.log(post.id, post.user_id, post.text)
-
+            
             // Create and ender a DIV for each post
             const element = document.createElement('div');
             element.className = `row justify-content-center`;
@@ -91,7 +82,7 @@ function load_feed(feed) {
                 <div class="row">
                     <div class="col m-2">
                         <div>
-                            <i id="toggle_like${post.id}" class="far fa-heart text-dark"></i> 
+                            <i id="toggle_like${post.id}" class="far fa-heart text-dark"></i><span id="num-likes${post.id}" class="ml-1"></span> 
                         <div>
                     </div>
                 </div>   
@@ -100,13 +91,11 @@ function load_feed(feed) {
             // RENDER div element for each post
             document.querySelector("#feeds-view").append(element);
         
-            
-            // Add event handler to like button
+            // Add EVENT HANDLER to LIKE BUTTON CLICK
             document.querySelector(`#toggle_like${post.id}`).addEventListener('click', function() {
                   
                 console.log(`CLICK toggle_like ${post.id}`);
-
-                // ONCLICK: GET request to CHECK if is_liked, send request acordingly
+                // GET request to CHECK if is_liked, send request acordingly
                 fetch(`like/${post.id}`)
                 .then(response => response.json())
                 .then(is_liked => {  
@@ -140,11 +129,26 @@ function load_feed(feed) {
                     }
                 })
                 
+                // TOGGLE_LIKE
                 if (document.querySelector(`#toggle_like${post.id}`).className === "far fa-heart text-dark") {
-                    document.querySelector(`#toggle_like${post.id}`).className = "fas fa-heart text-danger";   
+                    // LIKE 
+                    document.querySelector(`#toggle_like${post.id}`).className = "fas fa-heart text-danger";
+                    
+                    before = document.querySelector(`#num-likes${post.id}`).innerHTML;
+                    after = parseInt(before) + 1 
+                    document.querySelector(`#num-likes${post.id}`).innerHTML = after; 
                 } else {
+                    // UNLIKE 
                     document.querySelector(`#toggle_like${post.id}`).className = "far fa-heart text-dark";
+                     
+                    before = document.querySelector(`#num-likes${post.id}`).innerHTML;
+                    after = parseInt(before) - 1 
+                    document.querySelector(`#num-likes${post.id}`).innerHTML = after; 
                 }
+
+                document.querySelector(`#num-likes${post.id}`).innerHTML
+
+
             });
         });
     })
@@ -155,14 +159,13 @@ function load_feed(feed) {
     .then(posts => {
         posts.forEach(post => {
             console.log(post.id)
-            is_liked(post)
-            //num_likes(post)
-            /*
+            //is_liked(post)
+                       
             // Check if is_liked
             fetch(`like/${post.id}`)
             .then(response => response.json())
             .then(is_liked => {  
-                // Select correct heart_ini class
+                // Select proper heart_ini CLASS
                 if (!is_liked.message) {
                     console.log(`IS LIKED POST ${post.id} => ${is_liked.post}`);
                     heart_ini = `fas fa-heart text-danger`;
@@ -170,14 +173,39 @@ function load_feed(feed) {
                     console.log(`NOT LIKED POST ${post.id}`);
                     heart_ini = `far fa-heart text-dark`; 
                 }
-                
                 // Render correct heart_ini
                 document.querySelector(`#toggle_like${post.id}`).className = heart_ini;
-            
-            }) */
-            
+            })
         })   
-    
     });
+ 
+    // Find number of likes
+    fetch(`feed/${feed}`)
+    .then(response => response.json())
+    .then(posts => {
+        posts.forEach(post => {
+            console.log(`FOR LIKES LOOP ${post.id}`)
+            //is_liked(post)
+                       
+            // Check num_likes for each post
+            fetch(`num_likes/${post.id}`)
+            .then(response => response.json())
+            .then(likes => {  
+                console.log(likes.likes)
+                
+                document.querySelector(`#num-likes${post.id}`).innerHTML = likes.likes;
+            })
+        })   
+    });
+
+
+
+
+
+
       
+            
 }
+
+
+

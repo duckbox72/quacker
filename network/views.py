@@ -111,13 +111,15 @@ def like(request, post_id):
             like.save()
             return JsonResponse(like.serialize(), safe=False)
     
-
-def likes(post_id):
-    post = Post.objects.get(pk=post_id)
-    likes = Like.objects.get(post=post)
+@csrf_exempt
+@login_required
+def num_likes(request, post_id):
+     
+    num_likes = Like.objects.filter(post=post_id).count()
     
-    print(post.id, likes.count())
-    return JsonResponse(likes.serialize(), safe="False")
+    print(f"NUMBER OF LIKES {num_likes} ---------")
+    
+    return JsonResponse({"likes": num_likes})
 
 
 def login_view(request):

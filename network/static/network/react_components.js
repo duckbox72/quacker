@@ -1,9 +1,24 @@
+class TotalLikes extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            total_likes: 99999,
+        };
+    }
+    render() {
+        return <span>{this.state.total_likes}</span>
+    }
+}
+
+//ReactDOM.render(<TotalLikes />, document.querySelector("#total-likes"));
+
+
 class PostEntry extends React.Component {
             
     constructor(props) {
         super(props);
         this.state = {
-            id: 1,
+            id: 33,
             username: "FELIPE",
             user_email: "email@example.com",
             text: "Body text example.",
@@ -32,7 +47,7 @@ class PostEntry extends React.Component {
                 </div>
                 <div className="row">
                     <div className="col">
-                        <i id='toggle_like`{this.state.id}'className="far fa-heart text-dark"></i>
+                        <i id='toggle_like`{this.state.id}'className="far fa-heart text-dark"></i><TotalLikes />
                     </div>
                 </div>
             </div>
@@ -41,4 +56,8 @@ class PostEntry extends React.Component {
     }
 }
 
-ReactDOM.render(<PostEntry />, document.querySelector("#post_entry"));
+ReactDOM.render(<PostEntry />, document.querySelector("#post-entry"));
+
+
+
+

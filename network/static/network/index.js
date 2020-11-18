@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', function() {
   load_feed('all posts');
 });
 
-
 function is_liked(post) {
 
     // Check whether post is liked by user or not
@@ -82,7 +81,7 @@ function load_feed(feed) {
                 <div class="row">
                     <div class="col m-2">
                         <div>
-                            <i id="toggle_like${post.id}" class="far fa-heart text-dark"></i><span id="num-likes${post.id}" class="ml-1"></span> 
+                            <i id="toggle_like${post.id}" class="far fa-heart text-dark" style="font-size: 14px;"></i><span id="num-likes${post.id}" class="ml-1" style="font-size: 14px;"></span> 
                         <div>
                     </div>
                 </div>   

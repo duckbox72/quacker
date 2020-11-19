@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
   // By default, load  all posts feed
-  load_feed('all posts');
+  //load_feed('all posts');
 });
 
 function is_liked(post) {
@@ -25,7 +25,7 @@ function is_liked(post) {
     }); // Close fetch for like   
 }
 
-function load_feed(feed) {
+function aaaaaload_feed(feed) {
     // Show the feed view and hide other views
     document.querySelector('#feeds-view').style.display = 'block';
 

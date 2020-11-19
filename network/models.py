@@ -6,8 +6,8 @@ class User(AbstractUser):
     pass
 
 class Like(models.Model):
-    user = models.ForeignKey("User", on_delete=models.CASCADE, related_name="total_liked")
-    post = models.ForeignKey("Post", on_delete=models.CASCADE, related_name="total_likes")
+    user = models.ForeignKey("User", on_delete=models.CASCADE, related_name="user_liked")
+    post = models.ForeignKey("Post", on_delete=models.CASCADE, related_name="post_likes")
     
     def serialize(self):
         return {

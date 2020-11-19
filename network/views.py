@@ -69,8 +69,8 @@ def feed(request, feed):
         return JsonResponse({"error": "Invalid feed."}, status=400)
     
     # Return feed of posts in reverse chronologial order    
-    return JsonResponse([post.serialize() for post in posts], safe=False)
-
+    #return JsonResponse([post.serialize() for post in posts], safe=False)
+    return JsonResponse({"feed": feed,"posts": [post.serialize() for post in posts]})
 
 # API route like/<post.id>
 @csrf_exempt

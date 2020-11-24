@@ -60,6 +60,8 @@ def edit(request, post_id):
 # API route feed/<feed> 
 @login_required
 def feed(request, feed):
+    user = request.user
+
     # Filter posts returned on feed
     if feed == "all posts":
         posts = Post.objects.all().order_by("-created")
@@ -68,9 +70,26 @@ def feed(request, feed):
     else:
         return JsonResponse({"error": "Invalid feed."}, status=400)
     
+    # Check if each post is liked or not by active user
+    # Add toggle_like info to each post for correct response
+    complete_posts = [post.serialize() for post in posts]
+    for post in complete_posts:  
+        print(f' POST ID {post["id"]}, USER ID {user.username}')    
+        try:
+            is_liked = Like.objects.get(user=user.id, post=post["id"])
+            post["is_liked"] = True
+        except: # LikeDoesNotExist():
+            post["is_liked"] = False
+        #    return JsonResponse({"message": f"Like not found Post {post_id}"}, status=201)
+
+    for post in complete_posts:      
+        num_likes = Like.objects.filter(post=post["id"])
+        post["num_likes"] = len(num_likes)
+    
     # Return feed of posts in reverse chronologial order    
     #return JsonResponse([post.serialize() for post in posts], safe=False)
-    return JsonResponse({"feed": feed,"posts": [post.serialize() for post in posts]})
+    #return JsonResponse({"feed": feed, "posts": [post.serialize() for post in posts]})
+    return JsonResponse({"feed": feed, "posts": complete_posts})
 
 # API route like/<post.id>
 @csrf_exempt

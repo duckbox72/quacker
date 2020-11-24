@@ -1,38 +1,37 @@
 class ToggleLike extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      toggle_like_className: "far fa-heart text-dark",
-      num_likes: 0,
+    this.state = {  
+      num_likes: this.props.num_likes,
+      is_liked: this.props.is_liked,
+      
     };
     // this binding is necessary to make `this` work in the callback
     this.handleToggleLike = this.handleToggleLike.bind(this);
 
   }
-
+  
   // UPDATE STATE
-  handleToggleLike = () => {
-      
-    if ((this.state.toggle_like_className) === "far fa-heart text-dark") {
+  handleToggleLike = () => {  
+    if ((this.state.is_liked) === false) {
         console.log("FROM NO_LIKE  TO ====>>>> LIKE")
         this.setState(state => ({
-            toggle_like_className: "fas fa-heart text-danger",
+            is_liked: true,
             num_likes: this.state.num_likes + 1
         }));
     } else {
         console.log("FROM LIKE  TO ====>>>> NO_LIKE")
         this.setState(state => ({
-            toggle_like_className: "far fa-heart text-dark",
+            is_liked: false,
             num_likes: this.state.num_likes - 1
         }));
     }
   }
 
-  
   render() {
     return (
     <div className="col m-2">
-      <i onClick={this.handleToggleLike}  className={this.state.toggle_like_className} style={{fontSize: "14px"}}></i><span id="num-likes" className="ml-1" style={{fontSize: "14px"}}>{this.state.num_likes}</span>  
+      <i onClick={this.handleToggleLike}  className={this.state.is_liked ? "fas fa-heart text-danger" : "far fa-heart text-dark"} style={{fontSize: "14px"}}></i><span id="num-likes" className="ml-1" style={{fontSize: "14px"}}>{this.state.num_likes}</span>  
     </div>
     );
   }
@@ -49,9 +48,6 @@ class Feed extends React.Component {
           feed: "all posts", 
           posts: []
       };
-      // this binding is necessary to make `this` work in the callback
-      
-      //this.isLiked = this.isLiked.bind(this);
   }
 
   componentDidMount() {
@@ -64,9 +60,7 @@ class Feed extends React.Component {
             isLoaded: true,
             feed: result.feed,
             posts: result.posts,
-
-            //toggle_like_className: "far fa-heart text-dark",
-            //num_likes: 0,
+            
           });
         },
         // Note: it's important to handle errors here
@@ -79,25 +73,6 @@ class Feed extends React.Component {
           });
         }
       )
-  }
-  
-  
-  isLiked = () => {
-    // Check if is_liked
-    fetch(`like/${post.id}`)
-    .then(response => response.json())
-    .then(is_liked => {  
-        // Select proper heart_ini CLASS
-        if (!is_liked.message) {
-            console.log(`IS LIKED POST ${post.id} => ${is_liked.post}`);
-            heart_ini = `fas fa-heart text-danger`;
-        }else {
-            console.log(`NOT LIKED POST ${post.id}`);
-            heart_ini = `far fa-heart text-dark`; 
-        }
-        // Render correct heart_ini
-        document.querySelector(`#toggle_like${post.id}`).className = heart_ini;
-    })
   }
 
   render() {
@@ -127,7 +102,8 @@ class Feed extends React.Component {
                       </div>
                     </div>
                     <div className="row">
-                      <ToggleLike key={post.id} className="col m-2" />        
+                      <ToggleLike key={post.id} is_liked={post.is_liked} num_likes={post.num_likes} />
+                  
                     </div>
                   </div>
                 </div>

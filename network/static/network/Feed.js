@@ -1,3 +1,45 @@
+class ToggleLike extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      toggle_like_className: "far fa-heart text-dark",
+      num_likes: 0,
+    };
+    // this binding is necessary to make `this` work in the callback
+    this.handleToggleLike = this.handleToggleLike.bind(this);
+
+  }
+
+  // UPDATE STATE
+  handleToggleLike = () => {
+      
+    if ((this.state.toggle_like_className) === "far fa-heart text-dark") {
+        console.log("FROM NO_LIKE  TO ====>>>> LIKE")
+        this.setState(state => ({
+            toggle_like_className: "fas fa-heart text-danger",
+            num_likes: this.state.num_likes + 1
+        }));
+    } else {
+        console.log("FROM LIKE  TO ====>>>> NO_LIKE")
+        this.setState(state => ({
+            toggle_like_className: "far fa-heart text-dark",
+            num_likes: this.state.num_likes - 1
+        }));
+    }
+  }
+
+  
+  render() {
+    return (
+    <div className="col m-2">
+      <i onClick={this.handleToggleLike}  className={this.state.toggle_like_className} style={{fontSize: "14px"}}></i><span id="num-likes" className="ml-1" style={{fontSize: "14px"}}>{this.state.num_likes}</span>  
+    </div>
+    );
+  }
+
+}
+
+
 class Feed extends React.Component {
   constructor(props) {
       super(props);
@@ -7,6 +49,9 @@ class Feed extends React.Component {
           feed: "all posts", 
           posts: []
       };
+      // this binding is necessary to make `this` work in the callback
+      
+      //this.isLiked = this.isLiked.bind(this);
   }
 
   componentDidMount() {
@@ -20,8 +65,8 @@ class Feed extends React.Component {
             feed: result.feed,
             posts: result.posts,
 
-            toggle_like_className: "far fa-heart text-dark",
-            num_likes: 0,
+            //toggle_like_className: "far fa-heart text-dark",
+            //num_likes: 0,
           });
         },
         // Note: it's important to handle errors here
@@ -34,6 +79,25 @@ class Feed extends React.Component {
           });
         }
       )
+  }
+  
+  
+  isLiked = () => {
+    // Check if is_liked
+    fetch(`like/${post.id}`)
+    .then(response => response.json())
+    .then(is_liked => {  
+        // Select proper heart_ini CLASS
+        if (!is_liked.message) {
+            console.log(`IS LIKED POST ${post.id} => ${is_liked.post}`);
+            heart_ini = `fas fa-heart text-danger`;
+        }else {
+            console.log(`NOT LIKED POST ${post.id}`);
+            heart_ini = `far fa-heart text-dark`; 
+        }
+        // Render correct heart_ini
+        document.querySelector(`#toggle_like${post.id}`).className = heart_ini;
+    })
   }
 
   render() {
@@ -63,9 +127,7 @@ class Feed extends React.Component {
                       </div>
                     </div>
                     <div className="row">
-                      <div className="ToggleLike col m-2">
-                          <i onClick={this.toggle_like} key={post.id} id={post.id} className={this.state.toggle_like_className} style={{fontSize: "14px"}}></i><span id="num-likes${post.id}" className="ml-1" style={{fontSize: "14px"}}>{this.state.num_likes}</span>  
-                      </div>
+                      <ToggleLike key={post.id} className="col m-2" />        
                     </div>
                   </div>
                 </div>
@@ -75,26 +137,11 @@ class Feed extends React.Component {
         );
       }
     }
-
-    // UPDATE STATE
-  toggle_like = () => {
-      
-    if ((this.state.toggle_like_className) === "far fa-heart text-dark") {
-        this.setState(state => ({
-            toggle_like_className: "fas fa-heart text-danger",
-            num_likes: this.state.num_likes + 1
-        }));
-    } else {
-        this.setState(state => ({
-            toggle_like_className: "far fa-heart text-dark",
-            num_likes: this.state.num_likes - 1
-        }));
-    }
-  }
       
 }
 
 ReactDOM.render(<Feed  />, document.getElementById("feed-posts"));
+
 
 
 class Clock extends React.Component {
@@ -128,6 +175,7 @@ class Clock extends React.Component {
   );
   }
 }
+
 
 ReactDOM.render(
   <Clock />,

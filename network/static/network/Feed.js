@@ -5,9 +5,7 @@ class ToggleEdit extends React.Component {
       can_edit: this.props.can_edit,
       post_id: this.props.post_id,
       post_edited: this.props.post_edited,
-      toggle_edit: false,
-      
-      
+      toggle_edit: false,   
     };
     // this binding is necessary to make `this` work in the callback
     this.handleToggleEdit = this.handleToggleEdit.bind(this);
@@ -20,6 +18,7 @@ class ToggleEdit extends React.Component {
       this.setState(state => ({
         toggle_edit: true,
       }));
+      this.props.parentCallback("THIS IS CHILDREN DATA INTO A PARENT")
     } else {
       this.setState(state => ({
         toggle_edit: false,
@@ -32,7 +31,7 @@ class ToggleEdit extends React.Component {
     if (this.state.can_edit === true) {
       return (
         <div className="col-2 m-2">
-          <i onClick={this.handleToggleEdit}  className={this.state.toggle_edit ? "fas fa-edit text-dark" : "far fa-edit text-secondary" } style={{fontSize: "14px"}}></i>
+          <i onClick={this.handleToggleEdit}  className={this.state.toggle_edit ? "fas fa-edit text-dark" : "far fa-edit text-dark" } style={{fontSize: "14px"}}></i>
         </div>
       );
     } else {
@@ -99,11 +98,64 @@ class ToggleLike extends React.Component {
   render() {
     return (
     <div className="col-2 m-2">
-      <i onClick={this.handleToggleLike}  className={this.state.is_liked ? "fas fa-heart text-danger" : "far fa-heart text-dark"} style={{fontSize: "14px"}}></i><span id="num-likes" className="ml-1" style={{fontSize: "14px"}}>{this.state.num_likes}</span>  
+      <i onClick={this.handleToggleLike}  
+         className={this.state.is_liked ? "fas fa-heart text-danger" : "far fa-heart text-dark"} 
+         style={{fontSize: "14px"}}></i>
+         <span id="num-likes" className="ml-1" style={{fontSize: "14px"}}>{this.state.num_likes}</span>  
     </div>
     );
   }
 
+}
+
+class Post extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      post: this.props.post,
+      edit_callback: "",
+    };
+    this.callbackFunction = this.callbackFunction.bind(this);
+  }
+
+  callbackFunction = (childData) => {
+    this.setState( {
+      edit_callback: childData,
+    });
+    
+
+  }
+
+  render() {
+    return(
+      <div className="Post" key={this.state.post["id"]} id={this.state.post.id}>               
+        <div className="row justify-content-center">
+          <div className="PostInfo col-lg-6 border rounded-lg shadow-sm bg-white">
+            <div className="row">
+              <div className="Post-username col p-1 ml-3 small my-text font-weight-bolder">
+                  <a className="my-text my-text-hover" href="#">@{this.state.post.username}</a>
+              </div>
+              <div className="Post-created col small my-text text-right font-weight-normal pt-1">
+                  {this.state.post.created}
+              </div>
+            </div>
+            <div className="row">
+              <div className="Post-text col small font-weight-lighter ml-3 mr-3 pt-1 pb-1" style={{minHeight: "60px"}}>
+                  {this.state.post.text}
+              </div>
+            </div>
+            <div className="row">
+              <ToggleLike key={this.state.post.id} is_liked={this.state.post.is_liked} 
+                num_likes={this.state.post.num_likes} post_id={this.state.post.id} />
+              <ToggleEdit parentCallback={this.callbackFunction} post_id={this.state.post.id} 
+                can_edit={this. state.post.can_edit} post_edited={this.state.post.edited}/>
+              <p>{this.state.edit_callback}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 }
 
 
@@ -128,6 +180,7 @@ class Feed extends React.Component {
             isLoaded: true,
             feed: result.feed,
             posts: result.posts,
+            edit_callback: "",
             
           });
         },
@@ -142,7 +195,10 @@ class Feed extends React.Component {
         }
       )
   }
-
+  handleMouseOver = () => {
+    return console.log("MOUSE OVER");
+  }
+  
   render() {
       const { error, isLoaded, posts } = this.state;
       if (error) {
@@ -158,29 +214,7 @@ class Feed extends React.Component {
                 </div>
             </div>
             {posts.map(post => (
-              <div className="Post" key={post.id} id={post.id}>               
-                <div className="row justify-content-center">
-                  <div className="PostInfo col-lg-6 border rounded-lg shadow-sm bg-white">
-                    <div className="row">
-                      <div className="Post-username col p-1 ml-3 small my-text font-weight-bolder">
-                          @{post.username}
-                      </div>
-                      <div className="Post-created col small my-text text-right font-weight-normal pt-1">
-                          {post.created}
-                      </div>
-                    </div>
-                    <div className="row">
-                      <div className="Post-text col small font-weight-lighter ml-3 mr-3 pt-1 pb-1" style={{minHeight: "60px"}}>
-                          {post.text}
-                      </div>
-                    </div>
-                    <div className="row">
-                      <ToggleLike key={post.id} is_liked={post.is_liked} num_likes={post.num_likes} post_id={post.id} />
-                      <ToggleEdit post_id={post.id} can_edit={post.can_edit} />
-                    </div>
-                  </div>
-                </div>
-              </div>  
+               <Post key={post.id} post={post}/> 
             ))}
           </div>
         );
@@ -190,46 +224,5 @@ class Feed extends React.Component {
 }
 
 ReactDOM.render(<Feed  feed="all posts"/>, document.getElementById("feed-posts"));
-
-
-
-class Clock extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      date: new Date()
-    };
-  }
-  componentDidMount() {
-    this.timerID = setInterval(
-     () => this.tick(),
-     1000
-    )
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.timerID)
-
-  }
-
-  tick() {
-    this.setState({
-      date: new Date
-    });
-  }
-
-  render() {
-    return (
-    <div>{this.state.date.toLocaleTimeString()}</div>
-  );
-  }
-}
-
-
-ReactDOM.render(
-  <Clock />,
-  document.getElementById('clock')
-);
-
 
 

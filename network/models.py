@@ -32,7 +32,7 @@ class Post(models.Model):
     user = models.ForeignKey("User", on_delete=models.CASCADE, related_name="posted")
     text = models.CharField(max_length=256)
     created = models.DateTimeField(auto_now_add=True)
-    edited = models.BooleanField(default=False)
+    edited = models.IntegerField(default=0)
     #created = models.DateTimeField(default=timezone.now)
 
     #def __str__(self):
@@ -45,6 +45,7 @@ class Post(models.Model):
             "username": self.user.username,
             "user_email": self.user.email,
             "text": self.text,
-            "created": self.created.strftime("%b %-d %Y, %-I:%M %p")
+            "created": self.created.strftime("%b %-d %Y, %-I:%M %p"),
+            "edited": self.edited,
         }
     

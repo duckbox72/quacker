@@ -4,6 +4,7 @@ class ToggleEdit extends React.Component {
     this.state = {
       can_edit: this.props.can_edit,
       post_id: this.props.post_id,
+      post_edited: this.props.post_edited,
       toggle_edit: false,
       
       

@@ -71,7 +71,6 @@ def feed(request, feed):
         return JsonResponse({"error": "Invalid feed."}, status=400)
     
     # Check if each post is liked or not by active user
-    # Add toggle_like info to each post for correct response
     complete_posts = [post.serialize() for post in posts]
     for post in complete_posts:  
         print(f' POST ID {post["id"]}, USER ID {user.username}')    
@@ -80,11 +79,20 @@ def feed(request, feed):
             post["is_liked"] = True
         except: # LikeDoesNotExist():
             post["is_liked"] = False
-        #    return JsonResponse({"message": f"Like not found Post {post_id}"}, status=201)
-
+        
+    # Check num_likes for each post
     for post in complete_posts:      
         num_likes = Like.objects.filter(post=post["id"])
         post["num_likes"] = len(num_likes)
+    
+    # Check can_edit for each post
+    for post in complete_posts: 
+        try:
+            can_edit = Post.objects.get(id=post["id"], user=user)
+            post["can_edit"] = True
+        except: # CANNOT_EDIT
+            post["can_edit"] = False 
+
     
     # Return feed of posts in reverse chronologial order    
     #return JsonResponse([post.serialize() for post in posts], safe=False)

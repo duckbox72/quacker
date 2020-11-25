@@ -4,6 +4,9 @@ class ToggleEdit extends React.Component {
     this.state = {
       can_edit: this.props.can_edit,
       post_id: this.props.post_id,
+      toggle_edit: false,
+      
+      
     };
     // this binding is necessary to make `this` work in the callback
     this.handleToggleEdit = this.handleToggleEdit.bind(this);
@@ -12,15 +15,28 @@ class ToggleEdit extends React.Component {
   // UPDATE STATE
   handleToggleEdit = () => {
     console.log(`CLICK!!!!! ${this.state.post_id}`)
+    if (this.state.toggle_edit === false) {
+      this.setState(state => ({
+        toggle_edit: true,
+      }));
+    } else {
+      this.setState(state => ({
+        toggle_edit: false,
+      }))
+    }
 
   }
 
   render() {
-    return (
-    <div className="col-2 m-2">
-      <i onClick={this.handleToggleEdit}  className={this.state.can_edit ? "far fa-edit" : ""} style={{fontSize: "14px"}}></i>
-    </div>
-    );
+    if (this.state.can_edit === true) {
+      return (
+        <div className="col-2 m-2">
+          <i onClick={this.handleToggleEdit}  className={this.state.toggle_edit ? "fas fa-edit text-dark" : "far fa-edit text-secondary" } style={{fontSize: "14px"}}></i>
+        </div>
+      );
+    } else {
+      return <div></div>;
+    }
   }
 }
 
@@ -129,7 +145,7 @@ class Feed extends React.Component {
   render() {
       const { error, isLoaded, posts } = this.state;
       if (error) {
-        return <div>Error: {error.message}</div>;
+        return <div className="my-text text-center">Error: {error.message}</div>;
       } else if (!isLoaded) {
         return <div className="my-text text-center">Loading... <i className="fas fa-spinner"></i></div>;
       } else {

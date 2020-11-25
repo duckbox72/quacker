@@ -32,6 +32,7 @@ class Post(models.Model):
     user = models.ForeignKey("User", on_delete=models.CASCADE, related_name="posted")
     text = models.CharField(max_length=256)
     created = models.DateTimeField(auto_now_add=True)
+    edited = models.BooleanField(default=False)
     #created = models.DateTimeField(default=timezone.now)
 
     #def __str__(self):

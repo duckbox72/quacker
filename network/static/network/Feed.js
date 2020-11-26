@@ -1,46 +1,3 @@
-class ToggleEdit extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      can_edit: this.props.can_edit,
-      post_id: this.props.post_id,
-      post_edited: this.props.post_edited,
-      toggle_edit: false,   
-    };
-    // this binding is necessary to make `this` work in the callback
-    this.handleToggleEdit = this.handleToggleEdit.bind(this);
-  }
-
-  // UPDATE STATE
-  handleToggleEdit = () => {
-    console.log(`CLICK!!!!! ${this.state.post_id}`)
-    if (this.state.toggle_edit === false) {
-      this.setState(state => ({
-        toggle_edit: true,
-      }));
-      this.props.parentCallback("THIS IS CHILDREN DATA INTO A PARENT")
-    } else {
-      this.setState(state => ({
-        toggle_edit: false,
-      }))
-    }
-
-  }
-
-  render() {
-    if (this.state.can_edit === true) {
-      return (
-        <div className="col-2 m-2">
-          <i onClick={this.handleToggleEdit}  className={this.state.toggle_edit ? "fas fa-edit text-dark" : "far fa-edit text-dark" } style={{fontSize: "14px"}}></i>
-        </div>
-      );
-    } else {
-      return <div></div>;
-    }
-  }
-}
-
-
 class ToggleLike extends React.Component {
   constructor(props) {
     super(props);
@@ -108,49 +65,170 @@ class ToggleLike extends React.Component {
 
 }
 
+
+class ToggleEdit extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      can_edit: this.props.can_edit,
+      post_id: this.props.post_id,
+      post_edited: this.props.post_edited,
+      toggle_edit: false,   
+    };
+    // this binding is necessary to make `this` work in the callback
+    this.handleToggleEdit = this.handleToggleEdit.bind(this);
+  }
+
+  // UPDATE STATE
+  handleToggleEdit = () => {
+    console.log(`CLICK!!!!! ${this.state.post_id}`)
+    if (this.state.toggle_edit === false) {
+      this.setState(state => ({
+        toggle_edit: true,
+      }));
+      this.props.parentCallback("edit");
+    } else {
+      this.setState(state => ({
+        toggle_edit: false,
+      }))
+      this.props.parentCallback("view");
+    }
+
+  }
+
+  render() {
+    if (this.state.can_edit === true) {
+      return (
+        <div className="col-2 m-2">
+          <i onClick={this.handleToggleEdit}  className={this.state.toggle_edit ? "fas fa-edit text-dark" : "far fa-edit text-dark" } style={{fontSize: "14px"}}></i>
+        </div>
+      );
+    } else {
+      return <div></div>;
+    }
+  }
+}
+
+
+class PostView extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      view_mode: this.props.view_mode,
+      post: this.props.post,
+      form_text_value: this.props.post.text,
+    };
+    this.callbackViewMode = this.callbackViewMode.bind(this);
+    this.handleTextChange = this.handleTextChange.bind(this);
+  }
+
+  callbackViewMode = (view_mode) => {
+    this.setState({
+      view_mode: view_mode,
+    });
+  }
+
+  handleTextChange = (event) => {
+    this.setState({
+      form_text_value: event.target.value,
+    });
+  }
+
+  render() {
+    // VIEW MODE  ---- VIEW ---- // -----------------------------------------------------------------------
+    if (this.state.view_mode === "view") {
+      return (
+        <div>
+
+          <div className="row">
+            <div className="Post-username col p-1 ml-3 small my-text font-weight-bolder">
+                <a className="my-text my-text-hover" href="#">@{this.state.post.username}</a>
+            </div>
+            <div className="Post-created col small my-text text-right font-weight-normal pt-1">
+                {this.state.post.created}
+            </div>
+          </div>
+          <div className="row">
+            <div className="Post-text col small font-weight-lighter ml-3 mr-3 pt-1 pb-1" style={{minHeight: "105px"}}>
+                {this.state.post.text}
+            </div>
+          </div>
+          <div className="row">
+            <ToggleLike key={this.state.post.id} is_liked={this.state.post.is_liked} 
+              num_likes={this.state.post.num_likes} post_id={this.state.post.id} />
+            <ToggleEdit parentCallback={this.callbackViewMode} post_id={this.state.post.id} 
+              can_edit={this.state.post.can_edit} post_edited={this.state.post.edited}/>
+          </div>
+        
+        </div>
+      );
+      // VIEW MODE  ---- EDIT ---- // -----------------------------------------------------------------------
+    } else {
+      return (
+        <div>
+
+          <div className="row">
+            <div className="Post-username col p-1 ml-3 small my-text font-weight-bolder">
+                <a className="my-text my-text-hover" href="#">@{this.state.post.username}</a>
+            </div>
+            <div className="Post-created col small my-text text-right font-weight-normal pt-1">
+                {this.state.post.created}
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-lg-6 bg-white">  
+              <form>
+                <div className="row mt-1">
+                  <div className="col">
+                    <textarea 
+                    id="post-form-text" 
+                    autoFocus={true}
+                    value={this.state.form_text_value} 
+                    className="form-control border" 
+                    type="text" required maxLength="256"
+                    onChange={this.handleTextChange}>               
+                    </textarea>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col text-right">
+                      <button id="post-form-submit" className="btn btn-sm my-btn rounded-pill shadow-sm  mt-2 ml-2 mr-2" type="submit">update quacK <i id="fa-rss-white" className="fas fa-rss"></i></button>
+                  </div>
+                </div>
+                  
+              </form>
+            </div>
+          </div>
+          <div className="row">
+            <ToggleLike key={this.state.post.id} is_liked={this.state.post.is_liked} 
+              num_likes={this.state.post.num_likes} post_id={this.state.post.id} />
+            <ToggleEdit parentCallback={this.callbackViewMode} post_id={this.state.post.id} 
+              can_edit={this.state.post.can_edit} post_edited={this.state.post.edited}/>
+          </div>
+        
+        </div>
+      );
+    }
+  }
+}
+
+
 class Post extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       post: this.props.post,
-      edit_callback: "",
+      view_mode: "view"
     };
-    this.callbackFunction = this.callbackFunction.bind(this);
-  }
-
-  callbackFunction = (childData) => {
-    this.setState( {
-      edit_callback: childData,
-    });
     
-
   }
 
   render() {
-    return(
-      <div className="Post" key={this.state.post["id"]} id={this.state.post.id}>               
+    return (
+      <div className="Post" key={this.state.post.id} id={this.state.post.id}>               
         <div className="row justify-content-center">
           <div className="PostInfo col-lg-6 border rounded-lg shadow-sm bg-white">
-            <div className="row">
-              <div className="Post-username col p-1 ml-3 small my-text font-weight-bolder">
-                  <a className="my-text my-text-hover" href="#">@{this.state.post.username}</a>
-              </div>
-              <div className="Post-created col small my-text text-right font-weight-normal pt-1">
-                  {this.state.post.created}
-              </div>
-            </div>
-            <div className="row">
-              <div className="Post-text col small font-weight-lighter ml-3 mr-3 pt-1 pb-1" style={{minHeight: "60px"}}>
-                  {this.state.post.text}
-              </div>
-            </div>
-            <div className="row">
-              <ToggleLike key={this.state.post.id} is_liked={this.state.post.is_liked} 
-                num_likes={this.state.post.num_likes} post_id={this.state.post.id} />
-              <ToggleEdit parentCallback={this.callbackFunction} post_id={this.state.post.id} 
-                can_edit={this. state.post.can_edit} post_edited={this.state.post.edited}/>
-              <p>{this.state.edit_callback}</p>
-            </div>
+            <PostView post={this.state.post} view_mode={this.state.view_mode} />    
           </div>
         </div>
       </div>

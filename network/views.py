@@ -1,3 +1,4 @@
+import datetime
 import json
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -48,14 +49,19 @@ def add_post(request):
 @csrf_exempt
 @login_required
 def edit(request, post_id):
-    # Query for requested post
-    try:
-        post = Post.objects.get(pk=post_id)
-    except Email.DoesNotExist:
-        return JsonResponse({"error": "Post not found."}, status=404)
-    if request.method == "GET":
-        return JsonResponse(post.serialize())
+    # Adding a new post must be via POST
+    if request.method != "POST":
+        return JsonResponse({"error": "POST request required."}, status=400)
+    
+    post = Post.objects.get(pk=post_id)
+    data = json.loads(request.body)
+    
+    post.text = data["text"]
+    post.edited = post.edited + 1
 
+    post.save()
+
+    return JsonResponse(post.serialize(), status=200) ## TO DO HERE
 
 # API route feed/<feed> 
 @login_required

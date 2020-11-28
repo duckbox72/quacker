@@ -54,7 +54,7 @@ class ToggleLike extends React.Component {
 
   render() {
     return (
-    <div className="col-2 m-2">
+    <div className="col-2 ml-2 mr-2 mb-1">
       <i onClick={this.handleToggleLike}  
          className={this.state.is_liked ? "fas fa-heart text-danger" : "far fa-heart text-dark"} 
          style={{fontSize: "14px"}}></i>
@@ -65,7 +65,7 @@ class ToggleLike extends React.Component {
 
 }
 
-
+/*
 class ToggleEdit extends React.Component {
   constructor(props) {
     super(props);
@@ -99,7 +99,7 @@ class ToggleEdit extends React.Component {
   render() {
     if (this.state.can_edit === true) {
       return (
-        <div className="col-2 m-2">
+        <div className="col-2 ml-2 mr-2 mb-1">
           <i onClick={this.handleToggleEdit}  className={this.state.toggle_edit ? "fas fa-edit text-dark" : "far fa-edit text-dark" } style={{fontSize: "14px"}}></i>
         </div>
       );
@@ -109,6 +109,7 @@ class ToggleEdit extends React.Component {
   }
 }
 
+*/
 
 class PostView extends React.Component {
   constructor(props) {
@@ -120,6 +121,7 @@ class PostView extends React.Component {
     };
     this.callbackViewMode = this.callbackViewMode.bind(this);
     this.handleTextChange = this.handleTextChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   callbackViewMode = (view_mode) => {
@@ -132,6 +134,32 @@ class PostView extends React.Component {
     this.setState({
       form_text_value: event.target.value,
     });
+  }
+
+  handleSubmit = (event) => {
+    const text = this.state.form_text_value;
+
+    fetch(`edit/${this.state.post.id}`, {
+      method: 'POST',
+      body: JSON.stringify({
+        text: text,
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      
+      this.setState({
+        post: data,
+        view_mode: "view"
+      }); 
+    }); 
+
+    console.log(text);
+    
+    event.preventDefault();
+    
+    
   }
 
   render() {
@@ -149,7 +177,7 @@ class PostView extends React.Component {
             </div>
           </div>
           <div className="row">
-            <div className="Post-text col small font-weight-lighter ml-3 mr-3 pt-1 pb-1" style={{minHeight: "105px"}}>
+            <div className="Post-text col small font-weight-lighter ml-3 mr-3 pt-2 pb-1" style={{minHeight: "90px"}}>
                 {this.state.post.text}
             </div>
           </div>
@@ -184,15 +212,15 @@ class PostView extends React.Component {
                     id="post-form-text" 
                     autoFocus={true}
                     value={this.state.form_text_value} 
-                    className="form-control border" 
+                    className="form-control" 
                     type="text" required maxLength="256"
-                    onChange={this.handleTextChange}>               
+                    onChange={this.handleTextChange}>              
                     </textarea>
                   </div>
                 </div>
                 <div className="row">
                   <div className="col text-right">
-                      <button id="post-form-submit" className="btn btn-sm my-btn rounded-pill shadow-sm  mt-2 ml-2 mr-2" type="submit">update quacK <i id="fa-rss-white" className="fas fa-rss"></i></button>
+                      <small onClick={this.handleSubmit} className="my-text btn-link mr-2">update quacK<i className="fas fa-rss pl-1"></i></small>
                   </div>
                 </div>
                   

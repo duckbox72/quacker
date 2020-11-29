@@ -313,10 +313,6 @@ class Feed extends React.Component {
         }
       )
   }
-
-  handleMouseOver = () => {
-    return console.log("MOUSE OVER");
-  }
   
   render() {
     const { error, isLoaded, posts } = this.state;
@@ -342,5 +338,3 @@ class Feed extends React.Component {
 }
 
 ReactDOM.render(<Feed  feed="all posts"/>, document.getElementById("feed-posts"));
-
-

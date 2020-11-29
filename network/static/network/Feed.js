@@ -52,7 +52,7 @@ class ToggleLike extends React.Component {
 
   render() {
     return (
-    <div className="col-2 ml-2 mr-2 mb-1">
+    <div className="col-2 m-2">
       <i onClick={this.handleToggleLike}  
          className={this.state.is_liked ? "fas fa-heart text-danger" : "far fa-heart text-dark"} 
          style={{fontSize: "14px"}}></i>
@@ -60,8 +60,8 @@ class ToggleLike extends React.Component {
     </div>
     );
   }
-
 }
+
 
 class ToggleEdit extends React.Component {
   constructor(props) {
@@ -73,14 +73,13 @@ class ToggleEdit extends React.Component {
       
       toggle_edit: false,   
     };
-    // this binding is necessary to make `this` work in the callback
     this.handleToggleEdit = this.handleToggleEdit.bind(this);
     this.handleSave = this.handleSave.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
   }
 
   handleCancel = () => {
-    console.log(`CANCEL CICKED!!!!!`)
+    console.log(`CANCEL CICKED!`)
     this.setState({
       toggle_edit: false,
     });
@@ -88,7 +87,7 @@ class ToggleEdit extends React.Component {
   }
   
   handleSave = () => {
-    console.log(`SAVE CLICKED!!!!!`)
+    console.log(`SAVE CLICKED!`)
     this.setState({
       toggle_edit: false,
     });
@@ -96,28 +95,24 @@ class ToggleEdit extends React.Component {
   }
  
   handleToggleEdit = () => {
-    console.log(`CLICK!!!!! TOGGLE EDIT POST ${this.state.post_id}`)
-    
+    console.log(`TOGGLE EDIT CLICKED!  POST ${this.state.post_id}`)
     if (this.state.toggle_edit === false) {
       this.setState({
         toggle_edit: true
       });
       this.props.parentCallbackView("edit");
-      console.log(`VIEW SENT FROM CHILDREN -- (EDIT)(true) ${this.state.toggle_edit}`)
-    
     } else {
       this.setState({
         toggle_edit: false,
       });
       this.props.parentCallbackView("view");
-      console.log(`VIEW SENT FROM CHILDREN -- (VIEW)(false)`)
     }
   }
 
   render() {
     if (this.state.can_edit === true) {
       return (
-        <div className="col ml-2 mr-2 mb-1">
+        <div className="col m-2">
           <i onClick={this.handleToggleEdit}  className={this.state.toggle_edit ? "fas fa-edit text-dark" : "far fa-edit text-dark" } style={{fontSize: "14px"}}></i>
           <span style={{fontSize: "12px", marginLeft: "8px"}}>{this.state.toggle_edit ? "save" : "" }</span>
           <i onClick={this.handleSave}  className={this.state.toggle_edit ? "far fa-check-square text-success" : "" } style={{fontSize: "15px", marginLeft: "4px"}}></i>
@@ -135,27 +130,20 @@ class ToggleEdit extends React.Component {
 class PostView extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      
+    this.state = {     
       post: this.props.post,
       form_text_value: this.props.post.text,
       view_mode: this.props.view_mode,
-      
-      remote_save: false, 
-      
     };
+    this.callbackSave = this.callbackSave.bind(this);
     this.callbackViewMode = this.callbackViewMode.bind(this);
     this.handleTextChange = this.handleTextChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  callbackSave = (remote_save) => {
-    console.log(`REMOTE SAVE RETRIEVED FROM CHILDREN ${remote_save}`);
-  //this.setState({
-  //   remote_save: remote_save,
-  // });
+  callbackSave = () => {
+    console.log(`REMOTE SAVE TRIGGERED FROM CHILDREN`);
     this.handleSubmit()
-
   }
 
   callbackViewMode = (view_mode) => {
@@ -181,25 +169,16 @@ class PostView extends React.Component {
     })
     .then(response => response.json())
     .then(data => {
-      console.log(`CURRENT VIEW MODE ON SUBMIT: ${this.state.view_mode}`)
-      console.log(data);
-      //TO DO HERE ----------------------
       this.setState({
         post: data,
         view_mode: "view",
       }); 
     }); 
-    //this.updateChild(false); //---------------------------------------------------------
-    console.log(`ENTRY TEXT SUBMITTED TO FETCH: ${text}`);
-    //event.preventDefault();
-    
   }
 
   render() {
     // VIEW MODE  ---- VIEW ---- // -----------------------------------------------------------------------
-    
     if (this.state.view_mode === "view") {
-      console.log(`CURRENT VIEW MODE ON RENDER ***VIEW: ${this.state.view_mode}`)
       return (
         <div>
 
@@ -212,7 +191,7 @@ class PostView extends React.Component {
             </div>
           </div>
           <div className="row">
-            <div className="Post-text col small font-weight-lighter ml-3 mr-3 pt-2 pb-1" style={{minHeight: "90px"}}>
+            <div className="Post-text col small ml-3 mr-3 pt-2 pb-1" style={{minHeight: "64px"}}>
                 {this.state.post.text}
             </div>
           </div>
@@ -231,7 +210,6 @@ class PostView extends React.Component {
       );
       // VIEW MODE  ---- EDIT ---- // -----------------------------------------------------------------------
     } else {
-      console.log(`CURRENT VIEW MODE ON RENDER EDIT: ${this.state.view_mode}`)
       return (
         <div>
 
@@ -252,18 +230,13 @@ class PostView extends React.Component {
                     id="post-form-text" 
                     autoFocus={true}
                     value={this.state.form_text_value} 
-                    className="form-control" 
+                    className="form-control mb-2" 
                     type="text" required maxLength="256"
-                    onChange={this.handleTextChange}>              
+                    onChange={this.handleTextChange}
+                    style={{fontSize: "13px"}}>              
                     </textarea>
                   </div>
-                </div>
-                <div className="row">
-                  <div className="col text-right">
-                      <small onClick={this.handleSubmit} className="my-text my-text-hover mr-2">update quacK<i className="fas fa-rss pl-1"></i></small>
-                  </div>
-                </div>
-                  
+                </div>          
               </form>
             </div>
           </div>
@@ -289,8 +262,7 @@ class Post extends React.Component {
     this.state = {
       post: this.props.post,
       view_mode: "view"
-    };
-    
+    };  
   }
 
   render() {
@@ -328,8 +300,7 @@ class Feed extends React.Component {
             isLoaded: true,
             feed: result.feed,
             posts: result.posts,
-            edit_callback: "",
-            
+            edit_callback: "",        
           });
         },
         // Note: it's important to handle errors here
@@ -343,32 +314,32 @@ class Feed extends React.Component {
         }
       )
   }
+
   handleMouseOver = () => {
     return console.log("MOUSE OVER");
   }
   
   render() {
-      const { error, isLoaded, posts } = this.state;
-      if (error) {
-        return <div className="my-text text-center">Error: {error.message}</div>;
-      } else if (!isLoaded) {
-        return <div className="my-text text-center">Loading... <i className="fas fa-spinner"></i></div>;
-      } else {
-        return (
-          <div>
-            <div className="row justify-content-center mt-2">
-                <div className="col-lg-6 my-text text-right bg-white font-weight-bolder">
-                    {this.state.feed}
-                </div>
-            </div>
-            {posts.map(post => (
-               <Post key={post.id} post={post}/> 
-            ))}
+    const { error, isLoaded, posts } = this.state;
+    if (error) {
+      return <div className="my-text text-center">Error: {error.message}</div>;
+    } else if (!isLoaded) {
+      return <div className="my-text text-center">Loading... <i className="fas fa-spinner"></i></div>;
+    } else {
+      return (
+        <div>
+          <div className="row justify-content-center mt-2">
+              <div className="col-lg-6 my-text text-right bg-white font-weight-bolder">
+                  {this.state.feed}
+              </div>
           </div>
-        );
-      }
+          {posts.map(post => (
+              <Post key={post.id} post={post}/> 
+          ))}
+        </div>
+      );
     }
-      
+  }     
 }
 
 ReactDOM.render(<Feed  feed="all posts"/>, document.getElementById("feed-posts"));

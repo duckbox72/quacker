@@ -1,210 +1,346 @@
-document.addEventListener('DOMContentLoaded', function() {
-  // By default, load  all posts feed
-  //load_feed('all posts');
-});
-
-function is_liked(post) {
-
-    // Check whether post is liked by user or not
-    fetch(`like/${post.id}`)
-    .then(response => response.json())
-    .then(is_liked => {    
-        // No message means (actual) post is_liked in fact 
-        if (!is_liked.message) {
-            console.log(`IS LIKED POST ${post.id} => ${is_liked.post}`);
-            heart_ini = "fas fa-heart text-danger";
-            //return console.log(heart_ini);
-        } else {
-            console.log(`NOT LIKED POST ${post.id}`);
-            heart_ini = "far fa-heart text-dark";
-            //return console.log(heart_ini);
-        }
-        // Render correct heart_ini
-        document.querySelector(`#toggle_like${post.id}`).className = heart_ini;
-    
-    }); // Close fetch for like   
-}
-
-function aaaaaload_feed(feed) {
-    // Show the feed view and hide other views
-    document.querySelector('#feeds-view').style.display = 'block';
-
-    // Clear out form text field
-    document.querySelector('#post-form-text').value = '';
-
-    // DISPLAY the feed name
-    document.querySelector('#feed-name').innerHTML = 
-                            `<div class="row justify-content-center mt-2">
-                                <div class="col-lg-6 my-text">
-                                    ${feed.charAt(0).toUpperCase() + feed.slice(1)}
-                                </div>
-                            </div>`;
-
-    // Fetch feed for posts from API ROUTE
-    fetch(`feed/${feed}`)
-    .then(response => response.json())
-    .then(posts => {
-        console.log(posts)
-        // Display custom message if feed empty
-        if (posts.length == 0) {
-            document.querySelector("#feeds-view"). innerHTML +=
-            `<div class="row justify-content-center"
-                <div class="col">
-                    This feed has no posts.
-                </div>
-            </div>`;
-        };
-        
-        // If there are posts iteract though them 
-        posts.forEach(post => {
-            console.log(post.id, post.user_id, post.text)
-            
-            // Create and ender a DIV for each post
-            const element = document.createElement('div');
-            element.className = `row justify-content-center`;
-            element.id = `post${post.id}`;
-            element.innerHTML = 
-            `<div class="col-lg-6 border rounded-lg shadow-sm bg-white">
-                <div class="row">
-                    <div class="col p-1 ml-3 small my-text font-weight-bolder">
-                        @${post.username}
-                    </div>
-                    <div class="col small my-text text-right font-weight-lighter pt-1">
-                        ${post.created}
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col small font-weight-lighter ml-3 mr-3 pt-1 pb-1" style="min-height: 60px;">
-                        ${post.text}
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col m-2">
-                        <div>
-                            <i id="toggle_like${post.id}" class="far fa-heart text-dark" style="font-size: 14px;"></i><span id="num-likes${post.id}" class="ml-1" style="font-size: 14px;"></span> 
-                        <div>
-                    </div>
-                </div>   
-            </div>`;
-            
-            // RENDER div element for each post
-            document.querySelector("#feeds-view").append(element);
-        
-            // Add EVENT HANDLER to LIKE BUTTON CLICK
-            document.querySelector(`#toggle_like${post.id}`).addEventListener('click', function() {
-                  
-                console.log(`CLICK toggle_like ${post.id}`);
-                // GET request to CHECK if is_liked, send request acordingly
-                fetch(`like/${post.id}`)
-                .then(response => response.json())
-                .then(is_liked => {  
-                    // No message means is_like exists
-                    if (!is_liked.message) {
-                        console.log(`IS LIKED POST ${post.id} => ${is_liked.post}`);
-                        fetch(`like/${post.id}`, {
-                            method: 'POST',
-                            body: JSON.stringify({
-                                post: post.id,
-                                action: "delete",
-                            })
-                        })   
-                        .then(response => response.json())
-                        .then(post => {
-                            console.log(post)
-                        })
-                    } else {
-                        console.log(`NOT LIKED POST ${post.id}`);
-                        fetch(`like/${post.id}`, {
-                            method: 'POST',
-                            body: JSON.stringify({
-                                post: post.id,
-                                action: "create",
-                            })
-                        })
-                        .then(response => response.json())
-                        .then(like => {
-                            console.log(like)
-                        }) 
-                    }
-                })
-                
-                // TOGGLE_LIKE
-                if (document.querySelector(`#toggle_like${post.id}`).className === "far fa-heart text-dark") {
-                    // LIKE 
-                    document.querySelector(`#toggle_like${post.id}`).className = "fas fa-heart text-danger";
-                    
-                    before = document.querySelector(`#num-likes${post.id}`).innerHTML;
-                    after = parseInt(before) + 1 
-                    document.querySelector(`#num-likes${post.id}`).innerHTML = after; 
-                } else {
-                    // UNLIKE 
-                    document.querySelector(`#toggle_like${post.id}`).className = "far fa-heart text-dark";
-                     
-                    before = document.querySelector(`#num-likes${post.id}`).innerHTML;
-                    after = parseInt(before) - 1 
-                    document.querySelector(`#num-likes${post.id}`).innerHTML = after; 
-                }
-
-                document.querySelector(`#num-likes${post.id}`).innerHTML
-
-
-            });
-        });
-    })
-    
-    // Check whether post is liked by user or not to set correct heart_ini
-    fetch(`feed/${feed}`)
-    .then(response => response.json())
-    .then(posts => {
-        posts.forEach(post => {
-            console.log(post.id)
-            //is_liked(post)
-                       
-            // Check if is_liked
-            fetch(`like/${post.id}`)
-            .then(response => response.json())
-            .then(is_liked => {  
-                // Select proper heart_ini CLASS
-                if (!is_liked.message) {
-                    console.log(`IS LIKED POST ${post.id} => ${is_liked.post}`);
-                    heart_ini = `fas fa-heart text-danger`;
-                }else {
-                    console.log(`NOT LIKED POST ${post.id}`);
-                    heart_ini = `far fa-heart text-dark`; 
-                }
-                // Render correct heart_ini
-                document.querySelector(`#toggle_like${post.id}`).className = heart_ini;
-            })
-        })   
-    });
- 
-    // Find number of likes
-    fetch(`feed/${feed}`)
-    .then(response => response.json())
-    .then(posts => {
-        posts.forEach(post => {
-            console.log(`FOR LIKES LOOP ${post.id}`)
-            //is_liked(post)
-                       
-            // Check num_likes for each post
-            fetch(`num_likes/${post.id}`)
-            .then(response => response.json())
-            .then(likes => {  
-                console.log(likes.likes)
-                
-                document.querySelector(`#num-likes${post.id}`).innerHTML = likes.likes;
-            })
-        })   
-    });
-
-
-
-
-
-
+class ToggleLike extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {  
+      num_likes: this.props.num_likes,
+      is_liked: this.props.is_liked,
+      post_id: this.props.post_id,
       
-            
+    };
+    this.handleToggleLike = this.handleToggleLike.bind(this);
+  }
+  
+  handleToggleLike = () => {  
+    if ((this.state.is_liked) === false) {
+        console.log("FROM NO_LIKE  TO ====>>>> LIKE")
+        this.setState(state => ({
+            is_liked: true,
+            num_likes: this.state.num_likes + 1
+        }));
+        fetch(`like/${this.state.post_id}`, {
+            method: 'POST',
+            body: JSON.stringify({
+                post: this.state.post_id,
+                action: "create",
+            })
+        })
+        .then(response => response.json())
+        .then(like => {
+            console.log(like);
+        }) 
+        
+    } else {
+        console.log("FROM LIKE  TO ====>>>> NO_LIKE")
+        this.setState(state => ({
+            is_liked: false,
+            num_likes: this.state.num_likes - 1
+        }));
+        fetch(`like/${this.state.post_id}`, {
+          method: 'POST',
+          body: JSON.stringify({
+              post: this.state.post_id,
+              action: "delete",
+          })
+        })   
+        .then(response => response.json())
+        .then(post => {
+            console.log(post);
+        })
+    }
+  }
+
+  render() {
+    return (
+    <div className="col-2 m-2">
+      <i onClick={this.handleToggleLike}  
+         className={this.state.is_liked ? "fas fa-heart text-danger" : "far fa-heart text-dark"} 
+         style={{fontSize: "14px"}}></i>
+         <span id="num-likes" className="ml-1" style={{fontSize: "14px"}}>{this.state.num_likes}</span>  
+    </div>
+    );
+  }
 }
 
+
+class ToggleEdit extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      post_id: this.props.post_id,
+      can_edit: this.props.can_edit,
+      post_edited: this.props.post_edited,
+      
+      toggle_edit: false,   
+    };
+    this.handleToggleEdit = this.handleToggleEdit.bind(this);
+    this.handleSave = this.handleSave.bind(this);
+    this.handleCancel = this.handleCancel.bind(this);
+  }
+
+  handleCancel = () => {
+    console.log(`CANCEL CICKED!`)
+    this.setState({
+      toggle_edit: false,
+    });
+    this.props.parentCallbackView("view");
+  }
+  
+  handleSave = () => {
+    console.log(`SAVE CLICKED!`)
+    this.setState({
+      toggle_edit: false,
+    });
+    this.props.parentCallbackSave(true);
+  }
+ 
+  handleToggleEdit = () => {
+    console.log(`TOGGLE EDIT CLICKED!  POST ${this.state.post_id}`)
+    if (this.state.toggle_edit === false) {
+      this.setState({
+        toggle_edit: true
+      });
+      this.props.parentCallbackView("edit");
+    } else {
+      this.setState({
+        toggle_edit: false,
+      });
+      this.props.parentCallbackView("view");
+    }
+  }
+ 
+  render() {
+    if (this.state.can_edit === true) {
+      return (
+        <div className="col m-2">
+          <i onClick={this.handleToggleEdit}  className={this.state.toggle_edit ? "fas fa-edit text-dark" : "far fa-edit text-dark" } style={{fontSize: "14px"}}></i>
+          <span style={{fontSize: "12px", marginLeft: "8px"}}>{this.state.toggle_edit ? "save" : "" }</span>
+          <i onClick={this.handleSave}  className={this.state.toggle_edit ? "fas fa-check text-success" : "" } style={{fontSize: "15px", marginLeft: "4px"}}></i>
+          <span style={{fontSize: "12px", marginLeft: "8px"}}>{this.state.toggle_edit ? "cancel" : "" }</span>
+          <i onClick={this.handleCancel}  className={this.state.toggle_edit ? "fas fa-times text-danger" : "" } style={{fontSize: "15px", marginLeft: "4px"}}></i>
+        </div>
+      );
+    } else {
+      return <div></div>;
+    }
+  }
+}
+
+
+class PostView extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {     
+      post: this.props.post,
+      form_text_value: this.props.post.text,
+      view_mode: this.props.view_mode,
+    };
+    this.callbackSave = this.callbackSave.bind(this);
+    this.callbackViewMode = this.callbackViewMode.bind(this);
+    this.handleTextChange = this.handleTextChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  callbackSave = () => {
+    console.log(`REMOTE SAVE TRIGGERED FROM CHILDREN`);
+    this.handleSubmit()
+  }
+
+  callbackViewMode = (view_mode) => {
+    console.log(`MODE RETRIEVED FROM CHILDREN ${view_mode}`);
+    this.setState({
+      view_mode: view_mode,
+    });
+  }
+
+  handleTextChange = (event) => {
+    this.setState({
+      form_text_value: event.target.value,
+    });
+  }
+
+  handleSubmit = (event) => {
+    const text = this.state.form_text_value;
+    fetch(`edit/${this.state.post.id}`, {
+      method: 'POST',
+      body: JSON.stringify({
+        text: text,
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      this.setState({
+        post: data,
+        view_mode: "view",
+      }); 
+    }); 
+  }
+
+  render() {
+    // VIEW MODE  ---- VIEW ---- // -----------------------------------------------------------------------
+    if (this.state.view_mode === "view") {
+      return (
+        <div>
+
+          <div className="row">
+            <div className="Post-username col p-1 ml-3 small my-text font-weight-bolder">
+                <a className="my-text my-text-hover" href="#">@{this.state.post.username}</a>
+            </div>
+            <div className="Post-created col small my-text text-right font-weight-normal pt-1">
+                {this.state.post.created}
+            </div>
+          </div>
+          <div className="row">
+            <div className="Post-text col small ml-3 mr-3 pt-2 pb-1" style={{minHeight: "64px"}}>
+                {this.state.post.text}
+            </div>
+          </div>
+          <div className="row">
+            <ToggleLike key={this.state.post.id} is_liked={this.state.post.is_liked} 
+              num_likes={this.state.post.num_likes} post_id={this.state.post.id} />
+            <ToggleEdit 
+            parentCallbackView={this.callbackViewMode} 
+            post_id={this.state.post.id} 
+            can_edit={this.state.post.can_edit} 
+            post_edited={this.state.post.edited} 
+              />
+          </div>
+        
+        </div>
+      );
+      // VIEW MODE  ---- EDIT ---- // -----------------------------------------------------------------------
+    } else {
+      return (
+        <div>
+
+          <div className="row">
+            <div className="Post-username col p-1 ml-3 small my-text font-weight-bolder">
+                <a className="my-text my-text-hover" href="#">@{this.state.post.username}</a>
+            </div>
+            <div className="Post-created col small my-text text-right font-weight-normal pt-1">
+                {this.state.post.created}
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-lg-6 bg-white">  
+              <form>
+                <div className="row mt-1">
+                  <div className="col">
+                    <textarea 
+                    id="post-form-text" 
+                    autoFocus={false}
+                    value={this.state.form_text_value} 
+                    className="form-control mb-2" 
+                    type="text" required maxLength="256"
+                    onChange={this.handleTextChange}
+                    style={{fontSize: "13px"}}>              
+                    </textarea>
+                  </div>
+                </div>          
+              </form>
+            </div>
+          </div>
+          <div className="row">
+            <ToggleLike key={this.state.post.id} is_liked={this.state.post.is_liked} 
+              num_likes={this.state.post.num_likes} post_id={this.state.post.id} />
+            <ToggleEdit 
+              parentCallbackView={this.callbackViewMode}
+              parentCallbackSave={this.callbackSave} 
+              post_id={this.state.post.id} 
+              can_edit={this.state.post.can_edit} 
+              post_edited={this.state.post.edited}/>
+          </div>
+        </div>
+      );
+    }
+  }
+}
+
+class Post extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      post: this.props.post,
+      view_mode: "view"
+    };  
+  }
+
+  render() {
+    return (
+      <div className="Post" key={this.state.post.id} id={this.state.post.id}>               
+        <div className="row justify-content-center">
+          <div className="PostInfo col-lg-6 border rounded-lg shadow-sm bg-white">
+            <PostView post={this.state.post} view_mode={this.state.view_mode} />    
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
+
+
+class Feed extends React.Component {
+  constructor(props) {
+      super(props);
+      this.state = {
+          error: null,
+          isLoaded: false,
+          feed: this.props.feed, 
+          posts: []
+      };
+  }
+
+  componentDidMount() {
+    fetch(`feed/${this.state.feed}`)
+      .then(response => response.json())
+      .then(
+        (result) => {
+          console.log(result)
+            this.setState({
+            isLoaded: true,
+            feed: result.feed,
+            posts: result.posts,
+            edit_callback: "",        
+          });
+        },
+        // Note: it's important to handle errors here
+        // instead of a catch() block so that we don't swallow
+        // exceptions from actual bugs in components.
+        (error) => {
+          this.setState({
+            isLoaded: true,
+            error
+          });
+        }
+      )
+  }
+
+  handleMouseOver = () => {
+    return console.log("MOUSE OVER");
+  }
+  
+  render() {
+    const { error, isLoaded, posts } = this.state;
+    if (error) {
+      return <div className="my-text text-center">Error: {error.message}</div>;
+    } else if (!isLoaded) {
+      return <div className="my-text text-center">Loading... <i className="fas fa-spinner"></i></div>;
+    } else {
+      return (
+        <div>
+          <div className="row justify-content-center mt-2">
+              <div className="col-lg-6 my-text text-right bg-white font-weight-bolder">
+                  {this.state.feed}
+              </div>
+          </div>
+          {posts.map(post => (
+              <Post key={post.id} post={post}/> 
+          ))}
+        </div>
+      );
+    }
+  }     
+}
+
+ReactDOM.render(<Feed  feed="all posts"/>, document.getElementById("feed-posts"));
 
 

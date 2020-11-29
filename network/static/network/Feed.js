@@ -7,12 +7,10 @@ class ToggleLike extends React.Component {
       post_id: this.props.post_id,
       
     };
-    // this binding is necessary to make `this` work in the callback
     this.handleToggleLike = this.handleToggleLike.bind(this);
 
   }
   
-  // UPDATE STATE
   handleToggleLike = () => {  
     if ((this.state.is_liked) === false) {
         console.log("FROM NO_LIKE  TO ====>>>> LIKE")
@@ -65,37 +63,38 @@ class ToggleLike extends React.Component {
 
 }
 
-
-function updateToggleEdit(state) {
-  console.log(`ACTUAL COMPONENT STATE ${this.state.toggle_edit}`)
-  console.log(`STATE PUSHED FROM PARENT ${state}`)
-  if (this.state.toggle_edit === true) {
-    this.setState({
-      toggle_edit: state,
-    });
-    console.log(`SUCCESSLY PASSED TO CHILDREN FROM PARENT ${this.state.toggle_edit}`)
-  }
-
-}
-
 class ToggleEdit extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      can_edit: this.props.can_edit,
       post_id: this.props.post_id,
+      can_edit: this.props.can_edit,
       post_edited: this.props.post_edited,
       
       toggle_edit: false,   
     };
-    updateToggleEdit = updateToggleEdit.bind(this);
-
     // this binding is necessary to make `this` work in the callback
     this.handleToggleEdit = this.handleToggleEdit.bind(this);
-    
+    this.handleSave = this.handleSave.bind(this);
+    this.handleCancel = this.handleCancel.bind(this);
   }
 
-  // UPDATE STATE
+  handleCancel = () => {
+    console.log(`CANCEL CICKED!!!!!`)
+    this.setState({
+      toggle_edit: false,
+    });
+    this.props.parentCallbackView("view");
+  }
+  
+  handleSave = () => {
+    console.log(`SAVE CLICKED!!!!!`)
+    this.setState({
+      toggle_edit: false,
+    });
+    this.props.parentCallbackSave(true);
+  }
+ 
   handleToggleEdit = () => {
     console.log(`CLICK!!!!! TOGGLE EDIT POST ${this.state.post_id}`)
     
@@ -103,17 +102,16 @@ class ToggleEdit extends React.Component {
       this.setState({
         toggle_edit: true
       });
-      this.props.parentCallback("edit");
+      this.props.parentCallbackView("edit");
       console.log(`VIEW SENT FROM CHILDREN -- (EDIT)(true) ${this.state.toggle_edit}`)
     
     } else {
       this.setState({
         toggle_edit: false,
       });
-      this.props.parentCallback("view");
+      this.props.parentCallbackView("view");
       console.log(`VIEW SENT FROM CHILDREN -- (VIEW)(false)`)
     }
-
   }
 
   render() {
@@ -121,10 +119,10 @@ class ToggleEdit extends React.Component {
       return (
         <div className="col ml-2 mr-2 mb-1">
           <i onClick={this.handleToggleEdit}  className={this.state.toggle_edit ? "fas fa-edit text-dark" : "far fa-edit text-dark" } style={{fontSize: "14px"}}></i>
-          <span style={{fontSize: "12px", marginLeft: "10px"}}>{this.state.toggle_edit ? "save updates" : "" }</span>
-          <i   className={this.state.toggle_edit ? "far fa-check-square text-success" : "" } style={{fontSize: "15px", marginLeft: "6px"}}></i>
-          <span style={{fontSize: "12px", marginLeft: "10px"}}>{this.state.toggle_edit ? "cancel" : "" }</span>
-          <i   className={this.state.toggle_edit ? "far fa-window-close text-danger" : "" } style={{fontSize: "15px", marginLeft: "6px"}}></i>
+          <span style={{fontSize: "12px", marginLeft: "8px"}}>{this.state.toggle_edit ? "save" : "" }</span>
+          <i onClick={this.handleSave}  className={this.state.toggle_edit ? "far fa-check-square text-success" : "" } style={{fontSize: "15px", marginLeft: "4px"}}></i>
+          <span style={{fontSize: "12px", marginLeft: "8px"}}>{this.state.toggle_edit ? "cancel" : "" }</span>
+          <i onClick={this.handleCancel}  className={this.state.toggle_edit ? "far fa-window-close text-danger" : "" } style={{fontSize: "15px", marginLeft: "4px"}}></i>
         </div>
       );
     } else {
@@ -141,8 +139,9 @@ class PostView extends React.Component {
       
       post: this.props.post,
       form_text_value: this.props.post.text,
-      view_mode: this.props.view_mode, 
+      view_mode: this.props.view_mode,
       
+      remote_save: false, 
       
     };
     this.callbackViewMode = this.callbackViewMode.bind(this);
@@ -150,9 +149,14 @@ class PostView extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  //updateChild(toggle_edit) {
-  //  updateToggleEdit(toggle_edit)
-  //}
+  callbackSave = (remote_save) => {
+    console.log(`REMOTE SAVE RETRIEVED FROM CHILDREN ${remote_save}`);
+  //this.setState({
+  //   remote_save: remote_save,
+  // });
+    this.handleSubmit()
+
+  }
 
   callbackViewMode = (view_mode) => {
     console.log(`MODE RETRIEVED FROM CHILDREN ${view_mode}`);
@@ -187,7 +191,7 @@ class PostView extends React.Component {
     }); 
     //this.updateChild(false); //---------------------------------------------------------
     console.log(`ENTRY TEXT SUBMITTED TO FETCH: ${text}`);
-    event.preventDefault();
+    //event.preventDefault();
     
   }
 
@@ -215,8 +219,11 @@ class PostView extends React.Component {
           <div className="row">
             <ToggleLike key={this.state.post.id} is_liked={this.state.post.is_liked} 
               num_likes={this.state.post.num_likes} post_id={this.state.post.id} />
-            <ToggleEdit parentCallback={this.callbackViewMode} post_id={this.state.post.id} 
-              can_edit={this.state.post.can_edit} post_edited={this.state.post.edited} 
+            <ToggleEdit 
+            parentCallbackView={this.callbackViewMode} 
+            post_id={this.state.post.id} 
+            can_edit={this.state.post.can_edit} 
+            post_edited={this.state.post.edited} 
               />
           </div>
         
@@ -263,8 +270,12 @@ class PostView extends React.Component {
           <div className="row">
             <ToggleLike key={this.state.post.id} is_liked={this.state.post.is_liked} 
               num_likes={this.state.post.num_likes} post_id={this.state.post.id} />
-            <ToggleEdit parentCallback={this.callbackViewMode} post_id={this.state.post.id} 
-              can_edit={this.state.post.can_edit} post_edited={this.state.post.edited}/>
+            <ToggleEdit 
+              parentCallbackView={this.callbackViewMode}
+              parentCallbackSave={this.callbackSave} 
+              post_id={this.state.post.id} 
+              can_edit={this.state.post.can_edit} 
+              post_edited={this.state.post.edited}/>
           </div>
         </div>
       );

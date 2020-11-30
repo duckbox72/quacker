@@ -1,3 +1,75 @@
+class AddPostForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {     
+      form_text_value: "",
+    };
+    this.handleTextChange = this.handleTextChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleTextChange = (event) => {
+    this.setState({
+      form_text_value: event.target.value,
+    });
+  }
+
+  handleSubmit = (event) => {
+    const text = this.state.form_text_value;
+    fetch('/posts', {
+      method: 'POST',
+      body: JSON.stringify({
+          text: text,
+      }) 
+    })
+    .then(response => response.json())
+    .then(result => { 
+        if (result.error) {
+            alert(result.error);     
+        }
+        if (result.message) {
+            console.log(result.message);
+        } 
+    }) 
+  }
+
+  render() {
+    console.log(this.state.form_text_value)
+    return(
+      <div className="row justify-content-center mb-2"> 
+        <div className="col-lg-6 border rounded-lg shadow-sm bg-white">
+          <form id="post-form">
+            <div className="row">
+              <div className="col pt-1 ml-2">
+                  <span className="small my-text font-weight-bolder">new quacK </span><i id="fa-rss" className="fas fa-rss"></i> 
+              </div>
+            </div>
+            <div className="row mt-1">
+              <div className="col">
+                  <textarea 
+                  onChange={this.handleTextChange}
+                  className="form-control border-0 " 
+                  type="text" 
+                  value={this.state.form_text_value} 
+                  placeholder="What are you thinking?" 
+                  required maxLength="256"
+                  style={{fontSize: "14px"}}
+                  ></textarea>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col text-right">
+                  <button onClick={this.handleSubmit} className="btn btn-sm my-btn rounded-pill shadow-sm  m-2" type="submit">quacK <i id="fa-rss-white" className="fas fa-rss"></i></button>
+              </div>
+            </div>    
+          </form>    
+        </div>
+      </div>
+    );
+  }
+}
+
+
 class ToggleLike extends React.Component {
   constructor(props) {
     super(props);
@@ -111,6 +183,7 @@ class ToggleEdit extends React.Component {
   render() {
     if (this.state.can_edit === true) {
       return (
+        
         <div className="col m-2">
           <i onClick={this.handleToggleEdit}  className={this.state.toggle_edit ? "fas fa-edit text-dark" : "far fa-edit text-dark" } style={{fontSize: "14px"}}></i>
           <span style={{fontSize: "12px", marginLeft: "8px"}}>{this.state.toggle_edit ? "save" : "" }</span>
@@ -118,6 +191,7 @@ class ToggleEdit extends React.Component {
           <span style={{fontSize: "12px", marginLeft: "8px"}}>{this.state.toggle_edit ? "cancel" : "" }</span>
           <i onClick={this.handleCancel}  className={this.state.toggle_edit ? "fas fa-times text-danger" : "" } style={{fontSize: "15px", marginLeft: "4px"}}></i>
         </div>
+        
       );
     } else {
       return <div></div>;
@@ -179,75 +253,77 @@ class PostView extends React.Component {
     // VIEW MODE  ---- VIEW ---- // -----------------------------------------------------------------------
     if (this.state.view_mode === "view") {
       return (
-        <div>
-
-          <div className="row">
-            <div className="Post-username col p-1 ml-3 small my-text font-weight-bolder">
-                <a className="my-text my-text-hover" href="#">@{this.state.post.username}</a>
+        <div className="row justify-content-center">
+          <div className="col-lg-6 border rounded-lg shadow-sm bg-white">
+            <div className="row">
+              <div className="Post-username col p-1 ml-3 small my-text font-weight-bolder">
+                  <a className="my-text my-text-hover" href="#">@{this.state.post.username}</a>
+              </div>
+              <div className="Post-created col small my-text text-right font-weight-normal pt-1">
+                  {this.state.post.created}
+              </div>
             </div>
-            <div className="Post-created col small my-text text-right font-weight-normal pt-1">
-                {this.state.post.created}
+            <div className="row">
+              <div className="Post-text col small ml-3 mr-3 pt-2 pb-1" style={{minHeight: "64px"}}>
+                  {this.state.post.text}
+              </div>
+            </div>
+            <div className="row">
+              <ToggleLike key={this.state.post.id} is_liked={this.state.post.is_liked} 
+                num_likes={this.state.post.num_likes} post_id={this.state.post.id} />
+              <ToggleEdit 
+              parentCallbackView={this.callbackViewMode} 
+              post_id={this.state.post.id} 
+              can_edit={this.state.post.can_edit} 
+              post_edited={this.state.post.edited} 
+                />
             </div>
           </div>
-          <div className="row">
-            <div className="Post-text col small ml-3 mr-3 pt-2 pb-1" style={{minHeight: "64px"}}>
-                {this.state.post.text}
-            </div>
-          </div>
-          <div className="row">
-            <ToggleLike key={this.state.post.id} is_liked={this.state.post.is_liked} 
-              num_likes={this.state.post.num_likes} post_id={this.state.post.id} />
-            <ToggleEdit 
-            parentCallbackView={this.callbackViewMode} 
-            post_id={this.state.post.id} 
-            can_edit={this.state.post.can_edit} 
-            post_edited={this.state.post.edited} 
-              />
-          </div>
-        
         </div>
       );
       // VIEW MODE  ---- EDIT ---- // -----------------------------------------------------------------------
     } else {
       return (
-        <div>
-
-          <div className="row">
-            <div className="Post-username col p-1 ml-3 small my-text font-weight-bolder">
-                <a className="my-text my-text-hover" href="#">@{this.state.post.username}</a>
+        <div className="row justify-content-center">
+          <div className="col-lg-6 border rounded-lg shadow-sm bg-white">
+            <div className="row">
+              <div className="Post-username col p-1 ml-3 small my-text font-weight-bolder">
+                  <a className="my-text my-text-hover" href="#">@{this.state.post.username}</a>
+              </div>
+              <div className="Post-created col small my-text text-right font-weight-normal pt-1">
+                  {this.state.post.created}
+              </div>
             </div>
-            <div className="Post-created col small my-text text-right font-weight-normal pt-1">
-                {this.state.post.created}
+            <div className="row">
+              <div className="col-lg-6 bg-white">  
+                <form>
+                  <div className="row mt-1">
+                    <div className="col">
+                      <textarea 
+                      id="post-form-text" 
+                      autoFocus={false}
+                      value={this.state.form_text_value} 
+                      className="form-control mb-2" 
+                      type="text" 
+                      required maxLength="256"
+                      onChange={this.handleTextChange}
+                      style={{fontSize: "13px"}}
+                      ></textarea>
+                    </div>
+                  </div>          
+                </form>
+              </div>
             </div>
-          </div>
-          <div className="row">
-            <div className="col-lg-6 bg-white">  
-              <form>
-                <div className="row mt-1">
-                  <div className="col">
-                    <textarea 
-                    id="post-form-text" 
-                    autoFocus={false}
-                    value={this.state.form_text_value} 
-                    className="form-control mb-2" 
-                    type="text" required maxLength="256"
-                    onChange={this.handleTextChange}
-                    style={{fontSize: "13px"}}>              
-                    </textarea>
-                  </div>
-                </div>          
-              </form>
+            <div className="row">
+              <ToggleLike key={this.state.post.id} is_liked={this.state.post.is_liked} 
+                num_likes={this.state.post.num_likes} post_id={this.state.post.id} />
+              <ToggleEdit 
+                parentCallbackView={this.callbackViewMode}
+                parentCallbackSave={this.callbackSave} 
+                post_id={this.state.post.id} 
+                can_edit={this.state.post.can_edit} 
+                post_edited={this.state.post.edited}/>
             </div>
-          </div>
-          <div className="row">
-            <ToggleLike key={this.state.post.id} is_liked={this.state.post.is_liked} 
-              num_likes={this.state.post.num_likes} post_id={this.state.post.id} />
-            <ToggleEdit 
-              parentCallbackView={this.callbackViewMode}
-              parentCallbackSave={this.callbackSave} 
-              post_id={this.state.post.id} 
-              can_edit={this.state.post.can_edit} 
-              post_edited={this.state.post.edited}/>
           </div>
         </div>
       );
@@ -261,17 +337,17 @@ class Post extends React.Component {
     this.state = {
       post: this.props.post,
       view_mode: "view"
-    };  
+    }; 
   }
 
   render() {
     return (
       <div className="Post" key={this.state.post.id} id={this.state.post.id}>               
-        <div className="row justify-content-center">
-          <div className="PostInfo col-lg-6 border rounded-lg shadow-sm bg-white">
-            <PostView post={this.state.post} view_mode={this.state.view_mode} />    
-          </div>
-        </div>
+        
+  
+        <PostView post={this.state.post} view_mode={this.state.view_mode} />    
+          
+        
       </div>
     );
   }
@@ -286,7 +362,7 @@ class Feed extends React.Component {
           isLoaded: false,
           feed: this.props.feed, 
           posts: []
-      };
+      };    
   }
 
   componentDidMount() {
@@ -328,6 +404,7 @@ class Feed extends React.Component {
                   {this.state.feed}
               </div>
           </div>
+          <AddPostForm />
           {posts.map(post => (
               <Post key={post.id} post={post}/> 
           ))}
@@ -337,4 +414,4 @@ class Feed extends React.Component {
   }     
 }
 
-ReactDOM.render(<Feed  feed="all posts"/>, document.getElementById("feed-posts"));
+ReactDOM.render(<Feed  feed="all posts"/>, document.getElementById("feed-view"));

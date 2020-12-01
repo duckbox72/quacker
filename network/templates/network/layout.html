@@ -9,82 +9,79 @@
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
         <link href="{% static 'network/styles.css' %}" rel="stylesheet">
         
-        <!-- INCLUDES JAVASCRIPT PACKAGES REACT, REACTDOM, BABEL-->
+        <!-- INCLUDES JAVASCRIPT PACKAGES REACT, REACTDOM, BABEL
         <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
         <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
         <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+        -->
         
+        <script src="{% static 'network/index.js' %}" type="text/babel"></script>
         {% block script %}
         {% endblock %}
     </head>
     <body class="bg-white ">
-        <div class="container sticky-top">
+        
+        <div id="navbar" class="container sticky-top">
+            
             <div class="row">
+
                 <div class="col">
                 </div>
+           
                 <div class="col-lg-6 border rounded-lg shadow-sm bg-white">
-                    <nav class="navbar navbar-expand navbar-light">
-                        
+                    <nav class="navbar navbar-expand navbar-light">    
                         <a class="navbar-brand" href="#"><img src="{% static 'network/quacker-logo.png' %}" alt="ImgLogo" height="50px"></a>
-
-                        
-
-                            <div class="mr-auto">
-                                <ul class="navbar-nav pt-2">
-                                    {% if user.is_authenticated %}
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="{% url 'index' %}"><i class="fas fa-home"></i></a>
-                                        </li>
-                                    
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="#"><i class="fas fa-user"></i></a>
-                                        </li>
-
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="#"><i class="fas fa-user-friends"></i></a>
-                                        </li>
-                                        
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i></a>
-                                        </li>
-                                    {% else %}
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="{% url 'login' %}"><i class="fas fa-user"></i></a>
-                                        </li>
-                                        
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="{% url 'register' %}"><i class="fas fa-user-plus"></i></a>
-                                        </li>
-                                    {% endif %}
-                                </ul>
-                                
-                            </div>
-                            <div class="navbar-brand my-text pt-2">
+                        <div class="mr-auto">
+                            <ul class="navbar-nav pt-2">
                                 {% if user.is_authenticated %}
-                                    <a class="nav-link" href="#"><strong class="my-text my-text-hover small font-weight-bolder">@{{ user.username }}</strong></a>
+                                    <li class="nav-item">
+                                        <a id="home" class="nav-link" href="{% url 'index' %}"><i class="fas fa-home"></i></a>
+                                    </li>
+                                    
+                                
+                                    <li class="nav-item">
+                                        <a id="user-profile" class="nav-link" href="#"><i class="fas fa-user"></i></a>
+                                    </li>
+
+                                    <li class="nav-item">
+                                        <a id="user-friends" class="nav-link" href="#"><i class="fas fa-user-friends"></i></a>
+                                    </li>
+                                    
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i></a>
+                                    </li>
+                                {% else %}
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{% url 'login' %}"><i class="fas fa-user"></i></a>
+                                    </li>
+                                    
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{% url 'register' %}"><i class="fas fa-user-plus"></i></a>
+                                    </li>
                                 {% endif %}
-                            </div>
-                            
+                            </ul>             
+                        </div>
+                        <div class="navbar-brand my-text pt-2">
+                            {% if user.is_authenticated %}
+                                <a class="nav-link" href="#"><strong class="my-text my-text-hover small font-weight-bolder">@{{ user.username }}</strong></a>
+                            {% endif %}
+                        </div>      
                     </nav>
                 </div>
+
                 <div class="col">
                 </div>
+
             </div>
+            
         </div>
-
-
+    
         <div class="body">
             <div class="container">
                 {% block body %}
                 {% endblock %}
             </div>
         </div>
-        
-        <!-- SCRIPTS -->
-        
-        <script src="{% static 'network/Feed.js' %}" type="text/babel"></script> 
-        <!-- <script src="{% static 'network/add_post.js' %}"></script>
-        -->
         
     </body>
 </html>  

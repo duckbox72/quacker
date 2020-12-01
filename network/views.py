@@ -78,8 +78,7 @@ def feed(request, feed):
     
     # Check if each post is liked or not by active user
     complete_posts = [post.serialize() for post in posts]
-    for post in complete_posts:  
-        print(f' POST ID {post["id"]}, USER ID {user.username}')    
+    for post in complete_posts:      
         try:
             is_liked = Like.objects.get(user=user.id, post=post["id"])
             post["is_liked"] = True
@@ -102,8 +101,10 @@ def feed(request, feed):
     
     # Return feed of posts in reverse chronologial order    
     #return JsonResponse([post.serialize() for post in posts], safe=False)
+    return JsonResponse([post for post in complete_posts], safe=False)
+
     #return JsonResponse({"feed": feed, "posts": [post.serialize() for post in posts]})
-    return JsonResponse({"feed": feed, "posts": complete_posts})
+    #return JsonResponse({"feed": feed, "posts": complete_posts})
 
 # API route like/<post.id>
 @csrf_exempt

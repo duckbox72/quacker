@@ -29,7 +29,13 @@ class AddPostForm extends React.Component {
         }
         if (result.message) {
             console.log(result.message);
-        } 
+        }
+        
+        this.setState({
+          form_text_value: "",
+        });
+
+        this.props.parentCallbackSubmitted(true);
     }) 
   }
 
@@ -186,10 +192,11 @@ class ToggleEdit extends React.Component {
         
         <div className="col m-2">
           <i onClick={this.handleToggleEdit}  className={this.state.toggle_edit ? "fas fa-edit text-dark" : "far fa-edit text-dark" } style={{fontSize: "14px"}}></i>
-          <span style={{fontSize: "12px", marginLeft: "8px"}}>{this.state.toggle_edit ? "save" : "" }</span>
-          <i onClick={this.handleSave}  className={this.state.toggle_edit ? "fas fa-check text-success" : "" } style={{fontSize: "15px", marginLeft: "4px"}}></i>
-          <span style={{fontSize: "12px", marginLeft: "8px"}}>{this.state.toggle_edit ? "cancel" : "" }</span>
-          <i onClick={this.handleCancel}  className={this.state.toggle_edit ? "fas fa-times text-danger" : "" } style={{fontSize: "15px", marginLeft: "4px"}}></i>
+          
+          <i onClick={this.handleSave}  className={this.state.toggle_edit ? "far fa-check-circle text-secondary" : "" } style={{fontSize: "14px", marginLeft: "12px"}}><span style={{fontSize: "10px", marginLeft: "4px"}}>{this.state.toggle_edit ? "update" : "" }</span></i>
+          
+          <i onClick={this.handleCancel}  className={this.state.toggle_edit ? "far fa-times-circle text-secondary" : "" } style={{fontSize: "14px", marginLeft: "8px"}}><span style={{fontSize: "10px", marginLeft: "4px"}}>{this.state.toggle_edit ? "cancel" : "" }</span></i>
+          
         </div>
         
       );
@@ -361,8 +368,11 @@ class Feed extends React.Component {
           error: null,
           isLoaded: false,
           feed: this.props.feed, 
-          posts: []
+          posts: [],
+
+          form_submitted: false,
       };    
+      this.callbackSubmitted = this.callbackSubmitted.bind(this)
   }
 
   componentDidMount() {
@@ -375,7 +385,8 @@ class Feed extends React.Component {
             isLoaded: true,
             feed: result.feed,
             posts: result.posts,
-            edit_callback: "",        
+            edit_callback: "", 
+
           });
         },
         // Note: it's important to handle errors here
@@ -390,6 +401,14 @@ class Feed extends React.Component {
       )
   }
   
+  callbackSubmitted = (value) => {
+    console.log(`REMOTE SUBMIT TRIGGERED FROM CHILDREN`);
+    this.setState({
+      form_submitted: value,
+    });
+    this.componentDidMount()
+  }
+
   render() {
     const { error, isLoaded, posts } = this.state;
     if (error) {
@@ -399,12 +418,13 @@ class Feed extends React.Component {
     } else {
       return (
         <div>
-          <div className="row justify-content-center mt-2">
+          <div id="feed-name" className="row justify-content-center mt-2">
               <div className="col-lg-6 my-text text-right bg-white font-weight-bolder">
                   {this.state.feed}
               </div>
           </div>
-          <AddPostForm />
+          
+          <AddPostForm parentCallbackSubmitted={this.callbackSubmitted}/>     
           {posts.map(post => (
               <Post key={post.id} post={post}/> 
           ))}
@@ -414,4 +434,5 @@ class Feed extends React.Component {
   }     
 }
 
-ReactDOM.render(<Feed  feed="all posts"/>, document.getElementById("feed-view"));
+ReactDOM.render(<Feed feed="all posts"/>, document.getElementById("feed-view"));
+

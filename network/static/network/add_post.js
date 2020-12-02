@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log(result.message);
             } 
         })
-        return false;
+        
     })
+    //return false;
 });

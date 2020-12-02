@@ -61,7 +61,8 @@ def edit(request, post_id):
 
     post.save()
 
-    return JsonResponse(post.serialize(), status=200) ## TO DO HERE --
+    print(f"POST SENT {post}")
+    return JsonResponse(post.serialize(), safe=False, status=200) ## TO DO HERE --
 
 # API route feed/<feed> 
 @login_required

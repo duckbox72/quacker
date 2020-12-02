@@ -1,6 +1,12 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Use buttons to toggle between views
+    document.querySelector('#index').addEventListener('click', () => load_Feed('all posts'));
+    document.querySelector('#following').addEventListener('click', () => load_Feed('following'));
+    document.querySelector('#profile').addEventListener('click', () => load_mailbox('profile'));
+
+
     // By default, load  all posts feed
-  loadFeed('all posts');
+    loadFeed('all posts');
 })
 
 function loadFeed(feed) {
@@ -135,7 +141,7 @@ function loadFeed(feed) {
                     document.querySelector(`#num-likes${post.id}`).innerHTML = after; 
                 } else {
                     // FROM LIKE to UNLIKE 
-                    document.querySelector(`#toggle_like${post.id}`).className = "far fa-heart text-dark";
+                    document.querySelector(`#toggle-like${post.id}`).className = "far fa-heart text-dark";
                      
                     before = document.querySelector(`#num-likes${post.id}`).innerHTML;
                     after = parseInt(before) - 1 

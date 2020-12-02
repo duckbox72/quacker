@@ -35,16 +35,14 @@
                             <ul class="navbar-nav pt-2">
                                 {% if user.is_authenticated %}
                                     <li class="nav-item">
-                                        <a id="home" class="nav-link" href="{% url 'index' %}"><i class="fas fa-home"></i></a>
+                                        <a id="index" class="nav-link" href="{% url 'index' %}"><i class="fas fa-home"></i></a>
                                     </li>
-                                    
-                                
                                     <li class="nav-item">
-                                        <a id="user-profile" class="nav-link" href="#"><i class="fas fa-user"></i></a>
+                                        <a id="profile" class="nav-link" ><i class="fas fa-user"></i></a>
                                     </li>
 
                                     <li class="nav-item">
-                                        <a id="user-friends" class="nav-link" href="#"><i class="fas fa-user-friends"></i></a>
+                                        <a id="following" class="nav-link" ><i class="fas fa-user-friends"></i></a>
                                     </li>
                                     
                                     <li class="nav-item">

@@ -1,35 +1,11 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // Use buttons to toggle between views
-    document.querySelector('#index').addEventListener('click', () => loadFeed('all posts'));
-    document.querySelector('#following').addEventListener('click', () => loadFeed('following'));
-    document.querySelector('#profile').addEventListener('click', () => loadProfile(
-        // OBS: USER ID passed trough tag name
-        document.querySelector("#username").name
-    ));
-    
-    // By default, load  all posts feed
-    loadFeed('all posts');
-})
-
-
-function loadFeed(feed) {
+function loadProfile(user_id) {
     // TOGGLE VIEW
-    document.querySelector('#feed-view').style.display = 'block';
-    document.querySelector('#profile-view').style.display = 'none';
-
-    // CLEAR out form text field
-    document.querySelector('#post-form-text').value = '';
-
-    // DISPLAY the feed name
-    document.querySelector('#feed-name').innerHTML = 
-                            `<div class="row justify-content-center mt-2">
-                                <div class="col-lg-6 my-text">
-                                    ${feed.charAt(0).toUpperCase() + feed.slice(1)}
-                                </div>
-                            </div>`;
-
-    // Fetch feed for posts from API ROUTE
-    fetch(`feed/${feed}`)
+    document.querySelector('#profile-view').style.display = 'block';
+    document.querySelector('#feed-view').style.display = 'none';
+    
+    console.log(user_id);
+    feed = user_id
+    fetch(`feed/${feed}`) // STRING TYPE
     .then(response => response.json())
     .then(posts => {
         console.log(posts)
@@ -43,11 +19,6 @@ function loadFeed(feed) {
             </div>`;
         };
 
-        // CLEAR out old FEED before render new FEED
-        document.querySelector("#feed-view-following").innerHTML = "";
-        document.querySelector("#feed-view-all").innerHTML = "";
-        
-        // If there are posts iteract though them 
         posts.forEach(post => {
 
             function getToggleLikeClass(is_liked) {
@@ -100,15 +71,10 @@ function loadFeed(feed) {
 
                 </div>   
             </div>`;
-            
-            
-            // RENDER a DIV element for each post ------------------------------ RENDER DIV
-            if (feed === "all posts") {
-                document.querySelector("#feed-view-all").append(element);
-            } else {
-                document.querySelector("#feed-view-following").append(element);
-            }
 
+            // RENDER a DIV element for each post ------------------------------ RENDER DIV
+            document.querySelector("#profile-view-feed").append(element);
+           
             // Add EVENT HANDLER to LIKE BUTTON CLICK
             document.querySelector(`#toggle-like${post.id}`).addEventListener('click', function() {
                   
@@ -289,8 +255,9 @@ function loadFeed(feed) {
                 
             });
 
-
         });
-    })
 
+    });
+    
+ 
 }

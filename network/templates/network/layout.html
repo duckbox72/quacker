@@ -30,12 +30,12 @@
            
                 <div class="col-lg-6 border rounded-lg shadow-sm bg-white">
                     <nav class="navbar navbar-expand navbar-light">    
-                        <a class="navbar-brand" href="#"><img src="{% static 'network/quacker-logo.png' %}" alt="ImgLogo" height="50px"></a>
+                        <a class="navbar-brand" href="#"><img src="{% static 'network/quacker-logo.png' %}" alt="ImgLogo" height="42px"></a>
                         <div class="mr-auto">
                             <ul class="navbar-nav pt-2">
                                 {% if user.is_authenticated %}
                                     <li class="nav-item">
-                                        <a id="index" class="nav-link" href="{% url 'index' %}"><i class="fas fa-home"></i></a>
+                                        <a id="index" class="nav-link" ><i class="fas fa-home"></i></a>
                                     </li>
                                     <li class="nav-item">
                                         <a id="profile" class="nav-link" ><i class="fas fa-user"></i></a>
@@ -61,7 +61,7 @@
                         </div>
                         <div class="navbar-brand my-text pt-2">
                             {% if user.is_authenticated %}
-                                <a class="nav-link" href="#"><strong class="my-text my-text-hover small font-weight-bolder">@{{ user.username }}</strong></a>
+                                <a id="username" name="{{ user.id }}" class="nav-link" href="#"><span class="my-text my-text-hover" style="font-size: 14px;">@{{ user.username }}</span></a>
                             {% endif %}
                         </div>      
                     </nav>

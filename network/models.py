@@ -29,7 +29,7 @@ class Like(models.Model):
         }
 
 class Post(models.Model):
-    user = models.ForeignKey("User", on_delete=models.CASCADE, related_name="posted")
+    user = models.ForeignKey("User", on_delete=models.CASCADE, related_name="poster")
     text = models.CharField(max_length=256)
     created = models.DateTimeField(auto_now_add=True)
     edited = models.IntegerField(default=0)

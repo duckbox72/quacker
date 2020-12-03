@@ -8,7 +8,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 
-from .models import Like, Post, User
+from .models import Follow, Like, Post, User
 
 def index(request):
     # Authenticated users view index page (home) 
@@ -44,12 +44,27 @@ def add_post(request):
     return JsonResponse({"message": "Posted successfully."}, status=201)
 
 
+# API route delete/<post_id> 
+@csrf_exempt
+@login_required
+def erase(request, post_id):
+    # Editing or erasing a post must be via POST request
+    if request.method != "POST":
+        return JsonResponse({"error": "POST request required."}, status=400)
+    
+    post = Post.objects.get(pk=post_id)
+    data = json.loads(request.body)
+    
+    post.delete()
+
+    return JsonResponse({"sucess": "post deleted."}, safe=False, status=200)
+
 
 # API route edit/<post_id> 
 @csrf_exempt
 @login_required
 def edit(request, post_id):
-    # Adding a new post must be via POST
+    # Editing or erasing a post must be via POST request
     if request.method != "POST":
         return JsonResponse({"error": "POST request required."}, status=400)
     
@@ -62,23 +77,44 @@ def edit(request, post_id):
     post.save()
 
     print(f"POST SENT {post}")
-    return JsonResponse(post.serialize(), safe=False, status=200) ## TO DO HERE --
+    return JsonResponse(post.serialize(), safe=False, status=200) 
+
+
 
 # API route feed/<feed> 
 @login_required
 def feed(request, feed):
     user = request.user
 
-    # Filter posts returned on feed
+    # SELECT FEED (feed) POSTS 
     if feed == "all posts":
-        posts = Post.objects.all().order_by("-created")
+        posts = Post.objects.all().order_by("-created")  
+        complete_posts = [post.serialize() for post in posts]
+    
     elif feed == "following":
-        posts = Post.objects.all().order_by("-created")
+        # OBTAIN list of FOLLOWED users
+        following = Follow.objects.filter(follower=user)  
+        
+        complete_posts = [] 
+        for follow in following:
+            posts = Post.objects.filter(user=follow.followed).order_by('-created')
+            user_posts = [post.serialize() for post in posts]
+
+            for post in user_posts:
+                complete_posts.append(post)
+
+        complete_posts = sorted(complete_posts, key = lambda i: i['created'])
+
+    elif feed.isnumeric() == True:
+        user = User.objects.get(pk=int(feed))
+        posts = Post.objects.filter(user=user).order_by('-created')
+        complete_posts = [post.serialize() for post in posts]
+
     else:
-        return JsonResponse({"error": "Invalid feed."}, status=400)
+        return JsonResponse({"error": "Invalid feed."}, safe=False, status=400)
     
     # Check if each post is liked or not by active user
-    complete_posts = [post.serialize() for post in posts]
+    
     for post in complete_posts:      
         try:
             is_liked = Like.objects.get(user=user.id, post=post["id"])
@@ -103,7 +139,6 @@ def feed(request, feed):
     # Return feed of posts in reverse chronologial order    
     #return JsonResponse([post.serialize() for post in posts], safe=False)
     return JsonResponse([post for post in complete_posts], safe=False)
-
     #return JsonResponse({"feed": feed, "posts": [post.serialize() for post in posts]})
     #return JsonResponse({"feed": feed, "posts": complete_posts})
 

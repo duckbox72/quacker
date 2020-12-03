@@ -1,17 +1,49 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Use buttons to toggle between views
-    document.querySelector('#index').addEventListener('click', () => load_Feed('all posts'));
-    document.querySelector('#following').addEventListener('click', () => load_Feed('following'));
-    document.querySelector('#profile').addEventListener('click', () => load_mailbox('profile'));
-
-
+    document.querySelector('#index').addEventListener('click', () => loadFeed('all posts'));
+    document.querySelector('#following').addEventListener('click', () => loadFeed('following'));
+    document.querySelector('#profile').addEventListener('click', () => loadProfile(
+        // OBS: USER ID passed trough tag name
+        document.querySelector("#username").name
+    ));
+    
     // By default, load  all posts feed
     loadFeed('all posts');
 })
 
+
+function loadProfile(user_id) {
+    // TOGGLE VIEW
+    document.querySelector('#profile-view').style.display = 'block';
+    document.querySelector('#feed-view').style.display = 'none';
+    
+    console.log(user_id);
+    
+    fetch(`feed/${user_id}`)
+    .then(response => response.json())
+    .then(posts => {
+        console.log(posts)
+        // Display custom message case FEED has NO POSTS
+        if (posts.length == 0) {
+            document.querySelector("#feed-view"). innerHTML +=
+            `<div class="row my-text mt-3 justify-content-center"
+                <div class="col-6  text-center">
+                    This feed has no posts yet.
+                </div>
+            </div>`;
+        };
+
+    });
+    
+ 
+}
+
+
+
 function loadFeed(feed) {
-    // SHOW the feed view and HIDE other views
+    // TOGGLE VIEW
     document.querySelector('#feed-view').style.display = 'block';
+    document.querySelector('#profile-view').style.display = 'none';
 
     // CLEAR out form text field
     document.querySelector('#post-form-text').value = '';
@@ -38,6 +70,10 @@ function loadFeed(feed) {
                 </div>
             </div>`;
         };
+
+        // CLEAR out old FEED before render new FEED
+        document.querySelector("#feed-view-following").innerHTML = "";
+        document.querySelector("#feed-view-all").innerHTML = "";
         
         // If there are posts iteract though them 
         posts.forEach(post => {
@@ -61,7 +97,7 @@ function loadFeed(feed) {
                         @${post.username}
                     </div>
                     <div class="col small my-text text-right font-weight-lighter pt-1">
-                        ${post.created}
+                        ${post.created.toLowerCase()}
                     </div>
                 </div>
                 <div id="toggle-view${post.id}" class="row">
@@ -70,27 +106,36 @@ function loadFeed(feed) {
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-2 m-2">
+                    <div class="col-2 ml-2 mt-2 mb-2">
                         <i id="toggle-like${post.id}" class="${getToggleLikeClass(post.is_liked)}" style="font-size: 14px;"></i><span id="num-likes${post.id}" class="ml-1" style="font-size: 14px;">${post.num_likes}</span>
                     </div>
                     
-                    <div class="col-2 m-2">
+                    <div class="col-2 ml-2 mt-2 mb-2">
                         <i id="toggle-edit${post.id}" class="${getToggleEditClass(post.can_edit)}" style="font-size: 14px;"></i>      
                     </div>
 
-                    <div class="col-2 m-2">
-                        <i id="update${post.id}" class="" style="font-size: 14px; margin-left: 12px"><span id="update-span${post.id}" style="font-size: 10px; margin-left: 4px"></span></i>     
+                    <div class="col-2 ml-2 mt-2 mb-2">
+                        <i id="update${post.id}" class="" style="font-size: 14px; margin-left: 12px"><span id="update-span${post.id}" style="font-family: sans-serif; font-size: 10px; margin-left: 4px"></span></i>     
                     </div>
 
-                    <div class="col-2 m-2">
-                        <i id="cancel${post.id}" class="" style="font-size: 14px; margin-left: 12px"><span id="cancel-span${post.id}" style="font-size: 10px; margin-left: 4px"></span></i>     
+                    <div class="col-2 mt-2 mb-2">
+                        <i id="cancel${post.id}" class="" style="font-size: 14px; margin-left: 12px"><span id="cancel-span${post.id}" style="font-family: sans-serif; font-size: 10px; margin-left: 4px"></span></i>     
+                    </div>
+
+                    <div class="col-2 mt-2 mb-2">
+                        <a href="./"><i id="delete${post.id}" class="" style="font-size: 14px; margin-left: 12px"><span id="delete-span${post.id}" style="font-family: sans-serif; font-size: 10px; margin-left: 4px"></span></i></a>     
                     </div>
 
                 </div>   
             </div>`;
             
-            // RENDER a DIV element for each post
-            document.querySelector("#feed-view").append(element);
+            
+            // RENDER a DIV element for each post ------------------------------ RENDER DIV
+            if (feed === "all posts") {
+                document.querySelector("#feed-view-all").append(element);
+            } else {
+                document.querySelector("#feed-view-following").append(element);
+            }
 
             // Add EVENT HANDLER to LIKE BUTTON CLICK
             document.querySelector(`#toggle-like${post.id}`).addEventListener('click', function() {
@@ -165,6 +210,9 @@ function loadFeed(feed) {
                     document.querySelector(`#cancel${post.id}`).className = "far fa-times-circle text-dark";
                     document.querySelector(`#cancel-span${post.id}`).innerHTML = "cancel";
 
+                    document.querySelector(`#delete${post.id}`).className = "far fa-trash-alt text-dark";
+                    document.querySelector(`#delete-span${post.id}`).innerHTML = "delete";
+
                     document.querySelector(`#toggle-view${post.id}`).innerHTML = 
                         `<div class="col mt-1">
                             <textarea 
@@ -187,6 +235,9 @@ function loadFeed(feed) {
                     
                     document.querySelector(`#cancel${post.id}`).className = ""; 
                     document.querySelector(`#cancel-span${post.id}`).innerHTML = "";
+
+                    document.querySelector(`#delete${post.id}`).className = "";
+                    document.querySelector(`#delete-span${post.id}`).innerHTML = "";
 
                     document.querySelector(`#toggle-view${post.id}`).innerHTML = 
                         `<div class="col small font-weight-lighter ml-3 mr-3 pt-1 pb-1" style="min-height: 60px;">
@@ -220,6 +271,9 @@ function loadFeed(feed) {
                     document.querySelector(`#cancel${post.id}`).className = ""; 
                     document.querySelector(`#cancel-span${post.id}`).innerHTML = "";
 
+                    document.querySelector(`#delete${post.id}`).className = "";
+                    document.querySelector(`#delete-span${post.id}`).innerHTML = "";
+
                     document.querySelector(`#toggle-view${post.id}`).innerHTML = 
                         `<div class="col small font-weight-lighter ml-3 mr-3 pt-1 pb-1" style="min-height: 60px;">
                             ${new_post.text}
@@ -227,7 +281,6 @@ function loadFeed(feed) {
                     post.text = new_post.text;
                 }); 
             });
-
 
             // HANDLE CANCEL BUTTON CLICK
             document.querySelector(`#cancel${post.id}`).addEventListener('click', function() {
@@ -241,11 +294,30 @@ function loadFeed(feed) {
                 document.querySelector(`#cancel${post.id}`).className = ""; 
                 document.querySelector(`#cancel-span${post.id}`).innerHTML = "";
 
+                document.querySelector(`#delete${post.id}`).className = "";
+                document.querySelector(`#delete-span${post.id}`).innerHTML = "";
+
                 document.querySelector(`#toggle-view${post.id}`).innerHTML = 
                     `<div class="col small font-weight-lighter ml-3 mr-3 pt-1 pb-1" style="min-height: 60px;">
                         ${post.text}
                     </div>`;
             });
+
+            // HANDLE DELETE BUTTON CLICK ---> FETCH ERASE/POST
+            document.querySelector(`#delete${post.id}`).addEventListener('click', function() {
+                console.log('DELETE CLICKED')
+    
+                fetch(`erase/${post.id}`, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                    erase: true,
+                    })
+                })
+                .then(response => response.json())
+                
+            });
+
+
         });
     })
 

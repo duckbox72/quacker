@@ -34,7 +34,6 @@ def add_post(request):
     print(user)
     print(data.get("text", ""))
 
-  
     post = Post(
         user=user,
         text=data.get("text", "")
@@ -78,7 +77,6 @@ def edit(request, post_id):
 
     print(f"POST SENT {post}")
     return JsonResponse(post.serialize(), safe=False, status=200) 
-
 
 
 # API route feed/<feed> 
@@ -181,7 +179,7 @@ def like(request, post_id):
             like.save()
             return JsonResponse(like.serialize(), safe=False)
     
-@csrf_exempt
+
 @login_required
 def num_likes(request, post_id):
      
@@ -192,6 +190,28 @@ def num_likes(request, post_id):
     return JsonResponse({"likes": num_likes})
 
 
+
+@login_required
+def profile(request, user_id):
+    user = request.user
+    profile = User.objects.get(pk=user_id)
+    
+    if profile == user:
+        can_follow = False
+    else:
+        can_follow = True 
+    
+    username = profile.username
+    num_followers = len(Follow.objects.filter(followed=profile))
+    num_following = len(Follow.objects.filter(follower=profile)) 
+
+    complete_profile = {"username": username, "num_followers": num_followers, "num_following": num_following, "can_follow": can_follow}
+
+    return JsonResponse(complete_profile)
+
+
+
+# REGISTER LOGIN LOGOUT ---------------- ROUTES --------------------
 def login_view(request):
     if request.method == "POST":
 

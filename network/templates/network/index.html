@@ -1,7 +1,7 @@
 {% extends "network/layout.html" %}
-
+{% load static %}
 {% block title %}
-    QUACKer
+    quacKer
 {% endblock %}
 
 {% block body %}
@@ -18,11 +18,13 @@
         <div class="col-lg-6 border rounded-lg shadow-sm bg-white">
             <form id="post-form">
                 <div class="row">
-                    <div class="col pt-1 ml-2">
-                        <span class="small my-text font-weight-bolder">new quacK </span><i id="fa-rss" class="fas fa-rss"></i> 
+                    <div class="col pt-1">
+                        <img src="{% static 'network/face_stamp.jpg' %}" class="ml-1" alt="..." 
+                        style="height: 20px; width: 20px; object-fit: cover; border-radius: 10px;"> 
+                        <span class="small my-text font-weight-bolder ml-1">new quacK </span><i id="fa-rss" class="fas fa-rss"></i> 
                     </div>
                     <div class="col small my-text text-right pt-1 mr-2">
-                        <div id="clock">clock to do</div> 
+                        
                     </div>
                 </div>
                 <div class="row mt-1">
@@ -46,15 +48,62 @@
 </div>
 <!------- END FEEDS VIEW  ------->
 <div id="profile-view">
+    <div class="row justify-content-center mb-2"> 
+        <div class="col-lg-6 bg-white">
+            <div id="profile-view-feed-name"></div>
+        </div>
+    </div>
+
+    <!-------  PROFILE CARD  ------->
+    <div id="profile" class="row justify-content-center mb-2"> 
+        <div class="col-lg-6 border rounded-lg shadow-sm bg-white">
+            <div class="row">
+                <div class="col pl-3 text-left">
+                    <img src="{% static 'network/face_stamp.jpg' %}" class="shadow-sm mt-2" alt="..." 
+                        style="height: 43px; width: 43px; object-fit: cover; border-radius: 21px;">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col my-text text-left pt-2">
+                    <h6 id="profile-username"></h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col small ml-2 mt-3">
+                    following <span id="profile-following"></span>
+                </div>
+                <div class="col small mt-3">
+                    followers <span id="profile-followers"></span>
+                </div>
+                <div class="col">
+                    
+                </div>
+                <div class="col">
+                    
+                </div>
+                <div class="col small text-right">
+                    <button id="toggle-follow" class="btn btn-sm my-btn rounded-pill shadow-sm pl-3 pr-3 m-2" type="submit">Follow</button>
+                </div>
+            
+            </div>
+
+        </div>   
+    </div>
+                
+            
+
+
+    
     <div id="profile-view-feed"></div>
 </div>
    
 {% endblock %}
 
 {% block script %}
-    {% load static %}
+   
     <script src="{% static 'network/index.js' %}"></script>
     <script src="{% static 'network/add_post.js' %}"></script> 
+    <script src="{% static 'network/generate_post.js' %}"></script>
     <script src="{% static 'network/profile.js' %}"></script> 
     
 {% endblock %}

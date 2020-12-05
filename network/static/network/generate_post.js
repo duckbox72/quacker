@@ -17,9 +17,9 @@ function generatePost(post, feed) {
         <div class="row">
             <div class="col p-1 ml-3 small my-text font-weight-bolder">     
                 
-                <img src="/static/network/face_stamp.jpg" alt="..." 
+                <img src="/static/network/no-user.png" alt="..." 
                     style="height: 20px; width: 20px; object-fit: cover; border-radius: 10px;">
-                <span class="pt-1 pl-1">
+                <span class="pl-1">
                 @${post.username} 
                 </span>
                 
@@ -29,7 +29,7 @@ function generatePost(post, feed) {
             </div>
         </div>
         <div id="toggle-view${post.id}" class="row">
-            <div class="col small font-weight-lighter ml-3 mr-3 pt-1 pb-1" style="min-height: 60px;">
+            <div class="col small font-weight-lighter ml-3 mr-3 mt-2 pb-1" style="min-height: 60px;">
                 ${post.text}
             </div>
         </div>
@@ -43,15 +43,15 @@ function generatePost(post, feed) {
             </div>
 
             <div class="col-2 ml-2 mt-2 mb-2">
-                <i id="update${post.id}" class="" style="font-size: 14px; margin-left: 12px"><span id="update-span${post.id}" style="font-family: sans-serif; font-size: 10px; margin-left: 4px"></span></i>     
+                <i id="update${post.id}" class="" style="font-size: 14px; margin-left: 12px"><span id="update-span${post.id}" style="font-family: sans-serif; font-size: 12px; margin-left: 4px"></span></i>     
             </div>
 
             <div class="col-2 mt-2 mb-2">
-                <i id="cancel${post.id}" class="" style="font-size: 14px; margin-left: 12px"><span id="cancel-span${post.id}" style="font-family: sans-serif; font-size: 10px; margin-left: 4px"></span></i>     
+                <i id="cancel${post.id}" class="" style="font-size: 14px; margin-left: 12px"><span id="cancel-span${post.id}" style="font-family: sans-serif; font-size: 12px; margin-left: 4px"></span></i>     
             </div>
 
             <div class="col-2 mt-2 mb-2">
-                <a href="./"><i id="delete${post.id}" class="" style="font-size: 14px; margin-left: 12px"><span id="delete-span${post.id}" style="font-family: sans-serif; font-size: 10px; margin-left: 4px"></span></i></a>     
+                <a href="./"><i id="delete${post.id}" class="" style="font-size: 14px; margin-left: 12px"><span id="delete-span${post.id}" style="font-family: sans-serif; font-size: 12px; margin-left: 4px"></span></i></a>     
             </div>
 
         </div>   

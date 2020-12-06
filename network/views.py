@@ -151,6 +151,20 @@ def feed(request, feed):
     #return JsonResponse({"feed": feed, "posts": [post.serialize() for post in posts]})
     #return JsonResponse({"feed": feed, "posts": complete_posts})
 
+
+
+# API route follow/<user_id> 
+@csrf_exempt
+@login_required
+def follow(request, user_id):
+    user = request.user
+    
+    # VERIFY AND RETURN can_follow status
+    if user.id == user_id:
+        return JsonResponse({"can_follow": False})
+    else:
+        return JsonResponse({"can_follow": True})
+
 # API route like/<post.id>
 @csrf_exempt
 @login_required

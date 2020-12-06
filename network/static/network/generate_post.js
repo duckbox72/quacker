@@ -13,7 +13,7 @@ function generatePost(post, feed) {
     element.className = `row justify-content-center`;
     element.id = `post${post.id}`;
     element.innerHTML = 
-    `<div class="col-lg-6 border rounded-lg shadow-sm bg-white">
+    `<div class="col-lg-6 border shadow-sm bg-white">
         <div class="row">
             <div class="col p-1 ml-3 small my-text font-weight-bolder">     
                 

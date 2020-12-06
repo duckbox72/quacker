@@ -12,9 +12,9 @@
     <div class="row justify-content-center mb-2"> 
         <div class="col-lg-6 bg-white">
             <div class="row justify-content-center mt-2">
-                <div id="username-info" class="col my-text">   
+                <div id="username-info" class="col my-text font-weight-bolder">   
                     {% if user.is_authenticated %}
-                        {{ user.username }}
+                        @{{ user.username }}
                     {% endif %}
                 </div>
                 
@@ -27,25 +27,23 @@
     
     <!-------  New post form  ------->
     <div class="row justify-content-center mb-2"> 
-        <div class="col-lg-6 border rounded-lg shadow-sm bg-white">
+        <div class="col-lg-6 border shadow-sm bg-white">
             <form id="post-form">
                 <div class="row">
-                    <div class="col pt-1">
+                    <div class="col">
                         <img id="post-form-photo" src="{% static 'network/no-user.png' %}" class="ml-1" alt="" 
                         style="height: 20px; width: 20px; object-fit: cover; border-radius: 10px;"> 
-                        <span class="small my-text font-weight-bolder ml-1">new quacK </span>
+                        <span class="small my-text font-weight-bolder pt-1 ml-1">new quacK </span>
                         <i id="fa-rss" class="fas fa-rss"></i> 
                     </div>
-                    <div class="col small my-text text-right pt-1 mr-2">
-                        
-                    </div>
+                    
                 </div>
                 <div class="row mt-1">
                     <div class="col">
                         <textarea id="post-form-text" class="form-control border-0" type="text" placeholder="What are you thinking?" required maxlength="256" style="font-size: 14px;"></textarea>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row mt-1">
                     <div class="col text-right">
                         <button id="post-form-submit" class="btn btn-sm my-btn rounded-pill shadow-sm  m-2" type="submit">quacK <i id="fa-rss-white" class="fas fa-rss"></i></button>
                     </div>
@@ -63,11 +61,6 @@
 
 
 
-
-
-
-
-
 <!-------  PROFILE VIEW  ------->
 <div id="profile-view">
     <div class="row justify-content-center mb-2"> 
@@ -82,14 +75,14 @@
 
     <!-------  Profile Card  ------->
     <div id="profile" class="row justify-content-center mb-2"> 
-        <div class="col-lg-6 border rounded-lg shadow-sm bg-white">
+        <div class="col-lg-6 border shadow-sm bg-white">
             <div class="row">
                 <div class="col-2 pl-3 text-left  bg-light">
                     <img id="profile-photo" src="{% static 'network/no-user.png' %}" class="mt-2" alt="..." 
                         style="height: 42px; width: 42px; object-fit: cover; border-radius: 21px;">
                 </div>
-                <div class="col small text-dark bg-light pt-4 pl-4">
-                    <div id="profile-description"></div>
+                <div class="col text-dark bg-light">
+                    <!--<div id="profile-description"></div>-->
                 </div>
             
             </div>
@@ -99,15 +92,15 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col small ml-2 pt-3" style="font-size: 12px;">
+                <div class="col small ml-2 mt-3" style="font-size: 12px;">
                     Following <span id="profile-following" style="font-size: 14px;"></span>
                 </div>
                 <div class="col small pt-3" style="font-size: 12px;">
                     Followers <span id="profile-followers" style="font-size: 14px;"></span>
                 </div>
                 
-                <div class="col small text-right">
-                    <button id="toggle-follow" class="btn btn-sm my-btn rounded-pill shadow-sm pl-3 pr-3 m-2" type="submit">Follow</button>
+                <div class="col small text-right" style="min-height: 48px;">
+                    <button id="toggle-follow" class="btn btn-sm my-btn rounded-pill shadow-sm pl-3 pr-3 m-2">Follow</button>
                 </div>
             
             </div>

@@ -8,8 +8,6 @@ function generatePost(post, feed) {
         return (can_edit  ? "far fa-edit text-dark" : "");
     }
 
-    
-
     // CREATE a DIV for each post
     const element = document.createElement('div');
     element.className = `row justify-content-center`;

@@ -48,6 +48,8 @@
 
 </div>
 <!------- END FEEDS VIEW  ------->
+
+<!-------  PROFILE VIEW  ------->
 <div id="profile-view">
     <div class="row justify-content-center mb-2"> 
         <div class="col-lg-6 bg-white">
@@ -55,29 +57,30 @@
         </div>
     </div>
 
-    <!-------  PROFILE CARD  ------->
+    <!-------  Profile Card  ------->
     <div id="profile" class="row justify-content-center mb-2"> 
         <div class="col-lg-6 border rounded-lg shadow-sm bg-white">
             <div class="row">
-                <div class="col pl-3 text-left  bg-light">
+                <div class="col-2 pl-3 text-left  bg-light">
                     <img id="profile-photo" src="{% static 'network/no-user.png' %}" class="mt-2" alt="..." 
                         style="height: 42px; width: 42px; object-fit: cover; border-radius: 21px;">
                 </div>
+                <div class="col small text-dark bg-light pt-4 pl-4">
+                    <div id="profile-description"></div>
+                </div>
+            
             </div>
             <div class="row">
-                <div class="col my-text text-left pt-2  bg-light">
+                <div class="col my-text text-left pt-2 pl-3  bg-light">
                     <h6 id="profile-username"></h6>
                 </div>
             </div>
             <div class="row">
-                <div class="col small ml-2 mt-3" style="font-size: 14px;">
-                    Following <span id="profile-following"></span>
+                <div class="col small ml-2 pt-3" style="font-size: 12px;">
+                    Following <span id="profile-following" style="font-size: 14px;"></span>
                 </div>
-                <div class="col small mt-3" style="font-size: 14px;">
-                    Followers <span id="profile-followers"></span>
-                </div>
-                <div class="col">
-                    
+                <div class="col small pt-3" style="font-size: 12px;">
+                    Followers <span id="profile-followers" style="font-size: 14px;"></span>
                 </div>
                 
                 <div class="col small text-right">

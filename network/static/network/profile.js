@@ -1,12 +1,3 @@
-function loadProfileXX(user_id) {
-    
-    fetch(`profile/${user_id}`)
-
-
-    feed = user_id;
-    loadProfileFeed(feed)
-}
-
 function loadProfile(user_id) {
 
     // TOGGLE VIEW
@@ -27,6 +18,7 @@ function loadProfile(user_id) {
     .then(profile => {
         console.log(profile.username)
         document.querySelector("#profile-username").innerHTML = profile.username;
+        document.querySelector("#profile-description").innerHTML = profile.description;
         document.querySelector("#profile-following").innerHTML = profile.num_following;
         document.querySelector("#profile-followers").innerHTML = profile.num_followers;
 

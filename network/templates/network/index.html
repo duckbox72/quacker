@@ -8,11 +8,23 @@
 
 <!-------  FEED VIEW  ------->
 <div id="feed-view">
+    <!-------  FEED NAME AND USERNAME  ------->
     <div class="row justify-content-center mb-2"> 
         <div class="col-lg-6 bg-white">
-            <div id="feed-name"></div>
+            <div class="row justify-content-center mt-2">
+                <div id="username-info" class="col my-text">   
+                    {% if user.is_authenticated %}
+                        {{ user.username }}
+                    {% endif %}
+                </div>
+                
+                <div id="feed-name" class="col my-text text-right">   
+
+                </div>
+            </div>
         </div>
     </div>
+    
     <!-------  New post form  ------->
     <div class="row justify-content-center mb-2"> 
         <div class="col-lg-6 border rounded-lg shadow-sm bg-white">
@@ -49,11 +61,22 @@
 </div>
 <!------- END FEEDS VIEW  ------->
 
+
+
+
+
+
+
+
 <!-------  PROFILE VIEW  ------->
 <div id="profile-view">
     <div class="row justify-content-center mb-2"> 
         <div class="col-lg-6 bg-white">
-            <div id="profile-view-feed-name"></div>
+            <div class="row justify-content-center mt-2">
+                <div id="profile-view-feed-name" class="col my-text text-right">
+                   
+                </div>
+            </div>
         </div>
     </div>
 

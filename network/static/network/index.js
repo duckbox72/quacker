@@ -20,12 +20,20 @@ function loadFeed(feed) {
     document.querySelector('#post-form-text').value = '';
 
     // DISPLAY the feed name
-    document.querySelector('#feed-name').innerHTML = 
-                            `<div class="row justify-content-center mt-2">
-                                <div class="col my-text text-right">
-                                    ${feed}
-                                </div>
-                            </div>`;
+    document.querySelector('#feed-name').innerHTML = feed;
+                            
+    // RETRIEVE USER_ID
+    user_id = document.querySelector("#username").name
+    
+    fetch(`profile/${user_id}`)
+    .then(response => response.json())
+    .then(profile => {
+        if (profile.photo_name !== "") {
+            document.querySelector("#post-form-photo").src = `${profile.photo_name}`
+        }
+    });
+
+
 
     // Fetch feed for posts from API ROUTE
     fetch(`feed/${feed}`)
@@ -46,10 +54,9 @@ function loadFeed(feed) {
         document.querySelector("#feed-view-following").innerHTML = "";
         document.querySelector("#feed-view-all").innerHTML = "";
         document.querySelector("#profile-view-feed").innerHTML = "";
-        
+
         // If there are posts iteract though them 
         posts.forEach(post => {
-            
             generatePost(post, feed)
         });
     })

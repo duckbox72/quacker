@@ -5,24 +5,19 @@ function loadProfile(user_id) {
     document.querySelector('#feed-view').style.display = 'none';
     
     // DISPLAY the feed name
-    document.querySelector('#profile-view-feed-name').innerHTML = 
-                            `<div class="row justify-content-center mt-2">
-                                <div class="col my-text text-right">
-                                    my posts
-                                </div>
-                            </div>`;   
+    document.querySelector('#profile-view-feed-name').innerHTML = "my posts";
+                               
                         
     
     fetch(`profile/${user_id}`)
     .then(response => response.json())
     .then(profile => {
-        console.log(profile.username)
+        
         document.querySelector("#profile-username").innerHTML = profile.username;
         document.querySelector("#profile-description").innerHTML = profile.description;
         document.querySelector("#profile-following").innerHTML = profile.num_following;
         document.querySelector("#profile-followers").innerHTML = profile.num_followers;
 
-        console.log(profile.photo_name)
         if (profile.photo_name !== "") {
             (document.querySelector("#profile-photo").src = `${profile.photo_name}`) 
         }

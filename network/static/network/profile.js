@@ -20,15 +20,20 @@ function loadProfile(user_id) {
                                     my posts
                                 </div>
                             </div>`;   
+                        
     
     fetch(`profile/${user_id}`)
     .then(response => response.json())
-    .then(data => {
-        console.log(data.username)
-        document.querySelector("#profile-username").innerHTML = data.username;
-        document.querySelector("#profile-following").innerHTML = data.num_following;
-        document.querySelector("#profile-followers").innerHTML = data.num_followers;
+    .then(profile => {
+        console.log(profile.username)
+        document.querySelector("#profile-username").innerHTML = profile.username;
+        document.querySelector("#profile-following").innerHTML = profile.num_following;
+        document.querySelector("#profile-followers").innerHTML = profile.num_followers;
 
+        console.log(profile.photo_name)
+        if (profile.photo_name !== "") {
+            (document.querySelector("#profile-photo").src = `${profile.photo_name}`) 
+        }
     });
 
 

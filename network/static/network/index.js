@@ -49,6 +49,7 @@ function loadFeed(feed) {
         
         // If there are posts iteract though them 
         posts.forEach(post => {
+            
             generatePost(post, feed)
         });
     })

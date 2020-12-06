@@ -8,7 +8,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 
-from .models import Follow, Like, Post, User
+from .models import Follow, Like, Post, Profile, User
 
 def index(request):
     # Authenticated users view index page (home) 
@@ -78,7 +78,6 @@ def edit(request, post_id):
     print(f"POST SENT {post}")
     return JsonResponse(post.serialize(), safe=False, status=200) 
 
-
 # API route feed/<feed> 
 @login_required
 def feed(request, feed):
@@ -133,6 +132,18 @@ def feed(request, feed):
         except: # CANNOT_EDIT
             post["can_edit"] = False 
 
+    # Check profile photo_name
+    for post in complete_posts:
+        try: 
+            profile = Profile.objects.get(pk=post["user_id"])
+            photo_name = profile.photo.name
+            print(photo_name)
+            post["photo_name"] = photo_name
+
+        except:
+            photo_name = "/static/network/no-user.png"
+            post["photo_name"] = photo_name
+            
     
     # Return feed of posts in reverse chronologial order    
     #return JsonResponse([post.serialize() for post in posts], safe=False)
@@ -194,20 +205,43 @@ def num_likes(request, post_id):
 @login_required
 def profile(request, user_id):
     user = request.user
-    profile = User.objects.get(pk=user_id)
     
-    if profile == user:
+    try:
+        profile = Profile.objects.get(pk=user_id)
+        description = profile.description
+        photo_name = profile.photo.name
+    
+    except:
+        description = ""
+        photo_name = ""
+        pass
+    
+    
+    if user_id == user.id:
         can_follow = False
     else:
         can_follow = True 
     
-    username = profile.username
-    num_followers = len(Follow.objects.filter(followed=profile))
-    num_following = len(Follow.objects.filter(follower=profile)) 
+    username = User.objects.get(pk=user_id).username
+    num_followers = len(Follow.objects.filter(followed=user))
+    num_following = len(Follow.objects.filter(follower=user))
 
-    complete_profile = {"username": username, "num_followers": num_followers, "num_following": num_following, "can_follow": can_follow}
+    complete_profile = {"username": username, 
+                        "num_followers": num_followers, 
+                        "num_following": num_following, 
+                        "can_follow": can_follow,
+                        "description": description,
+                        "photo_name": photo_name,
+                        }
 
     return JsonResponse(complete_profile)
+
+
+
+
+
+
+
 
 
 

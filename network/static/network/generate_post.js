@@ -8,6 +8,8 @@ function generatePost(post, feed) {
         return (can_edit  ? "far fa-edit text-dark" : "");
     }
 
+    
+
     // CREATE a DIV for each post
     const element = document.createElement('div');
     element.className = `row justify-content-center`;
@@ -17,7 +19,7 @@ function generatePost(post, feed) {
         <div class="row">
             <div class="col p-1 ml-3 small my-text font-weight-bolder">     
                 
-                <img src="/static/network/no-user.png" alt="..." 
+                <img src="${post.photo_name}" alt="..." 
                     style="height: 20px; width: 20px; object-fit: cover; border-radius: 10px;">
                 <span class="pl-1">
                 @${post.username} 

@@ -48,4 +48,10 @@ class Post(models.Model):
             "created": self.created.strftime("%b %-d %Y, %-I:%M %p"),
             "edited": self.edited,
         }
+
+
+class Profile(models.Model):
+    user = models.OneToOneField("User", on_delete=models.CASCADE, primary_key=True)
+    description = models.CharField(max_length=128, blank=True)
+    photo = models.ImageField(upload_to='static', blank=True)
     

@@ -153,7 +153,7 @@ def feed(request, feed):
 
 
 
-# API route follow/<user_id> 
+# API route follow/<user_id> -- where user_id refers the user TO BE FOLLOWED
 @csrf_exempt
 @login_required
 def follow(request, user_id):
@@ -164,11 +164,24 @@ def follow(request, user_id):
 
     # ROUTE reached by a GET request
     else:
-        # VERIFY AND RETURN can_follow status
+        # VERIFY can_follow status
         if user.id == user_id:
-            return JsonResponse({"can_follow": False})
+            can_follow = False
         else:
-            return JsonResponse({"can_follow": True})
+            can_follow = True
+
+            # VERIFY if (query user) is_followed (by current user) status 
+        try:
+            is_followed = Follow.objects.get(follower=user, followed=User.objects.get(id=user_id))
+            is_followed = True
+        except: # FollowDoesNotExist():
+            is_followed = False 
+
+        return JsonResponse({"can_follow": can_follow, "is_followed": is_followed})
+
+
+
+
 
 # API route like/<post.id>
 @csrf_exempt

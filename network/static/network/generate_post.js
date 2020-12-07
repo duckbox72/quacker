@@ -19,7 +19,7 @@ function generatePost(post, feed) {
                 
                 <img src="${post.photo_name}" alt="..." 
                     style="height: 20px; width: 20px; object-fit: cover; border-radius: 10px;">
-                <span id="profile-user${post.user_id}-post${post.id}"class="pl-1">
+                <span id="profile-user${post.user_id}-post${post.id}" class="pl-1 my-text-hover">
                 @${post.username} 
                 </span>
                 

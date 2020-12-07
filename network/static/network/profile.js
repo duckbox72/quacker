@@ -7,12 +7,11 @@ function loadProfile(user_id) {
     // DISPLAY the feed name
     document.querySelector('#profile-view-feed-name').innerHTML = "my posts";
     
-
-    // DISPLAY or HIDE (in case profile is user's self) FOLLOW BUTTON                  
+    // FETCH FOR PROFILE DATA
     fetch(`profile/${user_id}`)
     .then(response => response.json())
     .then(profile => {
-        
+ 
         document.querySelector("#profile-username").innerHTML = profile.username;
         document.querySelector("#profile-following").innerHTML = profile.num_following;
         document.querySelector("#profile-followers").innerHTML = profile.num_followers;
@@ -24,21 +23,40 @@ function loadProfile(user_id) {
             document.querySelector("#profile-photo").src = `/static/network/no-user.png`
         }
     });
-
-    fetch(`follow/${user_id}`) // todo ---------------------------------
+    
+    // FETCH FOR FOLLOW STATUSES AND RENDER BUTTON ACCORDINGLY
+    fetch(`follow/${user_id}`)
     .then(response => response.json())
     .then(follow => {
-        // HIDE BUTTON in case user profile is from current user
-        if (follow.can_follow !== true) {
-            document.querySelector("#toggle-follow").style.display = 'none';
+        // OPTIONS
+        // follow.can_follow , follow.is_followed //
         
-        // SHOW BUTTON and add event listener to control toggle-folow
+        // CREATE a BUTTON to TOGGLE-FOLLOW
+        const element = document.createElement('button');
+        element.id = `toggle-follow-button${user_id}`
+
+        if (follow.is_followed === false) {
+            element.innerHTML = "Follow";
+            element.className = `btn btn-sm my-btn rounded-pill shadow-sm m-2 pl-3 pr-3`;
         } else {
-            document.querySelector("#toggle-follow").style.display = 'inline';
-            document.querySelector("#toggle-follow").addEventListener('click', function() {
-                
+            element.innerHTML = "Unfollow";
+            element.className = `btn btn-sm my-btn rounded-pill shadow-sm m-2`;
+        }
+        
+        // HIDE or RENDER BUTTON accordingly
+        if (follow.can_follow === false) {
+            document.querySelector("#toggle-follow").innerHTML = ''; 
+        } else {
+            document.querySelector("#toggle-follow").innerHTML = '';
+            document.querySelector("#toggle-follow").append(element);   
+        }  
+        
+        // TOGGLE FOLLOW 
+        if (document.querySelector("#toggle-follow").innerHTML !== '') {
+            document.querySelector(`#toggle-follow-button${user_id}`).addEventListener('click', function() {
+                        
                 console.log(`FROM NOT-FOLLOWED ${user_id} TO FOLLOWED!`);
-                if (document.querySelector("#toggle-follow")) {              
+                if (document.querySelector("#toggle-follow") !== '') {              
                     fetch(`follow/${user_id}`, {
                         method: 'POST',
                         body: JSON.stringify({
@@ -57,8 +75,11 @@ function loadProfile(user_id) {
 
             });
         }
-
     });
+    
+    
+
+
 
     // fetch for user FEED and generate POST for each entry                           
     feed = user_id;

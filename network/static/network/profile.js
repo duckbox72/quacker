@@ -28,8 +28,6 @@ function loadProfile(user_id) {
     fetch(`follow/${user_id}`)
     .then(response => response.json())
     .then(follow => {
-        // OPTIONS
-        // follow.can_follow , follow.is_followed //
         
         // CREATE a BUTTON to TOGGLE-FOLLOW
         const element = document.createElement('button');
@@ -38,9 +36,11 @@ function loadProfile(user_id) {
         if (follow.is_followed === false) {
             element.innerHTML = "Follow";
             element.className = `btn btn-sm my-btn rounded-pill shadow-sm m-2 pl-3 pr-3`;
+            document.querySelector("#profile-following-sign").className = "far fa-star";
         } else {
             element.innerHTML = "Unfollow";
             element.className = `btn btn-sm my-btn rounded-pill shadow-sm m-2`;
+            document.querySelector("#profile-following-sign").className = "fas fa-star";
         }
         
         // HIDE or RENDER BUTTON accordingly
@@ -54,9 +54,8 @@ function loadProfile(user_id) {
         // TOGGLE FOLLOW 
         if (document.querySelector("#toggle-follow").innerHTML !== '') {
             document.querySelector(`#toggle-follow-button${user_id}`).addEventListener('click', function() {
-                        
-                console.log(`FROM NOT-FOLLOWED ${user_id} TO FOLLOWED!`);
-                if (document.querySelector("#toggle-follow") !== '') {              
+                 
+                if (document.querySelector(`#toggle-follow-button${user_id}`).innerHTML === "Follow") {
                     fetch(`follow/${user_id}`, {
                         method: 'POST',
                         body: JSON.stringify({
@@ -64,21 +63,26 @@ function loadProfile(user_id) {
                             action: "follow",
                         })
                     }) 
-                    
                     .then(response => response.json())
-                    .then(post => {
-                        console.log(post)
+                    .then(follow => {
+                        loadProfile(user_id);
                     })
-
+                } else {
+                    fetch(`follow/${user_id}`, {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            user_id: user_id,
+                            action: "unfollow",
+                        })
+                    }) 
+                    .then(response => response.json())
+                    .then(follow => {
+                        loadProfile(user_id);
+                    })  
                 }
-
-
             });
         }
     });
-    
-    
-
 
 
     // fetch for user FEED and generate POST for each entry                           

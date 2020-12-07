@@ -153,14 +153,32 @@ def feed(request, feed):
 
 
 
-# API route follow/<user_id> -- where user_id refers the user TO BE FOLLOWED
+# API route follow/<user_id>
 @csrf_exempt
 @login_required
 def follow(request, user_id):
     user = request.user
     # ROUTE reached by a POST request
     if request.method == "POST":
-        return JsonResponse({"method": "POST"})
+
+        follow_request = json.loads(request.body)
+        action = follow_request.get("action")
+        
+        followed = User.objects.get(id=follow_request.get("user_id"))
+        follower = user
+        
+        if action == "follow":       
+            follow = Follow(follower=follower, followed=followed)
+            follow.save() 
+            
+            return JsonResponse(follow.serialize(), safe=False)
+          
+        else:
+            follow = Follow.objects.get(follower=follower, followed=followed)
+            deleted_follow = follow
+            follow.delete()
+            
+            return JsonResponse(deleted_follow.serialize(), safe=False)
 
     # ROUTE reached by a GET request
     else:
@@ -178,8 +196,6 @@ def follow(request, user_id):
             is_followed = False 
 
         return JsonResponse({"can_follow": can_follow, "is_followed": is_followed})
-
-
 
 
 

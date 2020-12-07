@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', function() {
     loadFeed('all posts');
 })
 
-
 function loadFeed(feed) {
     // TOGGLE VIEW
     document.querySelector('#feed-view').style.display = 'block';
@@ -33,27 +32,28 @@ function loadFeed(feed) {
         }
     });
 
-
-
     // Fetch feed for posts from API ROUTE
     fetch(`feed/${feed}`)
     .then(response => response.json())
     .then(posts => {
         console.log(posts)
+        
+        // CLEAR out old FEED before render new FEED
+        document.querySelector("#feed-view-following").innerHTML = "";
+        document.querySelector("#feed-view-all").innerHTML = "";
+        document.querySelector("#profile-view-feed").innerHTML = "";
+        document.querySelector("#feed-view-no").innerHTML = "";
+        
+
         // Display custom message case FEED has NO POSTS
         if (posts.length == 0) {
-            document.querySelector("#feed-view"). innerHTML +=
+            document.querySelector("#feed-view-no"). innerHTML =
             `<div class="row my-text mt-3 justify-content-center"
                 <div class="col-6  text-center">
                     This feed has no posts yet.
                 </div>
             </div>`;
         };
-
-        // CLEAR out old FEED before render new FEED
-        document.querySelector("#feed-view-following").innerHTML = "";
-        document.querySelector("#feed-view-all").innerHTML = "";
-        document.querySelector("#profile-view-feed").innerHTML = "";
 
         // If there are posts iteract though them 
         posts.forEach(post => {

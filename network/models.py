@@ -12,9 +12,8 @@ class Follow(models.Model):
 
     def serialize(self):
         return {
-            "id": self.id,
-            "follower": self.follower,
-            "followed": self.followed,
+            "follower_id": self.follower.id,
+            "followed_id": self.followed.id,
         }
 
 class Like(models.Model):

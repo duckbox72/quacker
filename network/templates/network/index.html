@@ -55,6 +55,7 @@
     <!-- Actual feed are APPENDED and rendered here -->
     <div id="feed-view-all"></div>
     <div id="feed-view-following"></div>
+    <div id="feed-view-no"></div>
 
 </div>
 <!------- END FEEDS VIEW  ------->
@@ -81,8 +82,8 @@
                     <img id="profile-photo" src="{% static 'network/no-user.png' %}" class="mt-2" alt="..." 
                         style="height: 42px; width: 42px; object-fit: cover; border-radius: 21px;">
                 </div>
-                <div class="col text-dark bg-light">
-                    <!--<div id="profile-description"></div>-->
+                <div class="col my-text text-right bg-light pt-3 pr-4">
+                    <i id="profile-following-sign"></i>
                 </div>
             
             </div>

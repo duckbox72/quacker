@@ -19,7 +19,7 @@ function generatePost(post, feed) {
                 
                 <img src="${post.photo_name}" alt="..." 
                     style="height: 20px; width: 20px; object-fit: cover; border-radius: 10px;">
-                <span class="pl-1">
+                <span id="profile-user${post.user_id}-post${post.id}"class="pl-1">
                 @${post.username} 
                 </span>
                 
@@ -29,7 +29,7 @@ function generatePost(post, feed) {
             </div>
         </div>
         <div id="toggle-view${post.id}" class="row">
-            <div class="col small font-weight-lighter ml-3 mr-3 mt-2 pb-1" style="min-height: 60px;">
+            <div class="col small font-weight-lighter ml-3 mr-3 mt-2 pb-1" style="min-height: 52px;">
                 ${post.text}
             </div>
         </div>
@@ -66,6 +66,10 @@ function generatePost(post, feed) {
         document.querySelector("#profile-view-feed").append(element);
     }
 
+    // Add EVENT HANDLER to @USERNAME CLICK
+    document.querySelector(`#profile-user${post.user_id}-post${post.id}`).addEventListener('click', function() { 
+        loadProfile(post.user_id);
+    });
 
     // Add EVENT HANDLER to LIKE BUTTON CLICK
     document.querySelector(`#toggle-like${post.id}`).addEventListener('click', function() {

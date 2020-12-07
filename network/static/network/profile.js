@@ -6,32 +6,57 @@ function loadProfile(user_id) {
     
     // DISPLAY the feed name
     document.querySelector('#profile-view-feed-name').innerHTML = "my posts";
-                               
-    // DISPLAY or HIDE (in case profile is user's self) follow                    
-
-
-
     
+
+    // DISPLAY or HIDE (in case profile is user's self) FOLLOW BUTTON                  
     fetch(`profile/${user_id}`)
     .then(response => response.json())
     .then(profile => {
         
         document.querySelector("#profile-username").innerHTML = profile.username;
-        //document.querySelector("#profile-description").innerHTML = profile.description;
         document.querySelector("#profile-following").innerHTML = profile.num_following;
         document.querySelector("#profile-followers").innerHTML = profile.num_followers;
         
         if (profile.photo_name !== "") {
             document.querySelector("#profile-photo").src = `${profile.photo_name}`
         }
+        else {
+            document.querySelector("#profile-photo").src = `/static/network/no-user.png`
+        }
     });
 
-    fetch(`follow/${user_id}`)
+    fetch(`follow/${user_id}`) // todo ---------------------------------
     .then(response => response.json())
     .then(follow => {
-        if (follow.can_follow === false){
+        // HIDE BUTTON in case user profile is from current user
+        if (follow.can_follow === true){
             document.querySelector("#toggle-follow").style.display = 'none';
+        
+        // SHOW BUTTON and add event listener to control toggle-folow
+        } else {
+            document.querySelector("#toggle-follow").addEventListener('click', function() {
+                
+                console.log(`FROM NOT-FOLLOWED ${user_id} TO FOLLOWED!`);
+                if (document.querySelector("#toggle-follow")) {              
+                    fetch(`follow/${user_id}`, {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            user_id: user_id,
+                            action: "follow",
+                        })
+                    }) 
+                    
+                    .then(response => response.json())
+                    .then(post => {
+                        console.log(post)
+                    })
+
+                }
+
+
+            });
         }
+
     });
 
     // fetch for user FEED and generate POST for each entry                           

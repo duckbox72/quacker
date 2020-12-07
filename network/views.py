@@ -100,11 +100,11 @@ def feed(request, feed):
             for post in user_posts:
                 complete_posts.append(post)
 
-        complete_posts = sorted(complete_posts, key = lambda i: i['created'])
+        complete_posts = sorted(complete_posts, key = lambda i: i['created'], reverse=True)
 
     elif feed.isnumeric() == True:
-        user = User.objects.get(pk=int(feed))
-        posts = Post.objects.filter(user=user).order_by('-created')
+        feed_user= User.objects.get(pk=int(feed))
+        posts = Post.objects.filter(user=feed_user).order_by('-created')
         complete_posts = [post.serialize() for post in posts]
 
     else:
@@ -158,12 +158,17 @@ def feed(request, feed):
 @login_required
 def follow(request, user_id):
     user = request.user
-    
-    # VERIFY AND RETURN can_follow status
-    if user.id == user_id:
-        return JsonResponse({"can_follow": False})
+    # ROUTE reached by a POST request
+    if request.method == "POST":
+        return JsonResponse({"method": "POST"})
+
+    # ROUTE reached by a GET request
     else:
-        return JsonResponse({"can_follow": True})
+        # VERIFY AND RETURN can_follow status
+        if user.id == user_id:
+            return JsonResponse({"can_follow": False})
+        else:
+            return JsonResponse({"can_follow": True})
 
 # API route like/<post.id>
 @csrf_exempt
@@ -234,11 +239,12 @@ def profile(request, user_id):
     if user_id == user.id:
         can_follow = False
     else:
-        can_follow = True 
+        can_follow = True
+        
     
     username = User.objects.get(pk=user_id).username
-    num_followers = len(Follow.objects.filter(followed=user))
-    num_following = len(Follow.objects.filter(follower=user))
+    num_followers = len(Follow.objects.filter(followed=user_id))
+    num_following = len(Follow.objects.filter(follower=user_id))
 
     complete_profile = {"username": username, 
                         "num_followers": num_followers, 

@@ -29,11 +29,12 @@ function loadProfile(user_id) {
     .then(response => response.json())
     .then(follow => {
         // HIDE BUTTON in case user profile is from current user
-        if (follow.can_follow === true){
+        if (follow.can_follow !== true) {
             document.querySelector("#toggle-follow").style.display = 'none';
         
         // SHOW BUTTON and add event listener to control toggle-folow
         } else {
+            document.querySelector("#toggle-follow").style.display = 'inline';
             document.querySelector("#toggle-follow").addEventListener('click', function() {
                 
                 console.log(`FROM NOT-FOLLOWED ${user_id} TO FOLLOWED!`);

@@ -48,7 +48,7 @@ function loadFeed(feed) {
         // Display custom message case FEED has NO POSTS
         if (posts.length == 0) {
             document.querySelector("#feed-view-no"). innerHTML =
-            `<div class="row my-text mt-3 justify-content-center"
+            `<div class="row my-text mt-3 justify-content-center">
                 <div class="col-6  text-center">
                     You are not following anyone.
                 </div>
@@ -57,10 +57,12 @@ function loadFeed(feed) {
 
         // If there are posts iteract though them 
         posts.forEach(post => {
-            generatePost(post, feed)
+            generatePost(post, feed);
         });
 
-        document.querySelector("#feed-view-paginator"). innerHTML =
+        generatePage(posts);
+
+        document.querySelector("#feed-view-paginator").innerHTML =
         `<div class="row small justify-content-center mt-3">
             <nav aria-label="Feed Navigation">
                 <ul class="pagination">
@@ -79,8 +81,6 @@ function loadFeed(feed) {
                 </ul>
             </nav>
         </div>`
-
-
 
     })
 

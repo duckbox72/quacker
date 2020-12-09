@@ -2,6 +2,7 @@ import datetime
 import json
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
@@ -110,8 +111,7 @@ def feed(request, feed):
     else:
         return JsonResponse({"error": "Invalid feed."}, safe=False, status=400)
     
-    # Check if each post is liked or not by active user
-    
+    # Check if each post is liked or not by active user 
     for post in complete_posts:      
         try:
             is_liked = Like.objects.get(user=user.id, post=post["id"])
@@ -137,21 +137,30 @@ def feed(request, feed):
         try: 
             profile = Profile.objects.get(pk=post["user_id"])
             photo_name = profile.photo.name
-            print(photo_name)
             post["photo_name"] = photo_name
 
         except:
             photo_name = "/static/network/no-user.png"
             post["photo_name"] = photo_name
             
-    
-    # Return feed of posts in reverse chronologial order    
-    #return JsonResponse([post.serialize() for post in posts], safe=False)
+    # Create Pagination 
+    p = Paginator(complete_posts, 10)
+
+    for i in p.page_range:
+        page = p.page(i)
+        print("----------------")
+
+        print(page)
+        print(page.object_list)
+        print(page.has_previous())
+        print(page.has_next())
+        print("----------------")
+
+    print()
+
+    # Return feed of posts in reverse chronologial order    ###********* FEED REQUEST RERURN *********###
     return JsonResponse([post for post in complete_posts], safe=False)
-    #return JsonResponse({"feed": feed, "posts": [post.serialize() for post in posts]})
-    #return JsonResponse({"feed": feed, "posts": complete_posts})
-
-
+    
 
 # API route follow/<user_id>
 @csrf_exempt

@@ -143,21 +143,24 @@ def feed(request, feed):
             photo_name = "/static/network/no-user.png"
             post["photo_name"] = photo_name
             
-    # Create Pagination 
-    p = Paginator(complete_posts, 10)
-
+    # Create Pagination ==========================================================================
+    p = Paginator(complete_posts, 2)
+    
+    feed_pages = []
     for i in p.page_range:
         page = p.page(i)
-        print("----------------")
+        number = i
+        posts = page.object_list
+        has_previous = page.has_previous()
+        has_next = page.has_next()
+        
+        complete_page = {"number": number, "posts": posts, "has_previous": has_previous, "has_next": has_next}
+        feed_pages.append(complete_page)      
+    print([page for page in pages])
 
-        print(page)
-        print(page.object_list)
-        print(page.has_previous())
-        print(page.has_next())
-        print("----------------")
+    
 
-    print()
-
+    
     # Return feed of posts in reverse chronologial order    ###********* FEED REQUEST RERURN *********###
     return JsonResponse([post for post in complete_posts], safe=False)
     

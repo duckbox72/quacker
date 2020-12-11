@@ -1,4 +1,4 @@
-function generatePost(post, feed) {
+function generatePost(post, page, feed) {
 
     function getToggleLikeClass(is_liked) {
         return (is_liked ? "fas fa-heart text-danger" : "far fa-heart text-dark");
@@ -59,11 +59,11 @@ function generatePost(post, feed) {
 
     // RENDER a DIV element for each post ------------------------------ RENDER DIV
     if (feed === "all posts") {
-        document.querySelector("#feed-view-all").append(element);
+        document.querySelector(`#feed-view-all-page-${page.number}`).append(element);   
     } else  if (feed == "following") {
-        document.querySelector("#feed-view-following").append(element);
+        document.querySelector(`#feed-view-following-page-${page.number}`).append(element);
     } else{
-        document.querySelector("#profile-view-feed").append(element);
+        document.querySelector(`#profile-view-feed-page-${page.number}`).append(element);
     }
 
     // Add EVENT HANDLER to @USERNAME CLICK

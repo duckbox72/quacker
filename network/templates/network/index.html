@@ -57,15 +57,13 @@
     <div id="feed-view-following"></div>
     <div id="feed-view-no"></div>
 
-    <!-- feed view paginator--> 
-    <div id="feed-view-paginator">
-        
-    </div>
-
+    <!-- Actual feed view paginator--> 
+    <div id="feed-view-all-paginator"></div>
+    <div id="feed-view-following-paginator"></div>
+    
 
 </div>
 <!------- END FEEDS VIEW  ------->
-
 
 
 <!-------  PROFILE VIEW  ------->
@@ -118,25 +116,7 @@
     <div id="profile-view-feed"></div>
 
     <!-- Profile view paginator--> 
-    <div id="profile-view-paginator">
-        <nav aria-label="Page navigation example">
-            <ul class="pagination">
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-            </ul>
-        </nav>
-    </div>
+    <div id="profile-view-feed-paginator"></div>
 
 </div>
    
@@ -147,6 +127,7 @@
     <script src="{% static 'network/index.js' %}"></script>
     <script src="{% static 'network/add_post.js' %}"></script> 
     <script src="{% static 'network/generate_page.js' %}"></script>
+    <script src="{% static 'network/generate_paginator.js' %}"></script>
     <script src="{% static 'network/generate_post.js' %}"></script>
     <script src="{% static 'network/profile.js' %}"></script> 
     

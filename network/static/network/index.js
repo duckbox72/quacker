@@ -38,12 +38,18 @@ function loadFeed(feed) {
     .then(pages => {
         console.log(`PAGES ==>`, pages);
         
-        // CLEAR out old FEED before render new FEED
-        document.querySelector("#feed-view-following").innerHTML = "";
+        // CLEAR out old FEED before render new FEED   
         document.querySelector("#feed-view-all").innerHTML = "";
-        document.querySelector("#profile-view-feed").innerHTML = "";
-        document.querySelector("#feed-view-no").innerHTML = "";
+        document.querySelector("#feed-view-all-paginator").innerHTML = "";
         
+        document.querySelector("#feed-view-following").innerHTML = "";
+        document.querySelector("#feed-view-following-paginator").innerHTML = "";
+        
+        document.querySelector("#profile-view-feed").innerHTML = "";
+        document.querySelector("#profile-view-feed-paginator").innerHTML = "";
+        
+        document.querySelector("#feed-view-no").innerHTML = "";
+
         // Display custom message case FEED has NO PAGES
         if (pages.length == 1 && pages[0].posts == "") {
             document.querySelector("#feed-view-no"). innerHTML =
@@ -54,14 +60,16 @@ function loadFeed(feed) {
             </div>`;
         }
         
-
         // If there are pages iteract though them 
         pages.forEach(page => { 
-            generatePage(page)
+            generatePage(page, feed)
 
             posts.forEach(post => {
-                generatePost(post, feed);
-            });    
+                console.log(page)
+                generatePost(post, page, feed);
+            });
+            
+            generatePaginator(page, feed)
         });     
 
     })

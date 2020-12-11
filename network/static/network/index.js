@@ -32,11 +32,11 @@ function loadFeed(feed) {
         }
     });
 
-    // Fetch feed for posts from API ROUTE
+    // Fetch feed for pages and posts from API ROUTE
     fetch(`feed/${feed}`)
     .then(response => response.json())
-    .then(posts => {
-        console.log(posts)
+    .then(pages => {
+        console.log(`PAGES ==>`, pages);
         
         // CLEAR out old FEED before render new FEED
         document.querySelector("#feed-view-following").innerHTML = "";
@@ -44,43 +44,25 @@ function loadFeed(feed) {
         document.querySelector("#profile-view-feed").innerHTML = "";
         document.querySelector("#feed-view-no").innerHTML = "";
         
-
-        // Display custom message case FEED has NO POSTS
-        if (posts.length == 0) {
+        // Display custom message case FEED has NO PAGES
+        if (pages.length == 1 && pages[0].posts == "") {
             document.querySelector("#feed-view-no"). innerHTML =
             `<div class="row my-text mt-3 justify-content-center">
                 <div class="col-6  text-center">
-                    You are not following anyone.
+                    You are not following anyone yet.
                 </div>
             </div>`;
-        };
+        }
+        
 
-        // If there are posts iteract though them 
-        posts.forEach(post => {
-            generatePost(post, feed);
-        });
+        // If there are pages iteract though them 
+        pages.forEach(page => { 
+            generatePage(page)
 
-        generatePage(posts);
-
-        document.querySelector("#feed-view-paginator").innerHTML =
-        `<div class="row small justify-content-center mt-3">
-            <nav aria-label="Feed Navigation">
-                <ul class="pagination">
-                <li class="page-item">
-                    <a class="page-link my-text my text-hover" href="#" aria-label="Previous">
-                    <span aria-hidden="true"><i class="fas fa-angle-double-left"></i></span>
-                    </a>
-                </li>
-                <li class="page-item"><a class="page-link  my-text my text-hover" href="#">1</a></li>
-                <li class="page-item"><a class="page-link  my-text my text-hover" href="#">2</a></li>
-                <li class="page-item"><a class="page-link  my-text my text-hover" href="#">3</a></li>
-                    <a class="page-link my-text my text-hover" href="#" aria-label="Next">
-                    <span aria-hidden="true"><i class="fas fa-angle-double-right"></i></span> 
-                    </a>
-                </li>
-                </ul>
-            </nav>
-        </div>`
+            posts.forEach(post => {
+                generatePost(post, feed);
+            });    
+        });     
 
     })
 

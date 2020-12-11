@@ -156,13 +156,11 @@ def feed(request, feed):
         
         complete_page = {"number": number, "posts": posts, "has_previous": has_previous, "has_next": has_next}
         feed_pages.append(complete_page)      
-    print([page for page in pages])
-
     
-
-    
-    # Return feed of posts in reverse chronologial order    ###********* FEED REQUEST RERURN *********###
-    return JsonResponse([post for post in complete_posts], safe=False)
+     # Return feed of pages and posts   ###********* FEED REQUEST RERURN *********###
+    return JsonResponse([page for page in feed_pages], safe=False)
+   
+    #return JsonResponse([post for post in complete_posts], safe=False)
     
 
 # API route follow/<user_id>

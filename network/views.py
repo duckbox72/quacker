@@ -85,7 +85,7 @@ def feed(request, feed):
     user = request.user
 
     # SELECT FEED (feed) POSTS 
-    if feed == "all posts":
+    if feed == "all-posts":
         posts = Post.objects.all().order_by("-created")  
         complete_posts = [post.serialize() for post in posts]
     

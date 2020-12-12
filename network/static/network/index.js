@@ -1,13 +1,13 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Use buttons to toggle between views
-    document.querySelector('#index').addEventListener('click', () => loadFeed('all posts'));
+    document.querySelector('#index').addEventListener('click', () => loadFeed('all-posts'));
     document.querySelector('#following').addEventListener('click', () => loadFeed('following'));
     
     user_id = document.querySelector("#username").name
     document.querySelector('#profile').addEventListener('click', () => loadProfile(user_id));
     
     // By default, load  all posts feed
-    loadFeed('all posts');
+    loadFeed('all-posts');
 })
 
 function loadFeed(feed) {
@@ -58,19 +58,17 @@ function loadFeed(feed) {
                     You are not following anyone yet.
                 </div>
             </div>`;
-        }
+        } else {
         
-        // If there are pages iteract though them 
-        pages.forEach(page => { 
-            generatePage(page, feed)
-
-            posts.forEach(post => {
-                console.log(page)
-                generatePost(post, page, feed);
-            });
-            
-            generatePaginator(page, feed)
-        });     
+            // If there are pages iteract though them 
+            pages.forEach(page => { 
+                generatePage(page, feed, pages.length)
+                
+                posts.forEach(post => {
+                    generatePost(post, page, feed);
+                });
+            }); 
+        }       
 
     })
 

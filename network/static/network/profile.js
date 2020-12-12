@@ -87,29 +87,41 @@ function loadProfile(user_id) {
 
     // fetch for user FEED and generate POST for each entry                           
     feed = user_id;
-    fetch(`feed/${feed}`) // STRING TYPE
+    fetch(`feed/${feed}`)
     .then(response => response.json())
-    .then(posts => {
-        console.log(posts)
+    .then(pages => {
+        console.log(`PAGES ==>`, pages);
+
+        // CLEAR out old FEED before render new FEED
+        document.querySelector("#feed-view-all").innerHTML = "";
+        document.querySelector("#feed-view-all-paginator").innerHTML = "";
+        
+        document.querySelector("#feed-view-following").innerHTML = "";
+        document.querySelector("#feed-view-following-paginator").innerHTML = "";
+        
+        document.querySelector("#profile-view-feed").innerHTML = "";
+        document.querySelector("#profile-view-feed-paginator").innerHTML = "";
+        
+        document.querySelector("#feed-view-no").innerHTML = "";
+
         // Display custom message case FEED has NO POSTS
-        if (posts.length == 0) {
+        if (pages.length == 1 && pages[0].posts == "") {
             document.querySelector("#feed-view"). innerHTML +=
             `<div class="row my-text mt-3 justify-content-center"
                 <div class="col-6  text-center">
                     This feed has no posts yet.
                 </div>
             </div>`;
-        };
-
-        // CLEAR out old FEED before render new FEED
-        document.querySelector("#feed-view-following").innerHTML = "";
-        document.querySelector("#feed-view-all").innerHTML = "";
-        document.querySelector("#profile-view-feed").innerHTML = "";
-
-        posts.forEach(post => {
-            generatePost(post, feed)
-        });
-
+        } else {
+            // If there are pages iteract though them 
+            pages.forEach(page => { 
+                generatePage(page, feed, pages.length)
+                
+                posts.forEach(post => {
+                    generatePost(post, page, feed);
+                });
+            });
+        }
     });
 }
 

@@ -30,48 +30,48 @@ function generatePaginator(page, feed) {
             </ul>
         </nav>`;
 
-        if (feed === "all-posts") {
-            if (page.number === 1) {
-                paginator.style.display = 'block'; 
-            }
-            paginator.id = `paginator${page.number}`;
-            document.querySelector(`#feed-view-all-paginator-${page.number}`).innerHTML = "KKKKK";
-    
-            
-        } else  if (feed == "following") {
-            if (page.number === 1) {
-                element.style.display = 'block';
-                paginator_div.style.display = 'block';  
-            }
-            
-            element.id = `feed-view-following-page-${page.number}`;
-            document.querySelector("#feed-view-following").append(element);
-    
-            paginator_div.id = `feed-view-following-paginator-${page.number}`;
-            document.querySelector("#feed-view-following-paginator").append(paginator_div);
-    
-        } else{
-            if (page.number === 1) {
-                element.style.display = 'block'; 
-                paginator_div.style.display = 'block'; 
-            }
-            
-            element.id = `profile-view-feed-page-${page.number}`;
-            document.querySelector("#profile-view-feed").append(element);
-    
-            paginator_div.id = `#profile-view-feed-paginator-${page.number}`;
-            document.querySelector("#profile-view-feed-paginator").append(paginator_div);
-    
-        }
-
-}
+} 
 
 
-
-
-/*
-document.querySelector("#feed-view-paginator").innerHTML =
+    /*
+    // CREATE paginator BUTTONS for page
+    const paginator_previous = document.createElement('li');
+    paginator_previous.id = `previous-feed${feed}-page${page.number}`;
+    paginator_previous.className = `page-item`
+    paginator_previous.innerHTML = 
+        `<a class="page-link my-text my text-hover">
+            <i class="fas fa-angle-double-left"></i>
+        </a>`;
+    
+    const paginator_actual = document.createElement('li');
+    paginator_actual.id = `actual-feed${feed}-page${page.number}`;
+    paginator_actual.className = `page-item`
+    paginator_actual.innerHTML = `<a class="page-link">${page.number}</a>`;
+    
+    const paginator_next = document.createElement('li');
+    paginator_next.id = `next-feed${feed}-page${page.number}`;
+    paginator_next.className = `page-item`
+    paginator_next.innerHTML = 
+        `<a class="page-link my-text my text-hover">
+            <i class="fas fa-angle-double-right"></i>
+        </a>`;
+    
+    
+    // CREATE PAGINATOR DIV
+    const paginator= document.createElement('div');
+    paginator.style.display = 'block';
+    paginator.id = `paginator-${feed}-${page.number}`
+    paginator.innerHTML = 
         `<div class="row small justify-content-center mt-3">
-           
-        </div>`
-*/
+            <div class="col-6">
+                <nav>
+                    <ul id="ul-${feed}-${page.number}" class="pagination justify-content-center my-text my-text-hover">
+                    
+                    
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        `;
+
+    */

@@ -60,6 +60,7 @@ function loadFeed(feed) {
             </div>`;
         } else {
         
+            /*
             // If there are pages iteract though them 
             pages.forEach(page => { 
                 generatePage(page, feed, pages.length)
@@ -68,6 +69,14 @@ function loadFeed(feed) {
                     generatePost(post, page, feed);
                 });
             }); 
+            */
+            
+            // By default load page 1 (pages[0]) with respective posts
+            generatePage(pages[0], feed, pages.length);
+            
+            pages[0].posts.forEach(post => {
+                generatePost(post, pages[0], feed);
+            });
         }       
 
     })

@@ -12,7 +12,7 @@ function generatePage(page, feed, num_pages) {
     const element = document.createElement('div');
 
     // RENDER PAGE DIV for FEED
-    if (feed === "all-posts") {   
+    if (feed === "all") {   
         
         element.id = `feed-view-all-page-${page.number}`;
         document.querySelector("#feed-view-all").append(element);

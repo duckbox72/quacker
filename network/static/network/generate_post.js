@@ -58,7 +58,7 @@ function generatePost(post, page, feed) {
     </div>`;
 
     // RENDER a DIV element for each post ------------------------------ RENDER DIV
-    if (feed === "all-posts") {
+    if (feed === "all") {
         document.querySelector(`#feed-view-all-page-${page.number}`).append(element);   
     } else  if (feed == "following") {
         document.querySelector(`#feed-view-following-page-${page.number}`).append(element);

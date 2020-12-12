@@ -112,15 +112,17 @@ function loadProfile(user_id) {
                     This feed has no posts yet.
                 </div>
             </div>`;
+
+        // **************** THIS SECTION must be equal to index analog section    
         } else {
-            // If there are pages iteract though them 
-            pages.forEach(page => { 
-                generatePage(page, feed, pages.length)
-                
-                posts.forEach(post => {
-                    generatePost(post, page, feed);
-                });
+            // By default load page 1 (pages[0]) with respective posts and feed paginator
+            generatePage(pages[0], feed, pages.length);
+        
+            pages[0].posts.forEach(post => {
+                generatePost(post, pages[0], feed);
             });
+
+            generatePaginator(feed, pages.length);
         }
     });
 }

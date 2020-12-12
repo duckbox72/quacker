@@ -1,13 +1,13 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Use buttons to toggle between views
-    document.querySelector('#index').addEventListener('click', () => loadFeed('all-posts'));
+    document.querySelector('#index').addEventListener('click', () => loadFeed('all'));
     document.querySelector('#following').addEventListener('click', () => loadFeed('following'));
     
     user_id = document.querySelector("#username").name
     document.querySelector('#profile').addEventListener('click', () => loadProfile(user_id));
     
     // By default, load  all posts feed
-    loadFeed('all-posts');
+    loadFeed('all');
 })
 
 function loadFeed(feed) {
@@ -71,12 +71,16 @@ function loadFeed(feed) {
             }); 
             */
             
-            // By default load page 1 (pages[0]) with respective posts
+            // By default load page 1 (pages[0]) with respective posts and feed paginator
             generatePage(pages[0], feed, pages.length);
             
             pages[0].posts.forEach(post => {
                 generatePost(post, pages[0], feed);
             });
+
+            generatePaginator(feed, pages.length);
+
+
         }       
 
     })

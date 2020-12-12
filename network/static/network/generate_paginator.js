@@ -1,14 +1,54 @@
-function generatePaginator(page, feed) {
+function generatePaginator(feed, num_pages) {
     
     // CLEAR out last 
     document.querySelector("#feed-view-all-paginator").innerHTML = "";
     document.querySelector("#feed-view-following-paginator").innerHTML = "";
     document.querySelector("#profile-view-feed-paginator").innerHTML = "";
-    
-    
+        
     console.log(feed);
-    console.log(page.number);
+    console.log(num_pages);
+
     
+
+
+
+
+
+    // CREATE PAGINATOR DIV
+    const paginator = document.createElement('div');
+    paginator.id = `paginator-${feed}`;
+    paginator.innerHTML = 
+        `<div class="row small justify-content-center mt-3">
+            <div class="col-6">
+                <nav>
+                    <ul id="paginator-${feed}-ul" class="pagination justify-content-center my-text my-text-hover">
+                    
+                    
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        `;
+    
+    
+    document.querySelector(`#feed-view-${feed}-paginator`).append(paginator)
+
+    
+    
+    for (i = 1; i <= num_pages; i++) {
+        console.log(i);
+        
+        
+        document.querySelector(`#paginator-${feed}`).append("$$$");
+
+    }
+
+} 
+
+
+
+    
+    /*
     const paginator = document.createElement('div');
     paginator.style.display = 'none';
     paginator.className = "row small justify-content-center mt-3";
@@ -29,49 +69,5 @@ function generatePaginator(page, feed) {
             </li>
             </ul>
         </nav>`;
-
-} 
-
-
-    /*
-    // CREATE paginator BUTTONS for page
-    const paginator_previous = document.createElement('li');
-    paginator_previous.id = `previous-feed${feed}-page${page.number}`;
-    paginator_previous.className = `page-item`
-    paginator_previous.innerHTML = 
-        `<a class="page-link my-text my text-hover">
-            <i class="fas fa-angle-double-left"></i>
-        </a>`;
-    
-    const paginator_actual = document.createElement('li');
-    paginator_actual.id = `actual-feed${feed}-page${page.number}`;
-    paginator_actual.className = `page-item`
-    paginator_actual.innerHTML = `<a class="page-link">${page.number}</a>`;
-    
-    const paginator_next = document.createElement('li');
-    paginator_next.id = `next-feed${feed}-page${page.number}`;
-    paginator_next.className = `page-item`
-    paginator_next.innerHTML = 
-        `<a class="page-link my-text my text-hover">
-            <i class="fas fa-angle-double-right"></i>
-        </a>`;
-    
-    
-    // CREATE PAGINATOR DIV
-    const paginator= document.createElement('div');
-    paginator.style.display = 'block';
-    paginator.id = `paginator-${feed}-${page.number}`
-    paginator.innerHTML = 
-        `<div class="row small justify-content-center mt-3">
-            <div class="col-6">
-                <nav>
-                    <ul id="ul-${feed}-${page.number}" class="pagination justify-content-center my-text my-text-hover">
-                    
-                    
-                    </ul>
-                </nav>
-            </div>
-        </div>
-        `;
 
     */

@@ -58,6 +58,8 @@ function loadFeed(feed) {
                     You are not following anyone yet.
                 </div>
             </div>`;
+        
+        // In case there are PAGES to be shown
         } else {
         
             /*
@@ -73,13 +75,65 @@ function loadFeed(feed) {
             
             // By default load page 1 (pages[0]) with respective posts and feed paginator
             generatePage(pages[0], feed, pages.length);
-            
+
             pages[0].posts.forEach(post => {
                 generatePost(post, pages[0], feed);
             });
 
             generatePaginator(feed, pages.length);
+            var actual_page_number = pages[0].number;
 
+            
+            // HANDLE PAGINATOR BUTTONS =====================
+           
+            // button-PREVIOUS HANDLING
+            document.querySelector(`#button-previous-${feed}`).addEventListener('click', function() {
+                console.log(actual_page_number)
+            });
+            
+            // button-NEXT HANDLING
+            document.querySelector(`#button-next-${feed}`).addEventListener('click', function() {
+                console.log('NEXT CLICK')
+                
+                document.querySelector("#feed-view-all").innerHTML = ''            
+                
+                if (actual_page_number < pages.length) {
+        
+                    // Update button previous and actual classes
+                    if (actual_page_number === 1){
+                        document.querySelector(`#button-previous-${feed}`).className = `page-item`;
+                    }
+                    document.querySelector(`#button-actual-${feed}-${actual_page_number}`).className = `page-item`
+
+                    // Update page number and load next page
+                    actual_page_number += 1;
+
+                    document.querySelector(`#button-actual-${feed}-${actual_page_number}`).className = `page-item active`
+
+                    generatePage(pages[actual_page_number - 1], feed, pages.length);  
+                    pages[actual_page_number - 1].posts.forEach(post => {
+                        generatePost(post, pages[actual_page_number - 1], feed);
+                    });
+
+                    // If page is last disable next button
+                    if (actual_page_number === pages.length) {
+                        document.querySelector(`#button-next-${feed}`).className = `page-item disabled`;
+                    }
+                
+                } else if  (actual_page_number === pages.length) {
+                    
+                    generatePage(pages[actual_page_number - 1], feed, pages.length); 
+                    pages[actual_page_number - 1].posts.forEach(post => {
+                        generatePost(post, pages[actual_page_number - 1], feed);
+                    });
+                    console.log('NO MORE PAGES TO SHOW')
+                } else {
+                    
+                }
+                console.log(`OUTSIDE LOG ____ ${actual_page_number}`)
+            });
+
+            
 
         }       
 

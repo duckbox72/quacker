@@ -86,13 +86,17 @@ function loadFeed(feed) {
             
             // HANDLE PAGINATOR BUTTONS ==================================================================
            
+                
+         
+            a = [1, 2, 3, 4]
             // button-ACTUAL HANDLING (CREATE HANDLER FOR EACH PAGE BUTTON)
-            //for (i = 1; i < pages.length; i++) { 
-                document.querySelector(`#button-actual-${feed}-1`).addEventListener('click', function() {
+            a.forEach(ind => {
+                document.querySelector(`#button-actual-${feed}-${ind}`).addEventListener('click', function() {
 
-                console.log(`CLICKED PAGE NUMBER ${i}`);
+                    console.log(`CLICKED PAGE NUMBER ${ind}`);
                 });
-            //}
+            });
+            
             
             
             // button-PREVIOUS HANDLING

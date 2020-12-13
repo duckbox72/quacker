@@ -31,9 +31,6 @@ def add_post(request):
 
     user = request.user
     data = json.loads(request.body)
-    print(user.id)
-    print(user)
-    print(data.get("text", ""))
 
     post = Post(
         user=user,
@@ -76,7 +73,7 @@ def edit(request, post_id):
 
     post.save()
 
-    print(f"POST SENT {post}")
+    # print(f"POST SENT {post}")
     return JsonResponse(post.serialize(), safe=False, status=200) 
 
 # API route feed/<feed> 
@@ -144,7 +141,7 @@ def feed(request, feed):
             post["photo_name"] = photo_name
             
     # Create Pagination ==========================================================================
-    p = Paginator(complete_posts, 2)
+    p = Paginator(complete_posts, 10)
     
     feed_pages = []
     for i in p.page_range:
@@ -157,10 +154,8 @@ def feed(request, feed):
         complete_page = {"number": number, "posts": posts, "has_previous": has_previous, "has_next": has_next}
         feed_pages.append(complete_page)      
     
-     # Return feed of pages and posts   ###********* FEED REQUEST RERURN *********###
+    # Return feed of pages and posts   ###********* FEED REQUEST RERURN *********###
     return JsonResponse([page for page in feed_pages], safe=False)
-   
-    #return JsonResponse([post for post in complete_posts], safe=False)
     
 
 # API route follow/<user_id>
@@ -217,13 +212,12 @@ def like(request, post_id):
 
     if request.method == "GET":
     # Query for the requested like
-        print(f' POST ID {post_id}, USER ID {user.username}')    
+        # print(f' POST ID {post_id}, USER ID {user.username}')    
         try:
             is_liked = Like.objects.get(user=user.id, post=post_id)
         except: # LikeDoesNotExist():
             return JsonResponse({"message": f"Like not found Post {post_id}"}, status=201)
 
-        print(is_liked)
         return JsonResponse(is_liked.serialize(), safe=False)
     
     if request.method == "POST":
@@ -235,9 +229,7 @@ def like(request, post_id):
             liked_post = post.get("post", "")
             delete_like = Like.objects.get(user=user.id, post=liked_post)
             delete_like.delete()
-            print(f"===>>> {like_action}, {liked_post} ===>deleted")
-            # Print post to terminal and return it to be logged on console
-            #print(f"=====>>>> DELETED LIKE >>>> {delete_like}")
+            
             return JsonResponse(post)
         else: # like_action == create
             liked_post = post.get("post", "")
@@ -254,7 +246,7 @@ def num_likes(request, post_id):
      
     num_likes = Like.objects.filter(post=post_id).count()
     
-    print(f"NUMBER OF LIKES {num_likes} ---------")
+    # print(f"NUMBER OF LIKES {num_likes} ---------")
     
     return JsonResponse({"likes": num_likes})
 

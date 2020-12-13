@@ -4,7 +4,7 @@
 
     <div class="row justify-content-center">
         <div class="col-lg-6 border rounded shadow-sm p-3">
-            <h3>Login</h3>
+            <h3 class="ml-1 my-text">Login</h3>
 
             {% if message %}
                 <div>{{ message }}</div>
@@ -18,10 +18,10 @@
                 <div class="form-group">
                     <input class="form-control" type="password" name="password" placeholder="Password">
                 </div>
-                <input class="btn my-btn rounded-pill" type="submit" value="Login">
+                <input class="btn my-btn rounded-pill ml-1" type="submit" value="Login">
             </form>
 
-            <small>Don't have an account? <a href="{% url 'register' %}">Register here.</a></small>
+            <small class="ml-1">Don't have an account? <a href="{% url 'register' %}">Register here.</a></small>
         </div>
     </div>
 {% endblock %}

@@ -74,7 +74,7 @@ function generatePost(post, page, feed) {
     // Add EVENT HANDLER to LIKE BUTTON CLICK
     document.querySelector(`#toggle-like${post.id}`).addEventListener('click', function() {
         
-        console.log(`CLICK toggle-like ${post.id}`);
+        //console.log(`CLICK toggle-like ${post.id}`);
         
         // CHECK with GET request if post is_liked by user
         fetch(`like/${post.id}`)
@@ -82,7 +82,7 @@ function generatePost(post, page, feed) {
         .then(is_liked => {  
             // No message means is_like exists
             if (!is_liked.message) {
-                console.log(`FROM LIKED POST ${post.id} => ${is_liked.post} TO NON LIKED!`);              
+                // console.log(`FROM LIKED POST ${post.id} => ${is_liked.post} TO NON LIKED!`);              
                 fetch(`like/${post.id}`, {
                     method: 'POST',
                     body: JSON.stringify({
@@ -92,10 +92,10 @@ function generatePost(post, page, feed) {
                 })   
                 .then(response => response.json())
                 .then(post => {
-                    console.log(post)
+                    // console.log(post)
                 })
             } else {
-                console.log(`FROM NOT LIKED POST ${post.id} - TO LIKED`);
+                // console.log(`FROM NOT LIKED POST ${post.id} - TO LIKED`);
                 fetch(`like/${post.id}`, {
                     method: 'POST',
                     body: JSON.stringify({
@@ -105,7 +105,7 @@ function generatePost(post, page, feed) {
                 })
                 .then(response => response.json())
                 .then(like => {
-                    console.log(like)
+                    // console.log(like)
                 }) 
             }
         })
@@ -130,7 +130,7 @@ function generatePost(post, page, feed) {
 
     // HANDLE EDIT BUTTON CLICK
     document.querySelector(`#toggle-edit${post.id}`).addEventListener('click', function() {
-        console.log(`CLICK toggle-edit on POST ${post.id}`);
+        // console.log(`CLICK toggle-edit on POST ${post.id}`);
 
         // TOGGLE EDIT rendering changes
         if (document.querySelector(`#toggle-edit${post.id}`).className === "far fa-edit text-dark") {
@@ -182,7 +182,7 @@ function generatePost(post, page, feed) {
 
     // HANDLE UPDATE BUTTON CLICK
     document.querySelector(`#update${post.id}`).addEventListener('click', function() {
-        console.log('UPDATE CLICKED')
+        // console.log('UPDATE CLICKED')
         
         const text = document.querySelector(`#post-form-text${post.id}`).value;
         fetch(`edit/${post.id}`, {
@@ -194,7 +194,7 @@ function generatePost(post, page, feed) {
         .then(response => response.json())
         .then(new_post => {
             
-            console.log(new_post)
+            //console.log(new_post)
             // FROM EDIT MODE to VIEW MODE
         
             document.querySelector(`#toggle-edit${post.id}`).className = "far fa-edit text-dark";
@@ -218,7 +218,7 @@ function generatePost(post, page, feed) {
 
     // HANDLE CANCEL BUTTON CLICK
     document.querySelector(`#cancel${post.id}`).addEventListener('click', function() {
-        console.log('CANCEL CLICKED')
+        // console.log('CANCEL CLICKED')
         // FROM EDIT MODE to VIEW MODE
         document.querySelector(`#toggle-edit${post.id}`).className = "far fa-edit text-dark";
         
@@ -239,7 +239,7 @@ function generatePost(post, page, feed) {
 
     // HANDLE DELETE BUTTON CLICK ---> FETCH ERASE/POST
     document.querySelector(`#delete${post.id}`).addEventListener('click', function() {
-        console.log('DELETE CLICKED')
+        // console.log('DELETE CLICKED')
 
         fetch(`erase/${post.id}`, {
             method: 'POST',

@@ -18,6 +18,8 @@ function loadFeed(feed) {
     // CLEAR out form text field
     document.querySelector('#post-form-text').value = '';
 
+    // CLEAR out feed-name
+    document.querySelector('#feed-name').innerHTML = '';
     // DISPLAY the feed name
     document.querySelector('#feed-name').innerHTML = feed;
                             
@@ -36,7 +38,7 @@ function loadFeed(feed) {
     fetch(`feed/${feed}`)
     .then(response => response.json())
     .then(pages => {
-        console.log(`PAGES ==>`, pages);
+        // console.log(`PAGES ==>`, pages);
         
         // CLEAR out old FEED before render new FEED   
         document.querySelector("#feed-view-all").innerHTML = "";
@@ -72,8 +74,7 @@ function loadFeed(feed) {
             generatePaginator(feed, pages.length);
             var actual_page_number = pages[0].number;
             
-            handlePaginatorButtons(feed, pages, actual_page_number);
-            
+            handlePaginatorButtons(feed, pages, actual_page_number);   
             
         }       
     });

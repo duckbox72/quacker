@@ -5,12 +5,17 @@ function loadProfile(user_id) {
     document.querySelector('#feed-view').style.display = 'none';
     
     // DISPLAY the feed name
-    document.querySelector('#profile-view-feed-name').innerHTML = "my posts";
+    //document.querySelector('#profile-view-feed-name').innerHTML = "my posts";
     
     // FETCH FOR PROFILE DATA
     fetch(`profile/${user_id}`)
     .then(response => response.json())
     .then(profile => {
+
+        // CLEAR out feed-name
+        document.querySelector('#feed-name').innerHTML = '';
+        // DISPLAY the feed name
+        document.querySelector('#profile-view-feed-name').innerHTML = `${profile.username} posts`;
  
         document.querySelector("#profile-username").innerHTML = profile.username;
         document.querySelector("#profile-following").innerHTML = profile.num_following;
@@ -90,7 +95,7 @@ function loadProfile(user_id) {
     fetch(`feed/${feed}`)
     .then(response => response.json())
     .then(pages => {
-        console.log(`PAGES ==>`, pages);
+        //onsole.log(`PAGES ==>`, pages);
 
         // CLEAR out old FEED before render new FEED
         document.querySelector("#feed-view-all").innerHTML = "";

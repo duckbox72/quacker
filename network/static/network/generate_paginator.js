@@ -5,22 +5,21 @@ function generatePaginator(feed, num_pages) {
     document.querySelector("#feed-view-following-paginator").innerHTML = "";
     document.querySelector("#profile-view-feed-paginator").innerHTML = "";
     
-
     // CREATE PAGINATOR DIV
     const paginator = document.createElement('div');
     paginator.id = `paginator-${feed}`;
+    paginator.style.height = "20px";
     paginator.innerHTML = 
-        `<div class="row small justify-content-center mt-3">
+        `<div class="row small justify-content-center mt-3 mb-5"">
             <div class="col-6">
                 <nav>
-                    <ul id="paginator-${feed}-ul" class="pagination justify-content-center my-text my-text-hover">
+                    <ul id="paginator-${feed}-ul" class="pagination justify-content-center my-text my-text-hover" style="font-size: 11px;">
                     
                     </ul>
                 </nav>
             </div>
         </div>
         `;
-    
     
     if (feed ==="all" || feed ==="following") {
         document.querySelector(`#feed-view-${feed}-paginator`).append(paginator)

@@ -5,8 +5,8 @@ function generatePage(page, feed, num_pages) {
     has_next = page.has_next;
     has_previous = page.has_previous;
     
-    console.log(feed);
-    console.log(page.number);
+    //console.log(feed);
+    //console.log(page.number);
 
     // CREATE and RENDER PAGE DIV (to receive posts)
     const element = document.createElement('div');

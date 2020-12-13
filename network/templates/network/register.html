@@ -3,7 +3,7 @@
 {% block body %}
     <div class="row justify-content-center">
         <div class="col-lg-6 border rounded shadow-sm p-3">
-            <h3>Register</h3>
+            <h3 class="ml-1 my-text">Register</h3>
 
             {% if message %}
                 <div>{{ message }}</div>
@@ -23,10 +23,10 @@
                 <div class="form-group">
                     <input class="form-control" type="password" name="confirmation" placeholder="Confirm Password">
                 </div>
-                <input class="btn my-btn rounded-pill" type="submit" value="Register">
+                <input class="btn my-btn rounded-pill ml-1" type="submit" value="Register">
             </form>
 
-            <small>Already have an account? <a href="{% url 'login' %}">Log In here.</a></small>
+            <small class="ml-1">Already have an account? <a href="{% url 'login' %}">Log In here.</a></small>
         </div>
     </div>
 {% endblock %}

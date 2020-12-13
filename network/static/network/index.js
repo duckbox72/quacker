@@ -84,31 +84,80 @@ function loadFeed(feed) {
             var actual_page_number = pages[0].number;
 
             
-            // HANDLE PAGINATOR BUTTONS =====================
+            // HANDLE PAGINATOR BUTTONS ==================================================================
            
+            // button-ACTUAL HANDLING (CREATE HANDLER FOR EACH PAGE BUTTON)
+            //for (i = 1; i < pages.length; i++) { 
+                document.querySelector(`#button-actual-${feed}-1`).addEventListener('click', function() {
+
+                console.log(`CLICKED PAGE NUMBER ${i}`);
+                });
+            //}
+            
+            
             // button-PREVIOUS HANDLING
             document.querySelector(`#button-previous-${feed}`).addEventListener('click', function() {
-                console.log(actual_page_number)
+                console.log('PREVIOUS CLICK');
+            
+                // CLEAR out last 
+                document.querySelector("#feed-view-all").innerHTML = "";
+                document.querySelector("#feed-view-following").innerHTML = "";
+                document.querySelector("#profile-view-feed").innerHTML = "";
+                
+                if (actual_page_number > 1) {
+                    // Update button previous and actual classes
+                    if (actual_page_number === pages.length){
+                        document.querySelector(`#button-next-${feed}`).className = `page-item`;
+                    }
+                    document.querySelector(`#button-actual-${feed}-${actual_page_number}`).className = `page-item`;
+
+                    // Update page number and load next page
+                    actual_page_number -= 1;
+
+                    document.querySelector(`#button-actual-${feed}-${actual_page_number}`).className = `page-item active`;
+
+                    generatePage(pages[actual_page_number - 1], feed, pages.length);  
+                    pages[actual_page_number - 1].posts.forEach(post => {
+                        generatePost(post, pages[actual_page_number - 1], feed);
+                    });
+
+                    // If page is first disable previous button
+                    if (actual_page_number === 1) {
+                        document.querySelector(`#button-previous-${feed}`).className = `page-item disabled`;
+                    }
+                
+                } else {  // (actual_page_number === 1) 
+                    
+                    generatePage(pages[actual_page_number - 1], feed, pages.length); 
+                    pages[actual_page_number - 1].posts.forEach(post => {
+                        generatePost(post, pages[actual_page_number - 1], feed);
+                    });
+                    console.log('NO MORE PAGES TO SHOW');
+                }
+            
             });
+            
             
             // button-NEXT HANDLING
             document.querySelector(`#button-next-${feed}`).addEventListener('click', function() {
-                console.log('NEXT CLICK')
+                console.log('NEXT CLICK');
                 
-                document.querySelector("#feed-view-all").innerHTML = ''            
+                // CLEAR out last 
+                document.querySelector("#feed-view-all").innerHTML = "";
+                document.querySelector("#feed-view-following").innerHTML = "";
+                document.querySelector("#profile-view-feed").innerHTML = "";           
                 
                 if (actual_page_number < pages.length) {
-        
                     // Update button previous and actual classes
                     if (actual_page_number === 1){
                         document.querySelector(`#button-previous-${feed}`).className = `page-item`;
                     }
-                    document.querySelector(`#button-actual-${feed}-${actual_page_number}`).className = `page-item`
+                    document.querySelector(`#button-actual-${feed}-${actual_page_number}`).className = `page-item`;
 
                     // Update page number and load next page
                     actual_page_number += 1;
 
-                    document.querySelector(`#button-actual-${feed}-${actual_page_number}`).className = `page-item active`
+                    document.querySelector(`#button-actual-${feed}-${actual_page_number}`).className = `page-item active`;
 
                     generatePage(pages[actual_page_number - 1], feed, pages.length);  
                     pages[actual_page_number - 1].posts.forEach(post => {
@@ -120,20 +169,17 @@ function loadFeed(feed) {
                         document.querySelector(`#button-next-${feed}`).className = `page-item disabled`;
                     }
                 
-                } else if  (actual_page_number === pages.length) {
+                } else {  // (actual_page_number === pages.length) 
                     
                     generatePage(pages[actual_page_number - 1], feed, pages.length); 
                     pages[actual_page_number - 1].posts.forEach(post => {
                         generatePost(post, pages[actual_page_number - 1], feed);
                     });
-                    console.log('NO MORE PAGES TO SHOW')
-                } else {
-                    
+                    console.log('NO MORE PAGES TO SHOW');
                 }
-                console.log(`OUTSIDE LOG ____ ${actual_page_number}`)
             });
 
-            
+            // ============================================================================================
 
         }       
 

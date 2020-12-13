@@ -43,11 +43,6 @@ function generatePaginator(feed, num_pages) {
             </a>`;
         document.querySelector(`#paginator-${feed}-ul`).append(button_previous);
 
-        document.querySelector(`#button-previous-${feed}`).addEventListener('click', function() {
-            console.log('PREVIOUS');
-
-        })
-
         // CREATE BUTTON FOR EACH page  (ACTUAL)
         for (i = 1; i <= num_pages; i++) {    
             const button_actual = document.createElement('li');

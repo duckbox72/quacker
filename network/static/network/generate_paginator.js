@@ -67,56 +67,6 @@ function generatePaginator(feed, num_pages) {
             `<a class="page-link my-text my text-hover">
                 <i class="fas fa-angle-double-right"></i>
             </a>`;
-        document.querySelector(`#paginator-${feed}-ul`).append(button_next);
-
-
-        
+        document.querySelector(`#paginator-${feed}-ul`).append(button_next);   
     }
-
-
 } 
-
-
-
-    
-    /*
-    const paginator = document.createElement('div');
-    paginator.style.display = 'none';
-    paginator.className = "row small justify-content-center mt-3";
-    paginator.innerHTML = 
-        `<nav aria-label="Feed Navigation" class="col-6 text-center">
-            <ul class="pagination">
-            <li class="page-item">
-                <a class="page-link my-text my text-hover" href="#" aria-label="Previous">
-                <span aria-hidden="true"><i class="fas fa-angle-double-left"></i></span>
-                </a>
-            </li>
-            <li class="page-item"><a class="page-link  my-text my text-hover" href="#">1</a></li>
-            <li class="page-item"><a class="page-link  my-text my text-hover" href="#">2</a></li>
-            <li class="page-item"><a class="page-link  my-text my text-hover" href="#">3</a></li>
-                <a class="page-link my-text my text-hover" href="#" aria-label="Next">
-                <span aria-hidden="true"><i class="fas fa-angle-double-right"></i></span> 
-                </a>
-            </li>
-            </ul>
-        </nav>`;
-
-
-
-
-
-
-
-    
-    
-    
-    
-    const paginator_next = document.createElement('li');
-    paginator_next.id = `button-next-${feed}` 
-    button_previous.className = `page-item`
-    button_next.innerHTML = 
-        `<a class="page-link my-text my text-hover">
-            <i class="fas fa-angle-double-right"></i>
-        </a>`; 
-
-    */

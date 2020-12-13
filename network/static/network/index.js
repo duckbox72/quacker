@@ -61,18 +61,7 @@ function loadFeed(feed) {
         
         // In case there are PAGES to be shown
         } else {
-        
-            /*
-            // If there are pages iteract though them 
-            pages.forEach(page => { 
-                generatePage(page, feed, pages.length)
-                
-                posts.forEach(post => {
-                    generatePost(post, page, feed);
-                });
-            }); 
-            */
-            
+
             // By default load page 1 (pages[0]) with respective posts and feed paginator
             generatePage(pages[0], feed, pages.length);
 
@@ -82,21 +71,51 @@ function loadFeed(feed) {
 
             generatePaginator(feed, pages.length);
             var actual_page_number = pages[0].number;
-
             
             // HANDLE PAGINATOR BUTTONS ==================================================================
-           
                 
-         
-            a = [1, 2, 3, 4]
-            // button-ACTUAL HANDLING (CREATE HANDLER FOR EACH PAGE BUTTON)
-            a.forEach(ind => {
-                document.querySelector(`#button-actual-${feed}-${ind}`).addEventListener('click', function() {
+            // Create array to iteract pages when creating handlers
+            var pgs = []
+            for (i = 1; i <= pages.length; i++){
+                pgs.push(i);
+            }
+            // button-ACTUAL HANDLING (create handler for each PAGE BUTTON)
+            pgs.forEach(num => {
+                document.querySelector(`#button-actual-${feed}-${num}`).addEventListener('click', function() {
+                    console.log(`CLICKED PAGE NUMBER ${num}`);
 
-                    console.log(`CLICKED PAGE NUMBER ${ind}`);
+                    // CLEAR out last 
+                    document.querySelector("#feed-view-all").innerHTML = "";
+                    document.querySelector("#feed-view-following").innerHTML = "";
+                    document.querySelector("#profile-view-feed").innerHTML = "";
+
+                    
+                    document.querySelector(`#button-actual-${feed}-${actual_page_number}`).className = `page-item`;
+                    document.querySelector(`#button-actual-${feed}-${num}`).className = `page-item active`;
+
+                    // Update actual_page_num
+                    actual_page_number = num;
+
+                    if (actual_page_number === 1){
+                        document.querySelector(`#button-previous-${feed}`).className = `page-item disabled`;
+                        document.querySelector(`#button-next-${feed}`).className = `page-item`;
+                    } else if (actual_page_number === pages.length) {
+                        document.querySelector(`#button-previous-${feed}`).className = `page-item`;
+                        document.querySelector(`#button-next-${feed}`).className = `page-item disabled`;
+                    }
+                    
+
+                    generatePage(pages[actual_page_number - 1], feed, pages.length);  
+                    pages[actual_page_number - 1].posts.forEach(post => {
+                        generatePost(post, pages[actual_page_number - 1], feed);
+                    });
+                
+                
+                
+                
+                
                 });
             });
-            
             
             
             // button-PREVIOUS HANDLING

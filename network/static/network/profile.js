@@ -123,6 +123,9 @@ function loadProfile(user_id) {
             });
 
             generatePaginator(feed, pages.length);
+            var actual_page_number = pages[0].number;
+            
+            handlePaginatorButtons(feed, pages, actual_page_number);
         }
     });
 }

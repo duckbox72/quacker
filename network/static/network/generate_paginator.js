@@ -4,9 +4,7 @@ function generatePaginator(feed, num_pages) {
     document.querySelector("#feed-view-all-paginator").innerHTML = "";
     document.querySelector("#feed-view-following-paginator").innerHTML = "";
     document.querySelector("#profile-view-feed-paginator").innerHTML = "";
-        
-    console.log(feed);
-    console.log(num_pages);
+    
 
     // CREATE PAGINATOR DIV
     const paginator = document.createElement('div');

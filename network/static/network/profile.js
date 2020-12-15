@@ -4,9 +4,6 @@ function loadProfile(user_id) {
     document.querySelector('#profile-view').style.display = 'block';
     document.querySelector('#feed-view').style.display = 'none';
     
-    // DISPLAY the feed name
-    //document.querySelector('#profile-view-feed-name').innerHTML = "my posts";
-    
     // FETCH FOR PROFILE DATA
     fetch(`profile/${user_id}`)
     .then(response => response.json())

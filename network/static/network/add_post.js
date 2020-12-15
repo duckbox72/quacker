@@ -4,8 +4,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     form.addEventListener('submit', (event) => {
         let text = document.querySelector("#post-form-text");
-        console.log(`Text: ${text.value}`);
-        console.log('YOU CLICKED THE BUTTON');
+        //console.log(`Text: ${text.value}`);
+        //console.log('YOU CLICKED THE BUTTON');
 
         // POST requert to add a post
         fetch('/posts', {
@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 alert(result.error);     
             }
             if (result.message) {
-                console.log(result.message);
+                //console.log(result.message);
             } 
         })
         

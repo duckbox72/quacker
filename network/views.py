@@ -140,7 +140,7 @@ def feed(request, feed):
             photo_name = "/static/network/no-user.png"
             post["photo_name"] = photo_name
             
-    # Create Pagination ==========================================================================
+    # Create Pagination to actual feed =================================================================
     p = Paginator(complete_posts, 10)
     
     feed_pages = []
@@ -203,7 +203,6 @@ def follow(request, user_id):
         return JsonResponse({"can_follow": can_follow, "is_followed": is_followed})
 
 
-
 # API route like/<post.id>
 @csrf_exempt
 @login_required
@@ -251,7 +250,6 @@ def num_likes(request, post_id):
     return JsonResponse({"likes": num_likes})
 
 
-
 @login_required
 def profile(request, user_id):
     user = request.user
@@ -264,14 +262,12 @@ def profile(request, user_id):
     except:
         description = ""
         photo_name = ""
-        pass
-    
+        pass   
     
     if user_id == user.id:
         can_follow = False
     else:
-        can_follow = True
-        
+        can_follow = True     
     
     username = User.objects.get(pk=user_id).username
     num_followers = len(Follow.objects.filter(followed=user_id))
@@ -286,7 +282,6 @@ def profile(request, user_id):
                         }
 
     return JsonResponse(complete_profile)
-
 
 
 

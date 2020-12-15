@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 #from django.utils import timezone
 
+
 class User(AbstractUser):
     pass
 
@@ -16,6 +17,8 @@ class Follow(models.Model):
             "followed_id": self.followed.id,
         }
 
+
+
 class Like(models.Model):
     user = models.ForeignKey("User", on_delete=models.CASCADE, related_name="user_liked")
     post = models.ForeignKey("Post", on_delete=models.CASCADE, related_name="post_likes")
@@ -26,6 +29,7 @@ class Like(models.Model):
             "user": self.user.id,
             "post": self.post.id,
         }
+
 
 class Post(models.Model):
     user = models.ForeignKey("User", on_delete=models.CASCADE, related_name="poster")
